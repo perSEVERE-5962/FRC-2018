@@ -5,6 +5,9 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc.team5962.robot.commands.RunAutonomous;
 
 /* The VM is configured to automatically run this class, and to call the
@@ -16,7 +19,6 @@ import org.usfirst.frc.team5962.robot.commands.RunAutonomous;
 public class Robot extends IterativeRobot {
 
 	public static Command autonomousCommand;
-
 	/**
 	 * This function is run when the robot is first started up and should be used
 	 * for any initialization code.
@@ -25,6 +27,8 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		RobotMap.init();
 	}
+	
+
 
 	/**
 	 * This function is called once each time the robot enters Disabled mode. You
