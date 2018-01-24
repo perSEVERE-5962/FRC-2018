@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.usfirst.frc.team5962.robot.commands.RunAutonomous;
+import org.usfirst.frc.team5962.robot.subsystems.Drive;
 
 /* The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -16,6 +17,8 @@ import org.usfirst.frc.team5962.robot.commands.RunAutonomous;
 public class Robot extends IterativeRobot {
 
 	public static Command autonomousCommand;
+	public static OI oi;
+	public static Drive drive = new Drive();
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -24,6 +27,8 @@ public class Robot extends IterativeRobot {
 
 	public void robotInit() {
 		RobotMap.init();
+		oi = new OI();
+		RobotMap.myRobot.setMaxOutput(0.5);
 	}
 
 	/**
@@ -65,7 +70,7 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void teleopInit() {
-
+		oi.startDriveCommand();
 	}
 
 	/**
