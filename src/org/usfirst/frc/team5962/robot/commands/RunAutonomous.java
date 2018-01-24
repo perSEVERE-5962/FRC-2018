@@ -10,18 +10,19 @@ public class RunAutonomous extends Command {
 	private boolean isFinished = false;
 	private Autonomous autonomousSubsystem = new Autonomous();
 
-	protected void initialize() {
+	protected void initialize()
+	{
 		autonomousSubsystem.init();
 	}
 
-	protected void execute() {
-		//autonomousSubsystem.printHeavenlyVirtues();
-		//autonomousSubsystem.determineGoodPerson();
+	protected void execute() 
+	{
 
 	}
 
 	@Override
-	protected boolean isFinished() {
+	protected boolean isFinished()
+	{
 		// TODO Auto-generated method stub
 		return false;
 	}
