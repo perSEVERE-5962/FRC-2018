@@ -5,6 +5,9 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc.team5962.robot.commands.RunAutonomous;
 import org.usfirst.frc.team5962.robot.subsystems.Drive;
 
@@ -30,6 +33,8 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		RobotMap.myRobot.setMaxOutput(0.5);
 	}
+	
+
 
 	/**
 	 * This function is called once each time the robot enters Disabled mode. You
