@@ -11,95 +11,65 @@ public class Autonomous extends Subsystem {
 		// TODO Auto-generated method stub
 	}
 	
-	
-	public static enum HeavenlyVirtues {
-		printChastity,
-		printTemperance,
-		printCharity,
-		printDiligence,
-		printPatience,
-		printKindness,
-		printHumility,
-	
-		sins,
-		free
+	public static enum Location {
+		
+		farRight,
+		switchRight,
+		middle,
+		vault,
+		switchLeft,
+		farLeft
 		
 	}
 	
-	private HeavenlyVirtues state;
+	public static enum Action {
+		
+		nothing,
+		crossLine,
+		exchange,
+		switch1,
+		switch2,
+		scale,
+		
+		pickUpBlock,
+		placeBlock,
+		
+		stop
+	}
 	
-	SendableChooser<HeavenlyVirtues> goodOrBad;
+	//Variables for the switch case
+	private Location situation;
+	private Action action;
+	
+	//Variables for Shuffleboard
+	SendableChooser<Location> position;
+	SendableChooser<Action> state;
+	
 	public void init()
 	{
-		//state = HeavenlyVirtues.printChastity;
+		//Set up for state cases
+		situation = Location.farRight;
+		action = Action.nothing;
 		
-		//goodOrBad = new SendableChooser<HeavenlyVirtues>();
-		//goodOrBad.addDefault("Yes", HeavenlyVirtues.free);
-		//goodOrBad.addObject("No", HeavenlyVirtues.sins);
-		//SmartDashboard.putData("Are you a good person?", goodOrBad);
-		//SmartDashboard.putString("Test", "Here");
+		//Setting up options for location
+		position = new SendableChooser<Location>();
+		position.addDefault("Far Right", Location.farRight);
+		position.addObject("Right side of Switch", Location.switchRight);
+		position.addObject("Middle", Location.middle);
+		position.addObject("In front of Vault", Location.vault);
+		position.addObject("Left side of Switch", Location.switchLeft);
+		position.addObject("Far Left", Location.farLeft);
+		SmartDashboard.putData("Location of robot", position);
 		
-		
+		//Setting up options for actions in autonomous
+		state = new SendableChooser<Action>();
+		state.addDefault("Nothing", Action.nothing);
+		state.addObject("Cross the Line", Action.crossLine);
+		state.addObject("Exchange", Action.exchange);
+		state.addObject("One Switch", Action.switch1);
+		state.addObject("Two Switches", Action.switch2);
+		//state.addObject("Scale", Action.scale);
+		SmartDashboard.putData("Action for Auto", state);
 	}
 	
-	public void printHeavenlyVirtues()
-	{	
-		switch(state){
-
-		case printChastity:
-			SmartDashboard.putString("First Stage: ", "Chastity");
-			state = HeavenlyVirtues.printTemperance;
-			break;
-		
-		case printTemperance:
-			SmartDashboard.putString("Second Stage: ", "Temperance");
-			state = HeavenlyVirtues.printCharity;
-			break;
-		
-		case printCharity:
-			SmartDashboard.putString("Third Stage: ", "Charity");
-			state = HeavenlyVirtues.printDiligence;
-			break;
-			
-		case printDiligence:
-			SmartDashboard.putString("Fourth Stage: ", "Diligence");
-			state = HeavenlyVirtues.printPatience;
-			break;
-		
-		case printPatience:
-			SmartDashboard.putString("Fifth Stage: ", "Patience");
-			state = HeavenlyVirtues.printKindness;
-			break;
-			
-		case printKindness:
-			SmartDashboard.putString("Sixth Stage", "Kindness");
-			state = HeavenlyVirtues.printHumility;
-			break;
-			
-			
-		case printHumility:
-			SmartDashboard.putString("Seventh Stage: ","Humility");
-			break;
-			
-		case sins:
-			SmartDashboard.putString("Are you a good person?","Bad");
-			break;
-			
-		case free:
-			SmartDashboard.putString("Are you a good person?","Good");
-			break;
-
-		default:
-			SmartDashboard.putString("Status", "" + state);
-		}	
-	}
-	
-//	SendableChooser<HeavenlyVirtues> goodOrBad;
-	public void determineGoodPerson()
-	{
-//		goodOrBad = new SendableChooser<HeavenlyVirtues>();
-//		goodOrBad.addDefault("Yes", HeavenlyVirtues.free);
-//		goodOrBad.addObject("No", HeavenlyVirtues.sins);
-//		SmartDashboard.putData("Are you a good person?", goodOrBad);
-	}
 }
