@@ -5,30 +5,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Autonomous extends Subsystem {
-
-	public enum State{
-		genericOne,
-		genericTwo,
-		genericThree,
-		vagueOne,
-		vagueTwo,
-		vagueThree,
-		undefinedOne,
-		undefinedTwo,
-		undefinedThree,		
-		
-		stop
-	};
-	public State state;	
-	private void defineGenerics()
-	{
-	switch(state) {
-	case genericOne:
-			state = State.genericTwo;
-			
-	}
-	}
-	
 	
 	@Override
 	protected void initDefaultCommand() {
@@ -65,12 +41,18 @@ public class Autonomous extends Subsystem {
 	private Location situation;
 	private Action action;
 	
+	//Variable for stopwatch
+	private long end;
+	
 	//Variables for Shuffleboard
 	SendableChooser<Location> position;
 	SendableChooser<Action> state;
 	
 	public void init()
 	{
+		//Sets up the start timer
+		end = System.currentTimeMillis() + 15000;
+		
 		//Set up for state cases
 		situation = Location.farRight;
 		action = Action.nothing;
@@ -96,4 +78,9 @@ public class Autonomous extends Subsystem {
 		SmartDashboard.putData("Action for Auto", state);
 	}
 	
+	public void elapsedTime() {
+        long now = System.currentTimeMillis();
+        long elapsedTime =  (long) ((end - now) / 1000.0);
+        SmartDashboard.putNumber("Time", elapsedTime);
+    }
 }
