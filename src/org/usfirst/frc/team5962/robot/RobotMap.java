@@ -34,6 +34,8 @@ public class RobotMap {
 	private final static int DIO_CHANNEL_7 = 7;
 	private final static int DIO_CHANNEL_8 = 8;
 	private final static int DIO_CHANNEL_9 = 9;
+	
+	
 	public static Victor robotLeftVictor1;
 	public static Victor robotLeftVictor2;
 	public static Victor robotRightVictor1;
