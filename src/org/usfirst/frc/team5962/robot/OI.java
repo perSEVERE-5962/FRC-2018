@@ -24,7 +24,7 @@ public class OI {
 		joystickLeft = new Joystick(1);
 		joystickRight = new Joystick(2);
 		throttle = new JoystickButton(joystickLeft, 1);
-		throttle.whenPressed(new Throttle());
+		//throttle.whenPressed(new Throttle());
 
 	}
 	
@@ -34,7 +34,11 @@ public class OI {
 	}
 	
 	public double joystickLeftAxis() {
-		return joystickLeft.getRawAxis(2);
+		return joystickLeft.getRawAxis(1);
+	}
+	
+	public double joystickRightAxis() {
+		return joystickRight.getRawAxis(1);
 	}
 	
 	public boolean isThrottleEnabled() {
