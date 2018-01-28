@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Autonomous extends Subsystem {
 	
-	
 	@Override
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub
@@ -42,12 +41,18 @@ public class Autonomous extends Subsystem {
 	private Location situation;
 	private Action action;
 	
+	//Variable for stopwatch
+	private long end;
+	
 	//Variables for Shuffleboard
 	SendableChooser<Location> position;
 	SendableChooser<Action> state;
 	
 	public void init()
 	{
+		//Sets up the start timer
+		end = System.currentTimeMillis() + 15000;
+		
 		//Set up for state cases
 		situation = Location.farRight;
 		action = Action.nothing;
@@ -73,4 +78,9 @@ public class Autonomous extends Subsystem {
 		SmartDashboard.putData("Action for Auto", state);
 	}
 	
+	public void elapsedTime() {
+        long now = System.currentTimeMillis();
+        long elapsedTime =  (long) ((end - now) / 1000.0);
+        SmartDashboard.putNumber("Time", elapsedTime);
+    }
 }
