@@ -17,6 +17,7 @@ public class RunAutonomous extends Command {
 
 	protected void execute() 
 	{
+		autonomousSubsystem.elapsedTime();
 
 	}
 
