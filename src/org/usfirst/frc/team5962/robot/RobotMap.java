@@ -1,8 +1,8 @@
 package org.usfirst.frc.team5962.robot;
 
-import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -34,11 +34,13 @@ public class RobotMap {
 	private final static int DIO_CHANNEL_7 = 7;
 	private final static int DIO_CHANNEL_8 = 8;
 	private final static int DIO_CHANNEL_9 = 9;
+	
+	
 	public static Victor robotLeftVictor1;
 	public static Victor robotLeftVictor2;
 	public static Victor robotRightVictor1;
 	public static Victor robotRightVictor2;
-	public static RobotDrive myRobot;
+	public static DifferentialDrive myRobot;
 	public static SpeedController leftDrive;
 	public static SpeedController rightDrive;
 
@@ -50,6 +52,6 @@ public class RobotMap {
 		robotRightVictor2 = new Victor(PWM_CHANNEL_7);
 		leftDrive = new MultiSpeedController(robotLeftVictor1, robotLeftVictor2);
 		rightDrive = new MultiSpeedController(robotRightVictor1, robotRightVictor2);
-		myRobot = new RobotDrive(leftDrive, rightDrive);
+		myRobot = new DifferentialDrive(leftDrive, rightDrive);
 	}
 }
