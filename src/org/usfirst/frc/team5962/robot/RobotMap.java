@@ -46,10 +46,10 @@ public class RobotMap {
 
 	public static void init() {
 
-		robotLeftVictor1 = new Victor(PWM_CHANNEL_0);
-		robotLeftVictor2 = new Victor(PWM_CHANNEL_1);
-		robotRightVictor1 = new Victor(PWM_CHANNEL_6);
-		robotRightVictor2 = new Victor(PWM_CHANNEL_7);
+		robotLeftVictor1 = new Victor(PWM_CHANNEL_6);
+		robotLeftVictor2 = new Victor(PWM_CHANNEL_7);
+		robotRightVictor1 = new Victor(PWM_CHANNEL_0);
+		robotRightVictor2 = new Victor(PWM_CHANNEL_1);
 		leftDrive = new MultiSpeedController(robotLeftVictor1, robotLeftVictor2);
 		rightDrive = new MultiSpeedController(robotRightVictor1, robotRightVictor2);
 		myRobot = new DifferentialDrive(leftDrive, rightDrive);

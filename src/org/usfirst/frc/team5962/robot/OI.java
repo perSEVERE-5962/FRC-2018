@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class OI {
 	public Joystick joystickLeft;
 	public Joystick joystickRight;
+	public Joystick gamepad1;
 	public Button throttle;
 	
 	private boolean throttleEnabled = false;
@@ -23,6 +24,7 @@ public class OI {
 	public OI() {
 		joystickLeft = new Joystick(1);
 		joystickRight = new Joystick(2);
+		gamepad1 = new Joystick(0);
 		throttle = new JoystickButton(joystickLeft, 1);
 		//throttle.whenPressed(new Throttle());
 
@@ -39,6 +41,13 @@ public class OI {
 	
 	public double joystickRightAxis() {
 		return joystickRight.getRawAxis(1);
+	}
+	
+	public double gamepadLeftAxis() {
+		return gamepad1.getRawAxis(1);
+	}
+	public double gamepadRightAxis() {
+		return gamepad1.getRawAxis(5);
 	}
 	
 	public boolean isThrottleEnabled() {
