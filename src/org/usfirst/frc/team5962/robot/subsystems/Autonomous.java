@@ -5,29 +5,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Autonomous extends Subsystem {
-
-	public enum State{
-		genericOne,
-		genericTwo,
-		genericThree,
-		vagueOne,
-		vagueTwo,
-		vagueThree,
-		undefinedOne,
-		undefinedTwo,
-		undefinedThree,		
-		
-		stop
-	};
-	public State state;	
-	private void defineGenerics()
-	{
-	switch(state) {
-	case genericOne:
-			state = State.genericTwo;
-			
-	}
-	}
 	
 	
 	@Override
