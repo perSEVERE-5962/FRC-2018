@@ -12,7 +12,8 @@ public class Drive extends Subsystem {
 	private OI robotOI = new OI();
 	
 	public void joystickTank() {
-		RobotMap.myRobot.tankDrive(robotOI.joystickLeftAxis(), robotOI.joystickRightAxis());
+		//RobotMap.myRobot.tankDrive(robotOI.joystickRightAxis(), robotOI.joystickLeftAxis());
+		RobotMap.myRobot.tankDrive(robotOI.gamepadRightAxis(), robotOI.gamepadLeftAxis());
 	}
 
 	@Override
