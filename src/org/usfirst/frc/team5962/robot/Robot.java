@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team5962.robot.commands.RunAutonomous;
+import org.usfirst.frc.team5962.robot.sensors.ADIS16448_IMU;
+import org.usfirst.frc.team5962.robot.sensors.RobotGyro;
 import org.usfirst.frc.team5962.robot.subsystems.Drive;
 import org.usfirst.frc.team5962.robot.subsystems.Gyro;
 
@@ -24,6 +26,9 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	public static Drive drive = new Drive();
 	public static Gyro gyro = new Gyro();
+//	public static ADIS16448_IMU robotGyro = new ADIS16448_IMU();
+	public static RobotGyro robotGyro = new RobotGyro();
+	
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -34,7 +39,8 @@ public class Robot extends IterativeRobot {
 		RobotMap.init();
 		oi = new OI();
 		RobotMap.myRobot.setMaxOutput(0.5);
-		//gyro.setUpResetGyro();
+		robotGyro.resetGyro();
+		gyro.setUpResetGyro();
 		
 	}
 	
@@ -87,6 +93,8 @@ public class Robot extends IterativeRobot {
 	 */
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		gyro.resetGryoShuffleboard();
+		SmartDashboard.putNumber("Gyro ADIS - yaw", robotGyro.getGyroAngle());
 	}
 
 	/**
