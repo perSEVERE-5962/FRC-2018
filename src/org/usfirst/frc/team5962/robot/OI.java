@@ -33,8 +33,7 @@ public class OI {
 		
 		
 		throttle = new JoystickButton(joystickLeft, 1);
-		//throttle.whenPressed(new Throttle());
-		
+		throttle.whenPressed(new Throttle());
 
 	}
 	
