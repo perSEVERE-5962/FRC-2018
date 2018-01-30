@@ -11,7 +11,7 @@ public class Throttle extends Command{
 	boolean isFinished = false;
 	boolean isThrottleEnabled = false;
 	public Throttle() {
-		   requires(Robot.drive);
+		//requires(Robot.drive);
 		   
 	}
 
@@ -26,12 +26,12 @@ public class Throttle extends Command{
 	public void execute() {
 
 		if (isThrottleEnabled) {
-			RobotMap.myRobot.setMaxOutput(0.25);
+			RobotMap.myRobot.setMaxOutput(0);
 		} else {
 			RobotMap.myRobot.setMaxOutput(0.5);
 		}
-		isFinished = true;
 		Robot.oi.startDriveCommand();
+		isFinished = true;
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

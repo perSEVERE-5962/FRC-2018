@@ -2,6 +2,8 @@
 package org.usfirst.frc.team5962.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -9,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team5962.robot.commands.RunAutonomous;
+import org.usfirst.frc.team5962.robot.commands.Throttle;
 import org.usfirst.frc.team5962.robot.sensors.ADIS16448_IMU;
 import org.usfirst.frc.team5962.robot.sensors.RobotGyro;
 import org.usfirst.frc.team5962.robot.subsystems.Drive;
@@ -38,9 +41,8 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		RobotMap.init();
 		oi = new OI();
-		RobotMap.myRobot.setMaxOutput(0.5);
-		robotGyro.resetGyro();
-		gyro.setUpResetGyro();
+		//RobotMap.myRobot.setMaxOutput(0.5);
+		//gyro.setUpResetGyro();
 		
 	}
 	
@@ -93,6 +95,7 @@ public class Robot extends IterativeRobot {
 	 */
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		SmartDashboard.putString("throttle enabled", "" + oi.isThrottleEnabled());
 		gyro.resetGryoShuffleboard();
 		SmartDashboard.putNumber("Gyro ADIS - yaw", robotGyro.getGyroAngle());
 	}

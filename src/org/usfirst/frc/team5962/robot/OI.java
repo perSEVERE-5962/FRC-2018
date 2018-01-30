@@ -26,7 +26,7 @@ public class OI {
 		joystickRight = new Joystick(2);
 		gamepad1 = new Joystick(0);
 		throttle = new JoystickButton(joystickLeft, 1);
-		//throttle.whenPressed(new Throttle());
+		throttle.whenPressed(new Throttle());
 
 	}
 	
