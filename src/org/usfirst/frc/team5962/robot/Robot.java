@@ -25,6 +25,7 @@ public class Robot extends IterativeRobot {
 	public static Command autonomousCommand;
 	public static OI oi;
 	public static Drive drive = new Drive();
+	public static ADIS16448_IMU robotGyro = new ADIS16448_IMU();
 	public static Gyro gyro = new Gyro();
 //	public static ADIS16448_IMU robotGyro = new ADIS16448_IMU();
 	public static RobotGyro robotGyro = new RobotGyro();
