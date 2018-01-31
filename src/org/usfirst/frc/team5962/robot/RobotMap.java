@@ -43,7 +43,9 @@ public class RobotMap {
 	public static DifferentialDrive myRobot;
 	public static SpeedController leftDrive;
 	public static SpeedController rightDrive;
-
+	
+	public static Victor boxIntake;
+	
 	public static void init() {
 
 		robotLeftVictor1 = new Victor(PWM_CHANNEL_6);
@@ -53,5 +55,7 @@ public class RobotMap {
 		leftDrive = new MultiSpeedController(robotLeftVictor1, robotLeftVictor2);
 		rightDrive = new MultiSpeedController(robotRightVictor1, robotRightVictor2);
 		myRobot = new DifferentialDrive(leftDrive, rightDrive);
+		
+		boxIntake = new Victor(PWM_CHANNEL_3);
 	}
 }
