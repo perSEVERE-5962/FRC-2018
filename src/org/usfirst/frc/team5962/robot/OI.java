@@ -6,6 +6,7 @@ import org.usfirst.frc.team5962.robot.commands.Throttle;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -17,7 +18,11 @@ public class OI {
 	public Joystick joystickLeft;
 	public Joystick joystickRight;
 	public Joystick gamepad1;
+	
 	public Button throttle;
+	
+	public Trigger intake;
+	public Trigger outake;
 	
 	private boolean throttleEnabled = false;
 
@@ -25,8 +30,11 @@ public class OI {
 		joystickLeft = new Joystick(1);
 		joystickRight = new Joystick(2);
 		gamepad1 = new Joystick(0);
+		
+		
 		throttle = new JoystickButton(joystickLeft, 1);
 		//throttle.whenPressed(new Throttle());
+		
 
 	}
 	
@@ -48,6 +56,14 @@ public class OI {
 	}
 	public double gamepadRightAxis() {
 		return gamepad1.getRawAxis(5);
+	}
+	
+	public double gamePadRightTrigger() {
+		return gamepad1.getRawAxis(3);
+	}
+	
+	public double gamePadLeftTrigger() {
+		return gamepad1.getRawAxis(2);
 	}
 	
 	public boolean isThrottleEnabled() {

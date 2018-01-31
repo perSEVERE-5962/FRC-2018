@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team5962.robot.commands.RunAutonomous;
+import org.usfirst.frc.team5962.robot.commands.RunBoxIntake;
+import org.usfirst.frc.team5962.robot.commands.RunBoxOutake;
 import org.usfirst.frc.team5962.robot.sensors.ADIS16448_IMU;
 import org.usfirst.frc.team5962.robot.sensors.RobotGyro;
 import org.usfirst.frc.team5962.robot.subsystems.Drive;
@@ -23,11 +25,13 @@ import org.usfirst.frc.team5962.robot.subsystems.Gyro;
 public class Robot extends IterativeRobot {
 
 	public static Command autonomousCommand;
+	public static RunBoxIntake runBoxIntake = new RunBoxIntake();
+	public static RunBoxOutake runBoxOutake = new RunBoxOutake();
 	public static OI oi;
 	public static Drive drive = new Drive();
-	public static Gyro gyro = new Gyro();
+//	private static Gyro gyro = new Gyro();
 //	public static ADIS16448_IMU robotGyro = new ADIS16448_IMU();
-	public static RobotGyro robotGyro = new RobotGyro();
+//	private static RobotGyro robotGyro = new RobotGyro();
 	
 
 	/**
@@ -39,8 +43,8 @@ public class Robot extends IterativeRobot {
 		RobotMap.init();
 		oi = new OI();
 		RobotMap.myRobot.setMaxOutput(0.5);
-		robotGyro.resetGyro();
-		gyro.setUpResetGyro();
+//		robotGyro.resetGyro();
+//		gyro.setUpResetGyro();
 		
 	}
 	
@@ -74,7 +78,9 @@ public class Robot extends IterativeRobot {
 
 		if (autonomousCommand != null) {
 			autonomousCommand.start();
+			//robotGyro.resetGyro();
 		}
+
 	}
 
 	/**
@@ -82,10 +88,15 @@ public class Robot extends IterativeRobot {
 	 */
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+//		SmartDashboard.putNumber("Gyro ADIS - yaw", gyro.resetGyroAutomatic());
 	}
 
 	public void teleopInit() {
 		oi.startDriveCommand();
+		//robotGyro.resetGyro();
+		runBoxIntake.start();
+		runBoxOutake.start();
+		
 	}
 
 	/**
@@ -93,8 +104,9 @@ public class Robot extends IterativeRobot {
 	 */
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		gyro.resetGryoShuffleboard();
-		SmartDashboard.putNumber("Gyro ADIS - yaw", robotGyro.getGyroAngle());
+		//gyro.resetGryoShuffleboard();
+		//SmartDashboard.putNumber("Gyro ADIS - yaw", gyro.resetGyroAutomatic());
+		
 	}
 
 	/**
