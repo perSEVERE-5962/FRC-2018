@@ -1,5 +1,7 @@
 package org.usfirst.frc.team5962.robot.subsystems;
 
+import org.usfirst.frc.team5962.robot.subsystems.FmsDataRetrieval.PlatesLocation;
+
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -10,6 +12,8 @@ public class Autonomous extends Subsystem {
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub
 	}
+	
+	public static FmsDataRetrieval fmsDataRetrieval = new FmsDataRetrieval();
 	
 	public static enum Location {
 		
@@ -40,7 +44,8 @@ public class Autonomous extends Subsystem {
 	//Variables for the switch case
 	private Location situation;
 	private Action action;
-	
+	private PlatesLocation platesLocation;
+			
 	//Variable for stopwatch
 	private long end;
 	
@@ -56,6 +61,7 @@ public class Autonomous extends Subsystem {
 		//Set up for state cases
 		situation = Location.farRight;
 		action = Action.nothing;
+		platesLocation = fmsDataRetrieval.fieldDataRetrieval();
 		
 		//Setting up options for location
 		position = new SendableChooser<Location>();
@@ -83,4 +89,64 @@ public class Autonomous extends Subsystem {
         long elapsedTime =  (long) ((end - now) / 1000.0);
         SmartDashboard.putNumber("Time", elapsedTime);
     }
-}
+	
+	public void locationOnField()
+	{
+		switch (situation){
+		case farRight:
+			break;
+			
+		case switchRight:
+	        break;
+	        
+		case middle:
+			break;
+			
+		case vault:
+			break;
+			
+		case switchLeft:
+			break;
+			
+		case farLeft:	
+			break;
+		default:
+			break;
+			
+	}
+	}
+		
+		public void actionOnField()
+		{
+			switch (action){
+			case nothing:
+				break;
+				
+			case crossLine:
+				break;
+				
+			case exchange:
+				break;
+				
+			case switch1:
+				break;
+				
+			case switch2:
+				break;
+				
+			case scale:
+				break;
+				
+			case pickUpBlock:
+				break;
+				
+			case stop:
+				break;
+			default:
+				break;
+				
+			}
+			
+		}
+		
+	}
