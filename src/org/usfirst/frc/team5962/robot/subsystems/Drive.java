@@ -9,13 +9,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Drive extends Subsystem {
 	
-	private OI robotOI = new OI();
-	
 	public void joystickTank() {
-		//RobotMap.myRobot.tankDrive(robotOI.joystickRightAxis(), robotOI.joystickLeftAxis());
-		RobotMap.myRobot.tankDrive(robotOI.gamepadRightAxis(), robotOI.gamepadLeftAxis());
+		RobotMap.myRobot.tankDrive(Robot.oi.joystickRightAxis(), Robot.oi.joystickLeftAxis());
+		//RobotMap.myRobot.tankDrive(robotOI.gamepadRightAxis(), robotOI.gamepadLeftAxis());
 	}
-
 	@Override
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub

@@ -17,15 +17,15 @@ public class OI {
 	public Joystick joystickLeft;
 	public Joystick joystickRight;
 	public Joystick gamepad1;
-	public Button throttle;
 	
+	public Button throttle;
 	private boolean throttleEnabled = false;
 
 	public OI() {
 		joystickLeft = new Joystick(1);
 		joystickRight = new Joystick(2);
 		gamepad1 = new Joystick(0);
-		throttle = new JoystickButton(joystickLeft, 1);
+		throttle = new JoystickButton(joystickLeft, 3);
 		throttle.whenPressed(new Throttle());
 
 	}
