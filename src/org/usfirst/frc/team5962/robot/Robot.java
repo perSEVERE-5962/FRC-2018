@@ -29,11 +29,11 @@ import org.usfirst.frc.team5962.robot.subsystems.Gyro;
 public class Robot extends IterativeRobot {
 
 	public static Command autonomousCommand;
-	public static RunBoxIntake runBoxIntake = new RunBoxIntake();
-	public static RunBoxOutake runBoxOutake = new RunBoxOutake();
 	public static OI oi;
 	public static Drive drive = new Drive();
 	public static Gyro gyro = new Gyro();
+//	public static RunBoxIntake runBoxIntake = new RunBoxIntake();
+//	public static RunBoxOutake runBoxOutake = new RunBoxOutake();
 //	public static ADIS16448_IMU robotGyro = new ADIS16448_IMU();
 	public static RobotGyro robotGyro = new RobotGyro();
 	
@@ -101,8 +101,8 @@ public class Robot extends IterativeRobot {
 	public void teleopInit() {
 		oi.startDriveCommand();
 		robotGyro.resetGyro();
-		runBoxIntake.start();
-		runBoxOutake.start();
+		//runBoxIntake.start();
+		//runBoxOutake.start();
 	}
 
 	/**

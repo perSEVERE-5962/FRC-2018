@@ -1,6 +1,10 @@
 package org.usfirst.frc.team5962.robot;
 
+import org.usfirst.frc.team5962.robot.commands.RunBoxIntake;
+import org.usfirst.frc.team5962.robot.commands.RunBoxOutake;
 import org.usfirst.frc.team5962.robot.commands.RunJoystickTank;
+import org.usfirst.frc.team5962.robot.commands.StopBoxIntake;
+import org.usfirst.frc.team5962.robot.commands.StopBoxOutake;
 import org.usfirst.frc.team5962.robot.commands.Throttle;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -19,6 +23,10 @@ public class OI {
 	public Joystick joystickRight;
 	public Joystick gamepad1;
 	
+	public Button throttle;
+	public Button jsIntake;
+	public Button jsOutake;
+	
 	public Trigger intake;
 	public Trigger outake;
 	
@@ -29,8 +37,18 @@ public class OI {
 		joystickLeft = new Joystick(1);
 		joystickRight = new Joystick(2);
 		gamepad1 = new Joystick(0);
+		
+		
 		throttle = new JoystickButton(joystickLeft, 3);
-		throttle.whenPressed(new Throttle());
+		//throttle.whenPressed(new Throttle());
+		jsIntake = new JoystickButton(joystickLeft,1);
+		jsIntake.whenPressed(new RunBoxIntake());
+		jsIntake.whenReleased(new StopBoxIntake());
+		
+		jsOutake = new JoystickButton(joystickRight,1);
+		jsOutake.whenPressed(new RunBoxOutake());
+		jsOutake.whenReleased(new StopBoxOutake());
+		
 
 	}
 	
@@ -70,4 +88,5 @@ public class OI {
 		throttleEnabled = !throttleEnabled;
 		SmartDashboard.putString("throttle enabled", "" + throttleEnabled);
 	}
+	
 }

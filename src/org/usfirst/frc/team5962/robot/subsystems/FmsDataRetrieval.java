@@ -15,8 +15,8 @@ public static enum PlatesLocation {
 	private PlatesLocation fieldDataLocation;
 	
 	public PlatesLocation fieldDataRetrieval(){
+		
 	String gameData = DriverStation.getInstance().getGameSpecificMessage();
-	
 	fieldDataLocation = PlatesLocation.stop;
 	
 		if(gameData.charAt(0) == 'L')
