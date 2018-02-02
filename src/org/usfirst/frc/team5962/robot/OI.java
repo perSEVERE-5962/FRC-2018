@@ -30,6 +30,7 @@ public class OI {
 	public Trigger intake;
 	public Trigger outake;
 	
+	public Button throttle;
 	private boolean throttleEnabled = false;
 
 	public OI() {
@@ -48,6 +49,8 @@ public class OI {
 		jsOutake.whenPressed(new RunBoxOutake());
 		jsOutake.whenReleased(new StopBoxOutake());
 		
+		throttle = new JoystickButton(joystickLeft, 3);
+		throttle.whenPressed(new Throttle());
 
 	}
 	
