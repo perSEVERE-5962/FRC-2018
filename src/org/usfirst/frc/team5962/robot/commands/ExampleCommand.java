@@ -3,7 +3,7 @@ package org.usfirst.frc.team5962.robot.commands;
 import org.usfirst.frc.team5962.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
-public class ExampleCommand {
+public class ExampleCommand extends Command{
 
 	// Called just before this Command runs the first time
     protected void initialize() {

@@ -56,7 +56,7 @@ public class Autonomous extends Subsystem {
 	public void init()
 	{
 		//Sets up the start timer
-		end = System.currentTimeMillis() + 15000;
+		end = System.currentTimeMillis() + 16000;
 		
 		//Set up for state cases
 		situation = Location.farRight;
