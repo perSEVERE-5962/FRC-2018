@@ -2,15 +2,20 @@
 package org.usfirst.frc.team5962.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import org.usfirst.frc.team5962.robot.commands.ResetGyro;
 import org.usfirst.frc.team5962.robot.commands.RunAutonomous;
+import org.usfirst.frc.team5962.robot.commands.Throttle;
 import org.usfirst.frc.team5962.robot.commands.RunBoxIntake;
 import org.usfirst.frc.team5962.robot.commands.RunBoxOutake;
+import org.usfirst.frc.team5962.robot.commands.Throttle;
 import org.usfirst.frc.team5962.robot.sensors.ADIS16448_IMU;
 import org.usfirst.frc.team5962.robot.sensors.RobotGyro;
 import org.usfirst.frc.team5962.robot.subsystems.Drive;
@@ -25,14 +30,15 @@ import org.usfirst.frc.team5962.robot.subsystems.Gyro;
 public class Robot extends IterativeRobot {
 
 	public static Command autonomousCommand;
-	public static RunBoxIntake runBoxIntake = new RunBoxIntake();
-	public static RunBoxOutake runBoxOutake = new RunBoxOutake();
 	public static OI oi;
 	public static Drive drive = new Drive();
-//	private static Gyro gyro = new Gyro();
+	public static Gyro gyro = new Gyro();
+//	public static RunBoxIntake runBoxIntake = new RunBoxIntake();
+//	public static RunBoxOutake runBoxOutake = new RunBoxOutake();
 //	public static ADIS16448_IMU robotGyro = new ADIS16448_IMU();
-//	private static RobotGyro robotGyro = new RobotGyro();
+	public static RobotGyro robotGyro = new RobotGyro();
 	
+
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -42,9 +48,11 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		RobotMap.init();
 		oi = new OI();
+		//RobotMap.myRobot.setMaxOutput(0.5);
+		//gyro.setUpResetGyro();
 		RobotMap.myRobot.setMaxOutput(0.5);
-//		robotGyro.resetGyro();
-//		gyro.setUpResetGyro();
+		robotGyro.resetGyro();
+		SmartDashboard.putData("Reset Gyro", new ResetGyro());
 		
 	}
 	
@@ -78,7 +86,7 @@ public class Robot extends IterativeRobot {
 
 		if (autonomousCommand != null) {
 			autonomousCommand.start();
-			//robotGyro.resetGyro();
+			robotGyro.resetGyro();
 		}
 
 	}
@@ -88,15 +96,14 @@ public class Robot extends IterativeRobot {
 	 */
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-//		SmartDashboard.putNumber("Gyro ADIS - yaw", gyro.resetGyroAutomatic());
+		SmartDashboard.putNumber("Gyro ADIS - yaw", gyro.resetGyroAutomatic());
 	}
 
 	public void teleopInit() {
 		oi.startDriveCommand();
-		//robotGyro.resetGyro();
-		runBoxIntake.start();
-		runBoxOutake.start();
-		
+		robotGyro.resetGyro();
+		//runBoxIntake.start();
+		//runBoxOutake.start();
 	}
 
 	/**
@@ -104,9 +111,11 @@ public class Robot extends IterativeRobot {
 	 */
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		//gyro.resetGryoShuffleboard();
-		//SmartDashboard.putNumber("Gyro ADIS - yaw", gyro.resetGyroAutomatic());
+		SmartDashboard.putNumber("Gyro ADIS - yaw", gyro.resetGyroAutomatic());
 		
+		SmartDashboard.putString("throttle enabled", "" + oi.isThrottleEnabled());
+		gyro.resetGryoShuffleboard();
+		SmartDashboard.putNumber("Gyro ADIS - yaw", robotGyro.getGyroAngle());
 	}
 
 	/**

@@ -1,25 +1,23 @@
 package org.usfirst.frc.team5962.robot.commands;
 
+import org.usfirst.frc.team5962.robot.Robot;
 import org.usfirst.frc.team5962.robot.subsystems.BoxIntake;
 
 import edu.wpi.first.wpilibj.command.Command;
-
-public class RunBoxOutake extends Command{
+public class StopBoxOutake extends Command{
 
 	// Called just before this Command runs the first time
     protected void initialize() {
 
-    	BoxIntake.boxStop();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	BoxIntake.boxOutake();
+    	BoxIntake.boxStop();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	
 
     	return true;
     }
