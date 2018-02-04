@@ -56,9 +56,8 @@ public class Robot extends IterativeRobot {
 		RobotMap.myRobot.setMaxOutput(0.5);
 		robotGyro.resetGyro();
 		SmartDashboard.putData("Reset Gyro", new ResetGyro());
+
 		CameraServer.getInstance().startAutomaticCapture(0);
-		//SmartDashboard.putData("USB Camera 0", CameraServer.getInstance().getVideo());
-		
 	}
 	
 
