@@ -1,5 +1,7 @@
 package org.usfirst.frc.team5962.robot.subsystems;
 
+import org.usfirst.frc.team5962.robot.Robot;
+import org.usfirst.frc.team5962.robot.RobotMap;
 import org.usfirst.frc.team5962.robot.subsystems.FmsDataRetrieval.PlatesLocation;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -14,6 +16,10 @@ public class Autonomous extends Subsystem {
 	}
 	
 	public static FmsDataRetrieval fmsDataRetrieval = new FmsDataRetrieval();
+	
+	private final double DISTANCETOLINE = 80.625;
+	private final double DISTANCEPASTSWITCH = 105;
+	private final double DISTANCEACROSSSWITCH = 149;
 	
 	public static enum Location {
 		
@@ -38,6 +44,8 @@ public class Autonomous extends Subsystem {
 		pickUpBlock,
 		placeBlock,
 		
+		aroundSwitch,
+		
 		stop
 	}
 	
@@ -57,6 +65,18 @@ public class Autonomous extends Subsystem {
 	{
 		//Sets up the start timer
 		end = System.currentTimeMillis() + 16000;
+		
+		int leftRightValue;
+		
+		if (platesLocation == FmsDataRetrieval.PlatesLocation.leftSwitchOwnership)
+		{
+			leftRightValue = 1;
+		} else if (platesLocation == FmsDataRetrieval.PlatesLocation.rightSwitchOwnership){
+			
+			leftRightValue = -1;
+		} else {
+			leftRightValue = 0;
+		}
 		
 		//Set up for state cases
 		situation = Location.farRight;
@@ -79,7 +99,7 @@ public class Autonomous extends Subsystem {
 		state.addObject("Cross the Line", Action.crossLine);
 		state.addObject("Exchange", Action.exchange);
 		state.addObject("One Switch", Action.switch1);
-		state.addObject("Two Switches", Action.switch2);
+		//state.addObject("Two Switches", Action.switch2);
 		//state.addObject("Scale", Action.scale);
 		SmartDashboard.putData("Action for Auto", state);
 	}
@@ -94,22 +114,23 @@ public class Autonomous extends Subsystem {
 	{
 		switch (situation){
 		case farRight:
-			break;
+			
 			
 		case switchRight:
-	        break;
-	        
+		
 		case middle:
-			break;
 			
 		case vault:
 			break;
 			
 		case switchLeft:
+			
 			break;
 			
 		case farLeft:	
+			
 			break;
+			
 		default:
 			break;
 			
@@ -120,9 +141,16 @@ public class Autonomous extends Subsystem {
 		{
 			switch (action){
 			case nothing:
+				RobotMap.myRobot.tankDrive(0, 0);
 				break;
 				
 			case crossLine:
+				if (Robot.encoder.getDistance() < DISTANCETOLINE) {
+					RobotMap.myRobot.tankDrive(1, 1);
+				} else {
+					action = Action.stop;
+				}
+				
 				break;
 				
 			case exchange:
@@ -141,8 +169,11 @@ public class Autonomous extends Subsystem {
 				break;
 				
 			case stop:
+				RobotMap.myRobot.tankDrive(0, 0);
 				break;
+				
 			default:
+				RobotMap.myRobot.tankDrive(0, 0);
 				break;
 				
 			}

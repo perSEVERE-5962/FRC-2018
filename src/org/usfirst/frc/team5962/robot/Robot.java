@@ -18,6 +18,7 @@ import org.usfirst.frc.team5962.robot.commands.RunBoxIntake;
 import org.usfirst.frc.team5962.robot.commands.RunBoxOutake;
 import org.usfirst.frc.team5962.robot.commands.Throttle;
 import org.usfirst.frc.team5962.robot.sensors.ADIS16448_IMU;
+import org.usfirst.frc.team5962.robot.sensors.RobotEncoder;
 import org.usfirst.frc.team5962.robot.sensors.RobotGyro;
 import org.usfirst.frc.team5962.robot.subsystems.Drive;
 import org.usfirst.frc.team5962.robot.subsystems.Gyro;
@@ -38,6 +39,7 @@ public class Robot extends IterativeRobot {
 //	public static RunBoxOutake runBoxOutake = new RunBoxOutake();
 //	public static ADIS16448_IMU robotGyro = new ADIS16448_IMU();
 	public static RobotGyro robotGyro = new RobotGyro();
+	public static RobotEncoder encoder = new RobotEncoder();
 	
 
 
@@ -54,7 +56,8 @@ public class Robot extends IterativeRobot {
 		RobotMap.myRobot.setMaxOutput(0.5);
 		robotGyro.resetGyro();
 		SmartDashboard.putData("Reset Gyro", new ResetGyro());
-		CameraServer.getInstance().startAutomaticCapture();		
+
+		CameraServer.getInstance().startAutomaticCapture(0);
 	}
 	
 
@@ -113,10 +116,7 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		SmartDashboard.putNumber("Gyro ADIS - yaw", gyro.resetGyroAutomatic());
-		
 		SmartDashboard.putString("throttle enabled", "" + oi.isThrottleEnabled());
-		gyro.resetGryoShuffleboard();
-		SmartDashboard.putNumber("Gyro ADIS - yaw", robotGyro.getGyroAngle());
 	}
 
 	/**

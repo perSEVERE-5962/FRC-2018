@@ -12,7 +12,7 @@ public static enum PlatesLocation {
 		
 	}
 	
-	private PlatesLocation fieldDataLocation;
+	public PlatesLocation fieldDataLocation;
 	
 	public PlatesLocation fieldDataRetrieval(){
 		
