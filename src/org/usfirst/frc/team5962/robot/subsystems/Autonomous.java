@@ -1,5 +1,6 @@
 package org.usfirst.frc.team5962.robot.subsystems;
 
+import org.usfirst.frc.team5962.robot.Robot;
 import org.usfirst.frc.team5962.robot.RobotMap;
 import org.usfirst.frc.team5962.robot.subsystems.FmsDataRetrieval.PlatesLocation;
 
@@ -15,6 +16,10 @@ public class Autonomous extends Subsystem {
 	}
 	
 	public static FmsDataRetrieval fmsDataRetrieval = new FmsDataRetrieval();
+	
+	private final double DISTANCETOLINE = 80.625;
+	private final double DISTANCEPASTSWITCH = 105;
+	private final double DISTANCEACROSSSWITCH = 149;
 	
 	public static enum Location {
 		
@@ -140,6 +145,12 @@ public class Autonomous extends Subsystem {
 				break;
 				
 			case crossLine:
+				if (Robot.encoder.getDistance() < DISTANCETOLINE) {
+					RobotMap.myRobot.tankDrive(1, 1);
+				} else {
+					action = Action.stop;
+				}
+				
 				break;
 				
 			case exchange:
