@@ -38,6 +38,8 @@ public class Autonomous extends Subsystem {
 		pickUpBlock,
 		placeBlock,
 		
+		aroundSwitch,
+		
 		stop
 	}
 	
@@ -79,7 +81,7 @@ public class Autonomous extends Subsystem {
 		state.addObject("Cross the Line", Action.crossLine);
 		state.addObject("Exchange", Action.exchange);
 		state.addObject("One Switch", Action.switch1);
-		state.addObject("Two Switches", Action.switch2);
+		//state.addObject("Two Switches", Action.switch2);
 		//state.addObject("Scale", Action.scale);
 		SmartDashboard.putData("Action for Auto", state);
 	}
@@ -94,21 +96,62 @@ public class Autonomous extends Subsystem {
 	{
 		switch (situation){
 		case farRight:
+			
+			if (platesLocation == FmsDataRetrieval.PlatesLocation.leftSwitchOwnership)
+			{
+				
+			} else if (platesLocation == FmsDataRetrieval.PlatesLocation.rightSwitchOwnership){
+				
+			} else {
+				
+			}
 			break;
 			
 		case switchRight:
+			if (platesLocation == FmsDataRetrieval.PlatesLocation.leftSwitchOwnership)
+			{
+				
+			} else if (platesLocation == FmsDataRetrieval.PlatesLocation.rightSwitchOwnership){
+				
+			} else {
+				
+			}
 	        break;
 	        
 		case middle:
+			if (platesLocation == FmsDataRetrieval.PlatesLocation.leftSwitchOwnership)
+			{
+				
+			} else if (platesLocation == FmsDataRetrieval.PlatesLocation.rightSwitchOwnership){
+				
+			} else {
+				
+			}
 			break;
 			
 		case vault:
 			break;
 			
 		case switchLeft:
+			if (platesLocation == FmsDataRetrieval.PlatesLocation.leftSwitchOwnership)
+			{
+				
+			} else if (platesLocation == FmsDataRetrieval.PlatesLocation.rightSwitchOwnership){
+				
+			} else {
+				
+			}
 			break;
 			
 		case farLeft:	
+			if (platesLocation == FmsDataRetrieval.PlatesLocation.leftSwitchOwnership)
+			{
+				
+			} else if (platesLocation == FmsDataRetrieval.PlatesLocation.rightSwitchOwnership){
+				
+			} else {
+				
+			}
 			break;
 		default:
 			break;

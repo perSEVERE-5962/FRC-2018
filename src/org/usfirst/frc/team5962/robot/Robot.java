@@ -112,10 +112,7 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		SmartDashboard.putNumber("Gyro ADIS - yaw", gyro.resetGyroAutomatic());
-		
 		SmartDashboard.putString("throttle enabled", "" + oi.isThrottleEnabled());
-		gyro.resetGryoShuffleboard();
-		SmartDashboard.putNumber("Gyro ADIS - yaw", robotGyro.getGyroAngle());
 	}
 
 	/**
