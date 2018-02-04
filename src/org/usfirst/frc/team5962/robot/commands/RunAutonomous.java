@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class RunAutonomous extends Command {
 
 	private boolean isFinished = false;
-	private boolean targetReached = true;
+	private boolean targetReached = false;
 	private Autonomous autonomousSubsystem = new Autonomous();
 
 	protected void initialize()

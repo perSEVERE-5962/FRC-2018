@@ -1,5 +1,6 @@
 package org.usfirst.frc.team5962.robot.subsystems;
 
+import org.usfirst.frc.team5962.robot.RobotMap;
 import org.usfirst.frc.team5962.robot.subsystems.FmsDataRetrieval.PlatesLocation;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -60,6 +61,18 @@ public class Autonomous extends Subsystem {
 		//Sets up the start timer
 		end = System.currentTimeMillis() + 16000;
 		
+		int leftRightValue;
+		
+		if (platesLocation == FmsDataRetrieval.PlatesLocation.leftSwitchOwnership)
+		{
+			leftRightValue = 1;
+		} else if (platesLocation == FmsDataRetrieval.PlatesLocation.rightSwitchOwnership){
+			
+			leftRightValue = -1;
+		} else {
+			leftRightValue = 0;
+		}
+		
 		//Set up for state cases
 		situation = Location.farRight;
 		action = Action.nothing;
@@ -97,62 +110,22 @@ public class Autonomous extends Subsystem {
 		switch (situation){
 		case farRight:
 			
-			if (platesLocation == FmsDataRetrieval.PlatesLocation.leftSwitchOwnership)
-			{
-				
-			} else if (platesLocation == FmsDataRetrieval.PlatesLocation.rightSwitchOwnership){
-				
-			} else {
-				
-			}
-			break;
 			
 		case switchRight:
-			if (platesLocation == FmsDataRetrieval.PlatesLocation.leftSwitchOwnership)
-			{
-				
-			} else if (platesLocation == FmsDataRetrieval.PlatesLocation.rightSwitchOwnership){
-				
-			} else {
-				
-			}
-	        break;
-	        
+		
 		case middle:
-			if (platesLocation == FmsDataRetrieval.PlatesLocation.leftSwitchOwnership)
-			{
-				
-			} else if (platesLocation == FmsDataRetrieval.PlatesLocation.rightSwitchOwnership){
-				
-			} else {
-				
-			}
-			break;
 			
 		case vault:
 			break;
 			
 		case switchLeft:
-			if (platesLocation == FmsDataRetrieval.PlatesLocation.leftSwitchOwnership)
-			{
-				
-			} else if (platesLocation == FmsDataRetrieval.PlatesLocation.rightSwitchOwnership){
-				
-			} else {
-				
-			}
+			
 			break;
 			
 		case farLeft:	
-			if (platesLocation == FmsDataRetrieval.PlatesLocation.leftSwitchOwnership)
-			{
-				
-			} else if (platesLocation == FmsDataRetrieval.PlatesLocation.rightSwitchOwnership){
-				
-			} else {
-				
-			}
+			
 			break;
+			
 		default:
 			break;
 			
@@ -163,6 +136,7 @@ public class Autonomous extends Subsystem {
 		{
 			switch (action){
 			case nothing:
+				RobotMap.myRobot.tankDrive(0, 0);
 				break;
 				
 			case crossLine:
@@ -184,8 +158,11 @@ public class Autonomous extends Subsystem {
 				break;
 				
 			case stop:
+				RobotMap.myRobot.tankDrive(0, 0);
 				break;
+				
 			default:
+				RobotMap.myRobot.tankDrive(0, 0);
 				break;
 				
 			}
