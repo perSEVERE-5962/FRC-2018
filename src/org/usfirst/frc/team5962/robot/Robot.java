@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team5962.robot;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -53,7 +54,7 @@ public class Robot extends IterativeRobot {
 		RobotMap.myRobot.setMaxOutput(0.5);
 		robotGyro.resetGyro();
 		SmartDashboard.putData("Reset Gyro", new ResetGyro());
-		
+		CameraServer.getInstance().startAutomaticCapture();		
 	}
 	
 
