@@ -46,6 +46,8 @@ public class OI {
 		jsOutake.whenPressed(new RunBoxOutake());
 		jsOutake.whenReleased(new StopBoxOutake());
 		
+		throttle = new JoystickButton(joystickLeft, 3);
+		throttle.whenPressed(new Throttle());
 
 	}
 	
