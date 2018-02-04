@@ -30,7 +30,6 @@ public class OI {
 	public Trigger intake;
 	public Trigger outake;
 	
-	public Button throttle;
 	private boolean throttleEnabled = false;
 
 	public OI() {
@@ -39,8 +38,6 @@ public class OI {
 		gamepad1 = new Joystick(0);
 		
 		
-		throttle = new JoystickButton(joystickLeft, 3);
-		//throttle.whenPressed(new Throttle());
 		jsIntake = new JoystickButton(joystickLeft,1);
 		jsIntake.whenPressed(new RunBoxIntake());
 		jsIntake.whenReleased(new StopBoxIntake());
