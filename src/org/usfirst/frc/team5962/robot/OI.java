@@ -3,6 +3,7 @@ package org.usfirst.frc.team5962.robot;
 import org.usfirst.frc.team5962.robot.commands.RunBoxIntake;
 import org.usfirst.frc.team5962.robot.commands.RunBoxOutake;
 import org.usfirst.frc.team5962.robot.commands.RunJoystickTank;
+import org.usfirst.frc.team5962.robot.commands.RunWingDeploy;
 import org.usfirst.frc.team5962.robot.commands.StopBoxIntake;
 import org.usfirst.frc.team5962.robot.commands.StopBoxOutake;
 import org.usfirst.frc.team5962.robot.commands.Throttle;
@@ -27,6 +28,7 @@ public class OI {
 	public Button throttle;
 	public Button jsIntake;
 	public Button jsOutake;
+	//public Button deployWings;
 	
 	public Trigger intake;
 	public Trigger outake;
@@ -49,6 +51,9 @@ public class OI {
 		
 		throttle = new JoystickButton(joystickLeft, 3);
 		throttle.whenPressed(new Throttle());
+		
+		//deployWings = new JoystickButton(joystickRight, 3);
+		//deployWings.whenPressed(new RunWingDeploy());
 
 	}
 	

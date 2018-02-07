@@ -1,5 +1,6 @@
 package org.usfirst.frc.team5962.robot;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -45,6 +46,8 @@ public class RobotMap {
 	public static SpeedController rightDrive;
 	
 	public static Victor boxIntake;
+	public static Victor dropBoxIntake;
+	
 	
 	public static void init() {
 
@@ -54,8 +57,11 @@ public class RobotMap {
 		robotRightVictor2 = new Victor(PWM_CHANNEL_1);
 		leftDrive = new MultiSpeedController(robotLeftVictor1, robotLeftVictor2);
 		rightDrive = new MultiSpeedController(robotRightVictor1, robotRightVictor2);
-		myRobot = new DifferentialDrive(leftDrive, rightDrive);
+		myRobot = new DifferentialDrive(rightDrive, leftDrive);
 		
 		boxIntake = new Victor(PWM_CHANNEL_3);
+		dropBoxIntake = new Victor(PWM_CHANNEL_5);
+		
+
 	}
 }
