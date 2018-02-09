@@ -11,10 +11,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Drive extends Subsystem {
 	
 	public PIDDriveOutput pidDriveOutput = new PIDDriveOutput();
-	public PIDDriveSource pidDriveSource = new PIDDriveSource();
-	public PIDController pidDriveController = new PIDController(0,0,0,pidDriveSource,pidDriveOutput);
+    public PIDDriveSource pidDriveSource = new PIDDriveSource();
+	public PIDController pidDriveController = new PIDController(1,0,0,pidDriveSource,pidDriveOutput);
 	
-	public Drive() {
+	public Drive()  {
 		
 		pidDriveController.disable();
 		pidDriveController.setOutputRange(-1,-1);   //The speeds of the drive
@@ -29,4 +29,5 @@ public class Drive extends Subsystem {
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub
 	}
+	
 }
