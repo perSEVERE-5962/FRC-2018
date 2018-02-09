@@ -5,6 +5,7 @@ import org.usfirst.frc.team5962.robot.RobotMap;
 import org.usfirst.frc.team5962.robot.subsystems.FmsDataRetrieval.PlatesLocation;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,6 +24,10 @@ public class Autonomous extends Subsystem {
 	private final double DISTANCETOLINE = 80.625;
 	private final double DISTANCEPASTSWITCH = 105;
 	private final double DISTANCEACROSSSWITCH = 149;
+	
+	public PIDDriveOutput pidDriveOutput = new PIDDriveOutput();
+	public PIDDriveSource pidDriveSource = new PIDDriveSource();
+	public PIDController pidDriveController = new PIDController(0,0,0,pidDriveSource,pidDriveOutput);
 
 	//Enum for what action the bot is doing at the moment
 	public static enum CurrentState{
@@ -139,15 +144,19 @@ public class Autonomous extends Subsystem {
 			switch (currentState){
 			case nothing:
 				RobotMap.myRobot.tankDrive(0, 0);
+				pidDriveController.enable();
 				break;
 				
 			case crossLine:
-				if (Robot.encoder.getDistance() < DISTANCETOLINE) {
-					RobotMap.myRobot.tankDrive(-1, -1);
 					DriverStation.reportError("YOU ARE HERE", true);
-				} else {
-					steps++;
-				}
+					pidDriveController.setPID(1,  0,  0);
+					pidDriveController.setSetpoint(24);
+					pidDriveController.enable();
+//				if (Robot.encoder.getDistance() < DISTANCETOLINE) {
+//					RobotMap.myRobot.tankDrive(-1, -1);
+//				} else {
+//					steps++;
+//				}
 				
 				break;
 				
