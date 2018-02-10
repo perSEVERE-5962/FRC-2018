@@ -27,11 +27,26 @@ public class Autonomous extends Subsystem {
 	//Enum for what action the bot is doing at the moment
 	public static enum CurrentState{
 		
-		crossLine,
-		aroundSwitch,
-		exchange,
+		crossLineStraight,
+		crossLineDiagonal,
+		crossLineFromMiddle,
+		
+		drivePastSwitch,
+		driveAcrossSwitch,
+		driveHalfwayPastSwitch,
+		moveForwardToSwitch,
+		
+		driveBackwards,
+		
+		intoExchange,
 		intoSwitch,
 		pickUpBlock,
+		
+		turn180,
+		turn45Left,
+		turn45Right,
+		backToForward,
+		
 		nothing
 		
 	}
@@ -49,6 +64,7 @@ public class Autonomous extends Subsystem {
 	
 	//Variable for what step the action is on
 	int steps = 0;
+	int substeps = 0;
 	
 	//Variable on whether the switch ownership is left or right
 	int leftRightValue;
@@ -100,70 +116,288 @@ public class Autonomous extends Subsystem {
 	{
 		switch (location){
 		case farRight:
-			if (steps == 0 && action == Robot.Action.crossLine){
-				currentState = CurrentState.crossLine;
+			//Crosses the line
+			if (steps == 0 && (action == Robot.Action.crossLine ||
+							   action == Robot.Action.switch1)){
+				
+				currentState = CurrentState.crossLineStraight;
+			
+			//Moves directly to switch after crossing the line
+			} else if (leftRightValue == -1 && steps == 1 && action == Robot.Action.switch1) {
+				turnToSwitch();
+				
+			//Moves along the backside of the switch to drop the cube
 			} else if (leftRightValue == 1 && steps == 1 && action == Robot.Action.switch1) {
-				currentState = CurrentState.aroundSwitch;
-			}
-			else {
+				aroundSwitch();
+				
+			} else {
 				currentState = CurrentState.nothing;
 			}
+			break;
+			
+		case switchRight:
+			//Goes straight if switch is owned on the right side
+			if (leftRightValue == -1 && steps == 0 && (action == Robot.Action.crossLine ||
+			   				   						   action == Robot.Action.switch1)){
+				currentState = CurrentState.crossLineStraight;
+				
+			} else if (leftRightValue == -1 && steps == 1 && action == Robot.Action.switch1) {
+				straightToSwitch();
+				
+			//Turns if the switch is owned on the left side
+			} else if (leftRightValue == 1 && steps == 0 && (action == Robot.Action.crossLine ||
+						  									 action == Robot.Action.switch1)) {
+				currentState = CurrentState.crossLineDiagonal;
+				
+			} else if (leftRightValue == 1 && steps == 1 && action == Robot.Action.switch1) {
+				aroundSwitch();
+			} else
+				currentState = CurrentState.nothing;
 			
 			break;
-		case switchRight:
-		
-			break;
+			
 		case middle:
+			if (steps == 0 && (action == Robot.Action.crossLine ||
+				   			   action == Robot.Action.switch1)) {
+				currentState = CurrentState.crossLineFromMiddle;
+			} else if(steps == 1 && (action == Robot.Action.switch1)) {
+				straightToSwitch();
+			}  else
+				currentState = CurrentState.nothing;
 			
 			break;
 		case vault:
-			
+			if (steps == 0 && (action == Robot.Action.exchange ||
+							   action == Robot.Action.crossLine)) {
+				intoVault();
+			} else if(steps == 1 && action == Robot.Action.crossLine) {
+				crossLineAfterVault();
+			}
 			break;
 			
 		case switchLeft:
 			
+			//Goes straight if switch is owned on the left side
+			if (leftRightValue == 1 && steps == 0 && (action == Robot.Action.crossLine ||
+			   				   						   action == Robot.Action.switch1)){
+				currentState = CurrentState.crossLineStraight;
+				
+			} else if (leftRightValue == 1 && steps == 1 && action == Robot.Action.switch1) {
+				straightToSwitch();
+				
+			//Turns if the switch is owned on the left side
+			} else if (leftRightValue == -1 && steps == 0 && (action == Robot.Action.crossLine ||
+						  									 action == Robot.Action.switch1)) {
+				currentState = CurrentState.crossLineDiagonal;
+				
+			} else if (leftRightValue == -1 && steps == 1 && action == Robot.Action.switch1) {
+				aroundSwitch();
+			} else
+				currentState = CurrentState.nothing;
 			break;
 			
 		case farLeft:	
 			
+			//Crosses the Line
+			if (steps == 0 && (action == Robot.Action.crossLine ||
+			   action == Robot.Action.switch1)){
+
+				currentState = CurrentState.crossLineStraight;
+
+			//Moves directly to switch after crossing the line
+			} else if (leftRightValue == 1 && steps == 1 && action == Robot.Action.switch1) {
+				turnToSwitch();
+
+			//Moves along the backside of the switch to drop the cube
+			} else if (leftRightValue == -1 && steps == 1 && action == Robot.Action.switch1) {
+				aroundSwitch();
+
+			} else {
+				currentState = CurrentState.nothing;
+			}
 			break;
 			
 		default:
 			break;
 			
-	}
+	  }
 	}
 		
-		public void actionOnField()
-		{
-			switch (currentState){
-			case nothing:
-				RobotMap.myRobot.tankDrive(0, 0);
-				break;
+		
+		//Moves to the switch if it is on the same side
+		public void turnToSwitch() {
+			  if (substeps == 0) {
+					currentState = CurrentState.driveHalfwayPastSwitch;
 				
-			case crossLine:
-				if (Robot.encoder.getDistance() < DISTANCETOLINE) {
-					RobotMap.myRobot.tankDrive(-1, -1);
-					DriverStation.reportError("YOU ARE HERE", true);
-				} else {
-					steps++;
-				}
+				//Turns based on which switch we own
+			  } else if(substeps == 1) {
+				  if (leftRightValue == -1) {
+					  currentState = CurrentState.turn45Left;
+				  }
+				  else if(leftRightValue == 1) {
+					  currentState = CurrentState.turn45Right;
+				  }
+					  
 				
-				break;
-				
-			case aroundSwitch:
-				steps++;
-				
-			case exchange:
-				steps++;
-				break;
-				
-			default:
-				RobotMap.myRobot.tankDrive(0, 0);
-				break;
-				
-			}
-			
+			  } else if (substeps == 2) {
+				  currentState = CurrentState.moveForwardToSwitch;
+		      }else if(substeps == 3) {
+		    	  currentState = CurrentState.intoSwitch;
+			  } else {
+				  substeps = 0;
+				  steps++;
+			  }
 		}
 		
+		//Moves behind the switch to drop the cube
+		public void aroundSwitch() {
+			
+			if (substeps == 0) {
+				currentState = CurrentState.backToForward;
+			}
+			if (substeps == 1) {
+				currentState = CurrentState.drivePastSwitch;
+				
+				//Turns based on which switch we own
+			}else if ( substeps == 2){
+				if (leftRightValue == 1) {
+					currentState = CurrentState.turn45Left;
+				}else if (leftRightValue == -1) {
+					currentState = CurrentState.turn45Right;
+				}
+				
+			} else if (substeps == 3){
+				currentState = CurrentState.driveAcrossSwitch;
+				
+				//Turns based on which switch we own
+			} else if (substeps == 4) {
+				if (leftRightValue == 1) {
+					currentState = CurrentState.turn45Left;
+				}else if (leftRightValue == -1) {
+					currentState = CurrentState.turn45Right;
+				}
+				
+			} else if (substeps == 5) {
+				currentState = CurrentState.moveForwardToSwitch;
+			} else if (substeps == 6) {
+				currentState = CurrentState.intoSwitch;
+			} else {
+				substeps = 0;
+				steps++;
+			}
+		}
+		
+		//Moves forward to place the cube into the switch
+		public void straightToSwitch() {
+			
+			if (substeps == 0) {
+				currentState = CurrentState.backToForward;
+			} else if (substeps == 1) {
+				currentState = CurrentState.moveForwardToSwitch;
+			} else if(substeps == 2) {
+				currentState = CurrentState.intoSwitch;
+			} else {
+				substeps = 0;
+				steps++;
+			}
+		}
+		
+		//Place the box into the vault
+		public void intoVault() {
+			if (substeps == 0) {
+				currentState = CurrentState.intoExchange;
+			} else {
+				substeps = 0;
+				steps++;
+			}
+		}
+		
+		//Moves to the switch after placing the block
+		public void crossLineAfterVault() {
+			if (substeps == 0) {
+				currentState = CurrentState.driveBackwards;
+			} else if (substeps == 1) {
+				currentState = CurrentState.turn180;
+			} else if (substeps == 2) {
+				currentState = CurrentState.moveForwardToSwitch;
+			} else {
+				substeps = 0;
+				steps++;
+			}
+		}
+		
+		//All the small actions will do depending on what current state the bot is in (changed in methods)
+		//Only the cross the line actions should add 1 to steps. The rest should increment subsystems by 1
+		public void actionOnField(){
+			
+			switch (currentState){
+				case nothing:
+					RobotMap.myRobot.tankDrive(0, 0);
+					break;
+						
+				case crossLineStraight:
+					if (Robot.encoder.getDistance() < 20) {
+						RobotMap.myRobot.tankDrive(-.5, -.5);
+						DriverStation.reportError("YOU ARE HERE", true);
+					} else {
+						steps++;
+					}
+						
+					break;
+						
+				case crossLineDiagonal:
+					steps++;
+					break;
+						
+				case crossLineFromMiddle:
+					steps++;
+					break;
+						
+				case drivePastSwitch:
+					substeps++;
+					break;
+						
+				case driveAcrossSwitch:
+					substeps++;
+					break;
+						
+				case moveForwardToSwitch:
+					substeps++;
+					break;
+						
+				case intoExchange:
+					substeps++;
+					break;
+						
+				case intoSwitch:
+					substeps++;
+					break;
+						
+				case pickUpBlock:
+					substeps++;
+					break;
+						
+				case turn180:
+					substeps++;
+					break;
+						
+				case turn45Left:
+					substeps++;
+					break;
+						
+				case turn45Right:
+					substeps++;
+					break;
+						
+				case backToForward:
+					substeps++;
+					break;
+						
+				default:
+					RobotMap.myRobot.tankDrive(0, 0);
+					break;
+						
+				}
+					
+			}
 	}
