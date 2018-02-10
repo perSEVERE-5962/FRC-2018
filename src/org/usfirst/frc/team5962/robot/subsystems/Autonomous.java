@@ -25,9 +25,9 @@ public class Autonomous extends Subsystem {
 	private final double DISTANCEPASTSWITCH = 105;
 	private final double DISTANCEACROSSSWITCH = 149;
 	
-	public PIDDriveOutput pidDriveOutput = new PIDDriveOutput();
-	public PIDDriveSource pidDriveSource = new PIDDriveSource();
-	public PIDController pidDriveController = new PIDController(0,0,0,pidDriveSource,pidDriveOutput);
+	public PIDDriveOutput pidDriveOutput;
+	public PIDDriveSource pidDriveSource;
+	public PIDController pidDriveController;
 
 	//Enum for what action the bot is doing at the moment
 	public static enum CurrentState{
@@ -57,10 +57,22 @@ public class Autonomous extends Subsystem {
 	
 	//Variable on whether the switch ownership is left or right
 	int leftRightValue;
-	
+
+	boolean actionStarted = false;
+
 	//Called from Run Autonomous and sets up the timer and switch ownership
 	public void init()
 	{
+		//initialize PID
+		pidDriveOutput = new PIDDriveOutput();
+		pidDriveSource = new PIDDriveSource();
+		double Kp = SmartDashboard.getNumber("P Value:", 0);
+		double Ki = SmartDashboard.getNumber("I Value:", 0);
+		double Kd = SmartDashboard.getNumber("D Value:", 0);
+		pidDriveController = new PIDController(Kp,Ki,Kd,pidDriveSource,pidDriveOutput);
+		//pidDriveController.setPID(1,  0,  0);
+		pidDriveController.disable();
+		
 		//Set up for state cases
 		platesLocation = fmsDataRetrieval.fieldDataRetrieval();
 				
@@ -138,20 +150,30 @@ public class Autonomous extends Subsystem {
 			
 	}
 	}
+	
 		
 		public void actionOnField()
 		{
 			switch (currentState){
 			case nothing:
 				RobotMap.myRobot.tankDrive(0, 0);
-				pidDriveController.enable();
+//				pidDriveController.enable();
 				break;
 				
 			case crossLine:
 					DriverStation.reportError("YOU ARE HERE", true);
-					pidDriveController.setPID(1,  0,  0);
-					pidDriveController.setSetpoint(24);
-					pidDriveController.enable();
+					if (!actionStarted) {
+						pidDriveController.setSetpoint(24);
+						pidDriveController.enable();
+						actionStarted = true;
+					} else {
+						// if done, then 
+						//     1) actionStarted = false; 
+						//     2) steps++;
+						//     3) pidDriveController.disable();
+						// else do nothing
+					}
+					
 //				if (Robot.encoder.getDistance() < DISTANCETOLINE) {
 //					RobotMap.myRobot.tankDrive(-1, -1);
 //				} else {
