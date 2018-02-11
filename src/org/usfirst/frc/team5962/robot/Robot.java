@@ -1,6 +1,9 @@
 
 package org.usfirst.frc.team5962.robot;
 
+
+import edu.wpi.first.wpilibj.DriverStation;
+
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -16,6 +19,7 @@ import org.usfirst.frc.team5962.robot.commands.RunAutonomous;
 import org.usfirst.frc.team5962.robot.commands.Throttle;
 import org.usfirst.frc.team5962.robot.commands.RunBoxIntake;
 import org.usfirst.frc.team5962.robot.commands.RunBoxOutake;
+import org.usfirst.frc.team5962.robot.commands.RunDropIntake;
 import org.usfirst.frc.team5962.robot.commands.Throttle;
 import org.usfirst.frc.team5962.robot.sensors.ADIS16448_IMU;
 import org.usfirst.frc.team5962.robot.sensors.RobotEncoder;
@@ -35,14 +39,42 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	public static Drive drive = new Drive();
 	public static Gyro gyro = new Gyro();
+	public static RobotGyro robotGyro = new RobotGyro();
+	public static RobotEncoder encoder = new RobotEncoder();
 //	public static RunBoxIntake runBoxIntake = new RunBoxIntake();
 //	public static RunBoxOutake runBoxOutake = new RunBoxOutake();
 //	public static ADIS16448_IMU robotGyro = new ADIS16448_IMU();
-	public static RobotGyro robotGyro = new RobotGyro();
-	public static RobotEncoder encoder = new RobotEncoder();
+	public static RunDropIntake runDropIntake = new RunDropIntake();
 	
+	//Variables for Shuffleboard
+    SendableChooser<Location> position;
+	SendableChooser<Action> state;
 
 
+	//Enum for the Location of bot
+	public static enum Location {
+		
+		farRight,
+		switchRight,
+		middle,
+		vault,
+		switchLeft,
+		farLeft
+		
+	}
+	
+	//Enum for the Location of bot
+	public static enum Action {
+		
+		nothing,
+		crossLine,
+		exchange,
+		switch1,
+		switch2,
+		scale,
+		
+	}
+	
 	/**
 	 * This function is run when the robot is first started up and should be used
 	 * for any initialization code.
@@ -57,8 +89,22 @@ public class Robot extends IterativeRobot {
 		robotGyro.resetGyro();
 		SmartDashboard.putData("Reset Gyro", new ResetGyro());
 
+		encoder.setNumberOfEncoders(1);
+		
+		SmartDashboard.putNumber("Ultra Sonic distance", RobotMap.ultraSonic.getRange() );
+		
+		setUpAutonomousPosition();
+		setUpAutonomousAction();
+		
+		SmartDashboard.putNumber("P Value:", 0);
+		SmartDashboard.putNumber("I Value:", 0);
+		SmartDashboard.putNumber("D Value:", 0);
+		
+
+
 		CameraServer.getInstance().startAutomaticCapture(0);
 	}
+
 	
 
 
@@ -86,7 +132,11 @@ public class Robot extends IterativeRobot {
 	 * the switch structure below with additional strings & commands.
 	 */
 	public void autonomousInit() {
-		autonomousCommand = new RunAutonomous();
+		
+		Location location = (Location) position.getSelected();
+		Action action = (Action) state.getSelected();
+		
+		autonomousCommand = new RunAutonomous(location, action);
 
 		if (autonomousCommand != null) {
 			autonomousCommand.start();
@@ -108,6 +158,10 @@ public class Robot extends IterativeRobot {
 		robotGyro.resetGyro();
 		//runBoxIntake.start();
 		//runBoxOutake.start();
+		runDropIntake.start();
+		
+		SmartDashboard.putNumber("Ultra Sonic distance", RobotMap.ultraSonic.getRange() );
+		
 	}
 
 	/**
@@ -117,6 +171,9 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 		SmartDashboard.putNumber("Gyro ADIS - yaw", gyro.resetGyroAutomatic());
 		SmartDashboard.putString("throttle enabled", "" + oi.isThrottleEnabled());
+		SmartDashboard.putNumber("Ultra Sonic distance", RobotMap.ultraSonic.getRange() );
+//		SmartDashboard.putNumber("Ultra Sonic voltage", RobotMap.ultraSonic.getVoltage() );
+		
 	}
 
 	/**
@@ -124,5 +181,33 @@ public class Robot extends IterativeRobot {
 	 */
 	public void testPeriodic() {
 		LiveWindow.run();
+	}
+	
+	
+	//Shuffleboard setup for the location of the bot
+	private void setUpAutonomousPosition(){
+		
+		position = new SendableChooser<Location>();
+		position.addDefault("Far Right", Location.farRight);
+		position.addObject("Right side of Switch", Location.switchRight);
+		position.addObject("Middle", Location.middle);
+		position.addObject("In front of Vault", Location.vault);
+		position.addObject("Left side of Switch", Location.switchLeft);
+		position.addObject("Far Left", Location.farLeft);
+		SmartDashboard.putData("Location of robot", position);
+	}
+	
+	
+	//Shuffleboard setup for the action of the bot
+	private void setUpAutonomousAction() {
+		
+		state = new SendableChooser<Action>();
+		state.addDefault("Nothing", Action.nothing);
+		state.addObject("Cross the Line", Action.crossLine);
+		state.addObject("Exchange", Action.exchange);
+		state.addObject("One Switch", Action.switch1);
+		//state.addObject("Two Switches", Action.switch2);
+		//state.addObject("Scale", Action.scale);
+		SmartDashboard.putData("Action for Auto", state);
 	}
 }
