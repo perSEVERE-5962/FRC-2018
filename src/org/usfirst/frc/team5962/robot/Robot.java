@@ -164,7 +164,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Gyro ADIS - yaw", gyro.resetGyroAutomatic());
 		SmartDashboard.putString("throttle enabled", "" + oi.isThrottleEnabled());
 		SmartDashboard.putNumber("Ultra Sonic distance", RobotMap.ultraSonic.getRange() );
-		SmartDashboard.putNumber("Ultra Sonic voltage", RobotMap.ultraSonic.getVoltage() );
+//		SmartDashboard.putNumber("Ultra Sonic voltage", RobotMap.ultraSonic.getVoltage() );
 		
 	}
 

@@ -353,10 +353,20 @@ public class Autonomous extends Subsystem {
 					break;
 						
 				case crossLineStraight:
-					if (Robot.encoder.getDistance() < 20) {
-						RobotMap.myRobot.tankDrive(-.5, -.5);
-						DriverStation.reportError("YOU ARE HERE", true);
-					} else {
+//					if (Robot.encoder.getDistance() < 20) {
+//						RobotMap.myRobot.tankDrive(-.5, -.5);
+//						DriverStation.reportError("YOU ARE HERE", true);
+//					} else {
+//						steps++;
+//					}
+					DriverStation.reportError("YOU ARE HERE", true);
+					if (!actionStarted) {
+						pidDriveController.setSetpoint(24);
+						pidDriveController.enable();
+						actionStarted = true;
+					} else if (pidDriveController.onTarget()) {
+						pidDriveController.disable();
+						actionStarted = false;
 						steps++;
 					}
 						
