@@ -1,10 +1,10 @@
 package org.usfirst.frc.team5962.robot.commands;
 
 import org.usfirst.frc.team5962.robot.Robot;
-import org.usfirst.frc.team5962.robot.subsystems.DropIntake;
+import org.usfirst.frc.team5962.robot.subsystems.Lift;
 
 import edu.wpi.first.wpilibj.command.Command;
-public class RunDropIntake extends Command{
+public class RunLift extends Command{
 
 	// Called just before this Command runs the first time
     protected void initialize() {
@@ -13,8 +13,8 @@ public class RunDropIntake extends Command{
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	DropIntake.dropIntake();
-    	DropIntake.checkParallel();
+    	Lift.lift();
+    	Lift.checkHeight();
     }
 
     // Make this return true when this Command no longer needs to run execute()

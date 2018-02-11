@@ -20,6 +20,7 @@ import org.usfirst.frc.team5962.robot.commands.Throttle;
 import org.usfirst.frc.team5962.robot.commands.RunBoxIntake;
 import org.usfirst.frc.team5962.robot.commands.RunBoxOutake;
 import org.usfirst.frc.team5962.robot.commands.RunDropIntake;
+import org.usfirst.frc.team5962.robot.commands.RunLift;
 import org.usfirst.frc.team5962.robot.commands.Throttle;
 import org.usfirst.frc.team5962.robot.sensors.ADIS16448_IMU;
 import org.usfirst.frc.team5962.robot.sensors.RobotEncoder;
@@ -45,6 +46,7 @@ public class Robot extends IterativeRobot {
 //	public static RunBoxOutake runBoxOutake = new RunBoxOutake();
 //	public static ADIS16448_IMU robotGyro = new ADIS16448_IMU();
 	public static RunDropIntake runDropIntake = new RunDropIntake();
+	public static RunLift runLift = new RunLift();
 	
 	//Variables for Shuffleboard
     SendableChooser<Location> position;
@@ -159,6 +161,7 @@ public class Robot extends IterativeRobot {
 		//runBoxIntake.start();
 		//runBoxOutake.start();
 		runDropIntake.start();
+		runLift.start();
 		
 		SmartDashboard.putNumber("Ultra Sonic distance", RobotMap.ultraSonic.getRange() );
 		

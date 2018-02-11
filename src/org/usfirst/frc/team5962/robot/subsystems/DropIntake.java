@@ -3,10 +3,30 @@ package org.usfirst.frc.team5962.robot.subsystems;
 import org.usfirst.frc.team5962.robot.Robot;
 import org.usfirst.frc.team5962.robot.RobotMap;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 public class DropIntake {
 
+	final static double STRINGLENGTH = 16;
 	public static void dropIntake() {
 		
-			RobotMap.dropBoxIntake.set(Robot.oi.joystickRightAxis());
+		RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, Robot.oi.xBoxRightAxis());
+	}
+	
+	public static void checkParallel() {
+		
+		//Makes sure the intake is parrallel to the gorund so the intake won't move back
+		if (getDistance() >= STRINGLENGTH) {
+			RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, 0);
+		}
+	}
+	
+	public static double getDistance() {
+		
+		double encoderDistance = RobotMap.dropBoxIntake.getSensorCollection().getQuadraturePosition();
+		
+		//Determines distance of the string by 2*pi*(1) / 420;
+		double distance = encoderDistance * .0149;
+		return 0;
 	}
 }

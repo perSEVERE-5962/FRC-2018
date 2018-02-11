@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class RunBoxIntake extends Command{
 	
-	
 	// Called just before this Command runs the first time
     protected void initialize() {
 
