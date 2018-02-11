@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5962.robot.commands;
 
 import org.usfirst.frc.team5962.robot.Robot;
+import org.usfirst.frc.team5962.robot.subsystems.Joystick;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -18,7 +19,10 @@ public class RunJoystickTank extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	
+  
     	Robot.drive.joystickTank();
+    	Joystick.throttle();
     }
 
     // Make this return true when this Command no longer needs to run execute()
