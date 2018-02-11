@@ -1,5 +1,7 @@
 package org.usfirst.frc.team5962.robot;
 
+import org.usfirst.frc.team5962.robot.sensors.RobotUltrasonicAnalog;
+
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Victor;
@@ -48,6 +50,9 @@ public class RobotMap {
 	public static Victor boxIntake;
 	public static Victor dropBoxIntake;
 	
+	public static RobotUltrasonicAnalog ultraSonic;
+	
+	
 	
 	public static void init() {
 
@@ -61,6 +66,8 @@ public class RobotMap {
 		
 		boxIntake = new Victor(PWM_CHANNEL_3);
 		dropBoxIntake = new Victor(PWM_CHANNEL_5);
+		
+		ultraSonic = new RobotUltrasonicAnalog(DIO_CHANNEL_0);
 		
 
 	}

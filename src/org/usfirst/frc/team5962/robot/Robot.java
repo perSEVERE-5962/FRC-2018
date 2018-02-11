@@ -87,6 +87,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData("Reset Gyro", new ResetGyro());
 		encoder.setNumberOfEncoders(1);
 		
+		SmartDashboard.putNumber("Ultra Sonic distance", RobotMap.ultraSonic.getRange() );
+		
 		setUpAutonomousPosition();
 		setUpAutonomousAction();
 		
@@ -149,6 +151,9 @@ public class Robot extends IterativeRobot {
 		//runBoxIntake.start();
 		//runBoxOutake.start();
 		runDropIntake.start();
+		
+		SmartDashboard.putNumber("Ultra Sonic distance", RobotMap.ultraSonic.getRange() );
+		
 	}
 
 	/**
@@ -158,6 +163,8 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 		SmartDashboard.putNumber("Gyro ADIS - yaw", gyro.resetGyroAutomatic());
 		SmartDashboard.putString("throttle enabled", "" + oi.isThrottleEnabled());
+		SmartDashboard.putNumber("Ultra Sonic distance", RobotMap.ultraSonic.getRange() );
+		SmartDashboard.putNumber("Ultra Sonic voltage", RobotMap.ultraSonic.getVoltage() );
 		
 	}
 
