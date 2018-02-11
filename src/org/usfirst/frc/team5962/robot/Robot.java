@@ -1,7 +1,10 @@
 
 package org.usfirst.frc.team5962.robot;
 
+
 import edu.wpi.first.wpilibj.DriverStation;
+
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -85,6 +88,7 @@ public class Robot extends IterativeRobot {
 		RobotMap.myRobot.setMaxOutput(0.5);
 		robotGyro.resetGyro();
 		SmartDashboard.putData("Reset Gyro", new ResetGyro());
+
 		encoder.setNumberOfEncoders(1);
 		
 		SmartDashboard.putNumber("Ultra Sonic distance", RobotMap.ultraSonic.getRange() );
@@ -96,7 +100,11 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("I Value:", 0);
 		SmartDashboard.putNumber("D Value:", 0);
 		
-		}
+
+
+		CameraServer.getInstance().startAutomaticCapture(0);
+	}
+
 	
 
 
