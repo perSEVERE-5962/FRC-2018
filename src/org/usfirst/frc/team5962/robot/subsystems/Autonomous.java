@@ -359,15 +359,22 @@ public class Autonomous extends Subsystem {
 //					} else {
 //						steps++;
 //					}
-					DriverStation.reportError("YOU ARE HERE", true);
+					
+					//RobotMap.myRobot.setMaxOutput(0.5);
+					
 					if (!actionStarted) {
-						pidDriveController.setSetpoint(24);
+						DriverStation.reportWarning("YOU ARE HERE", true);
+						//pidDriveController.setOutputRange(0.25, 1.0);
+						pidDriveController.setInputRange(0,62);
+						pidDriveController.setSetpoint(60);
+						pidDriveController.setPercentTolerance(1);
 						pidDriveController.enable();
 						actionStarted = true;
 					} else if (pidDriveController.onTarget()) {
-						pidDriveController.disable();
-						actionStarted = false;
-						steps++;
+						DriverStation.reportWarning("YOU ARE ON TARGET", true);
+						//pidDriveController.disable();
+						//actionStarted = false;
+						//steps++;
 					}
 						
 					break;
