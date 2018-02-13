@@ -1,7 +1,10 @@
 
 package org.usfirst.frc.team5962.robot;
 
+
 import edu.wpi.first.wpilibj.DriverStation;
+
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -17,6 +20,7 @@ import org.usfirst.frc.team5962.robot.commands.Throttle;
 import org.usfirst.frc.team5962.robot.commands.RunBoxIntake;
 import org.usfirst.frc.team5962.robot.commands.RunBoxOutake;
 import org.usfirst.frc.team5962.robot.commands.RunDropIntake;
+import org.usfirst.frc.team5962.robot.commands.RunLift;
 import org.usfirst.frc.team5962.robot.commands.Throttle;
 import org.usfirst.frc.team5962.robot.sensors.ADIS16448_IMU;
 import org.usfirst.frc.team5962.robot.sensors.RobotEncoder;
@@ -42,6 +46,7 @@ public class Robot extends IterativeRobot {
 //	public static RunBoxOutake runBoxOutake = new RunBoxOutake();
 //	public static ADIS16448_IMU robotGyro = new ADIS16448_IMU();
 	public static RunDropIntake runDropIntake = new RunDropIntake();
+	public static RunLift runLift = new RunLift();
 	
 	//Variables for Shuffleboard
     SendableChooser<Location> position;
@@ -85,12 +90,27 @@ public class Robot extends IterativeRobot {
 		RobotMap.myRobot.setMaxOutput(0.5);
 		robotGyro.resetGyro();
 		SmartDashboard.putData("Reset Gyro", new ResetGyro());
+
 		encoder.setNumberOfEncoders(1);
+		
+		SmartDashboard.putNumber("Ultra Sonic distance", RobotMap.ultraSonic.getRange() );
 		
 		setUpAutonomousPosition();
 		setUpAutonomousAction();
 		
-		}
+		SmartDashboard.putNumber("P Value:", 0);
+		SmartDashboard.putNumber("I Value:", 0);
+		SmartDashboard.putNumber("D Value:", 0);
+		
+
+
+		CameraServer.getInstance().startAutomaticCapture(0);
+		
+		//RobotMap.dropBoxIntake.getSensorCollection().
+		
+		
+	}
+
 	
 
 
@@ -145,6 +165,10 @@ public class Robot extends IterativeRobot {
 		//runBoxIntake.start();
 		//runBoxOutake.start();
 		runDropIntake.start();
+		runLift.start();
+		
+		SmartDashboard.putNumber("Ultra Sonic distance", RobotMap.ultraSonic.getRange() );
+		
 	}
 
 	/**
@@ -154,6 +178,8 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 		SmartDashboard.putNumber("Gyro ADIS - yaw", gyro.resetGyroAutomatic());
 		SmartDashboard.putString("throttle enabled", "" + oi.isThrottleEnabled());
+		SmartDashboard.putNumber("Ultra Sonic distance", RobotMap.ultraSonic.getRange() );
+//		SmartDashboard.putNumber("Ultra Sonic voltage", RobotMap.ultraSonic.getVoltage() );
 		
 	}
 
