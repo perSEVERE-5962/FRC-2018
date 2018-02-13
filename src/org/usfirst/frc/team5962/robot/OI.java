@@ -2,10 +2,12 @@ package org.usfirst.frc.team5962.robot;
 
 import org.usfirst.frc.team5962.robot.commands.RunBoxIntake;
 import org.usfirst.frc.team5962.robot.commands.RunBoxOutake;
+import org.usfirst.frc.team5962.robot.commands.RunBoxSpin;
 import org.usfirst.frc.team5962.robot.commands.RunJoystickTank;
 import org.usfirst.frc.team5962.robot.commands.RunWingDeploy;
 import org.usfirst.frc.team5962.robot.commands.StopBoxIntake;
 import org.usfirst.frc.team5962.robot.commands.StopBoxOutake;
+import org.usfirst.frc.team5962.robot.commands.StopBoxSpin;
 import org.usfirst.frc.team5962.robot.commands.Throttle;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -24,10 +26,12 @@ public class OI {
 	public Joystick joystickLeft;
 	public Joystick joystickRight;
 	public Joystick gamepad1;
+	public Joystick xBoxController;
 	
 	public Button throttle;
 	public Button jsIntake;
 	public Button jsOutake;
+	public Button jsBoxSpin;
 	//public Button deployWings;
 	
 	public Trigger intake;
@@ -39,6 +43,7 @@ public class OI {
 		joystickLeft = new Joystick(1);
 		joystickRight = new Joystick(2);
 		gamepad1 = new Joystick(0);
+		xBoxController = new Joystick(3);
 		
 		
 		jsIntake = new JoystickButton(joystickLeft,1);
@@ -51,6 +56,10 @@ public class OI {
 		
 		throttle = new JoystickButton(joystickLeft, 3);
 		throttle.whenPressed(new Throttle());
+		
+		jsBoxSpin = new JoystickButton(joystickLeft, 4);
+		jsBoxSpin.whenPressed(new RunBoxSpin());
+		jsBoxSpin.whenReleased(new StopBoxSpin());
 		
 		//deployWings = new JoystickButton(joystickRight, 3);
 		//deployWings.whenPressed(new RunWingDeploy());
@@ -66,8 +75,16 @@ public class OI {
 		return joystickLeft.getRawAxis(1);
 	}
 	
+	public double joystickLeftThrottleAxis() {
+		return joystickLeft.getRawAxis(3);
+	}
+	
 	public double joystickRightAxis() {
 		return joystickRight.getRawAxis(1);
+	}
+	
+	public double joystickRightThrottleAxis() {
+		return joystickRight.getRawAxis(3);
 	}
 	
 	public double gamepadLeftAxis() {
@@ -77,12 +94,20 @@ public class OI {
 		return gamepad1.getRawAxis(5);
 	}
 	
+	public double gamePadLeftTrigger() {
+		return gamepad1.getRawAxis(2);
+	}
+	
 	public double gamePadRightTrigger() {
 		return gamepad1.getRawAxis(3);
 	}
 	
-	public double gamePadLeftTrigger() {
-		return gamepad1.getRawAxis(2);
+	public double xBoxLeftAxis() {
+		return xBoxController.getRawAxis(1);
+	}
+	
+	public double xBoxRightAxis() {
+		return xBoxController.getRawAxis(5);
 	}
 	
 	public boolean isThrottleEnabled() {
