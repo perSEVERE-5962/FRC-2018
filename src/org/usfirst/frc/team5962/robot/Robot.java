@@ -105,6 +105,10 @@ public class Robot extends IterativeRobot {
 
 
 		CameraServer.getInstance().startAutomaticCapture(0);
+		
+		//RobotMap.dropBoxIntake.getSensorCollection().
+		
+		
 	}
 
 	
