@@ -19,7 +19,7 @@ public class Drive extends Subsystem {
 		//pidDriveController.setSetpoint(120);        //The Distance is 10 feet or 120 inches
 	}
 	public void joystickTank() {
-		RobotMap.myRobot.tankDrive(Robot.oi.joystickRightAxis(), Robot.oi.joystickLeftAxis());
+		RobotMap.myRobot.tankDrive(Robot.oi.joystickLeftAxis(), Robot.oi.joystickRightAxis());
 		//RobotMap.myRobot.tankDrive(robotOI.gamepadRightAxis(), robotOI.gamepadLeftAxis());
 	}
 	@Override
