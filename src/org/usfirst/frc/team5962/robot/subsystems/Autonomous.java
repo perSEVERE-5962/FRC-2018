@@ -372,9 +372,9 @@ public class Autonomous extends Subsystem {
 						actionStarted = true;
 					} else if (pidDriveController.onTarget()) {
 						DriverStation.reportWarning("YOU ARE ON TARGET", true);
-						//pidDriveController.disable();
-						//actionStarted = false;
-						//steps++;
+						pidDriveController.disable();
+						actionStarted = false;
+						steps++;
 					}
 						
 					break;

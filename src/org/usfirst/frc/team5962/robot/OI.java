@@ -45,7 +45,6 @@ public class OI {
 		gamepad1 = new Joystick(0);
 		xBoxController = new Joystick(3);
 		
-		
 		jsIntake = new JoystickButton(joystickLeft,1);
 		jsIntake.whenPressed(new RunBoxIntake());
 		jsIntake.whenReleased(new StopBoxIntake());
