@@ -99,9 +99,9 @@ public class Robot extends IterativeRobot {
 		setUpAutonomousPosition();
 		setUpAutonomousAction();
 		
-		SmartDashboard.putNumber("P Value:", 0.25);
+		SmartDashboard.putNumber("P Value:", 0.49);
 		SmartDashboard.putNumber("I Value:", 0);
-		SmartDashboard.putNumber("D Value:", 0);
+		SmartDashboard.putNumber("D Value:", 0.49);
 		
 
 
