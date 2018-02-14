@@ -20,6 +20,7 @@ import org.usfirst.frc.team5962.robot.commands.Throttle;
 import org.usfirst.frc.team5962.robot.commands.RunBoxIntake;
 import org.usfirst.frc.team5962.robot.commands.RunBoxOutake;
 import org.usfirst.frc.team5962.robot.commands.RunDropIntake;
+import org.usfirst.frc.team5962.robot.commands.RunLift;
 import org.usfirst.frc.team5962.robot.commands.Throttle;
 import org.usfirst.frc.team5962.robot.sensors.ADIS16448_IMU;
 import org.usfirst.frc.team5962.robot.sensors.RobotEncoder;
@@ -45,6 +46,7 @@ public class Robot extends IterativeRobot {
 //	public static RunBoxOutake runBoxOutake = new RunBoxOutake();
 //	public static ADIS16448_IMU robotGyro = new ADIS16448_IMU();
 	public static RunDropIntake runDropIntake = new RunDropIntake();
+	public static RunLift runLift = new RunLift();
 	
 	//Variables for Shuffleboard
     SendableChooser<Location> position;
@@ -90,19 +92,24 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData("Reset Gyro", new ResetGyro());
 
 		encoder.setNumberOfEncoders(1);
+		encoder.reset();
 		
 		SmartDashboard.putNumber("Ultra Sonic distance", RobotMap.ultraSonic.getRange() );
 		
 		setUpAutonomousPosition();
 		setUpAutonomousAction();
 		
-		SmartDashboard.putNumber("P Value:", 0);
+		SmartDashboard.putNumber("P Value:", 0.25);
 		SmartDashboard.putNumber("I Value:", 0);
 		SmartDashboard.putNumber("D Value:", 0);
 		
 
 
 		CameraServer.getInstance().startAutomaticCapture(0);
+		
+		//RobotMap.dropBoxIntake.getSensorCollection().
+		
+		
 	}
 
 	
@@ -159,6 +166,7 @@ public class Robot extends IterativeRobot {
 		//runBoxIntake.start();
 		//runBoxOutake.start();
 		runDropIntake.start();
+		runLift.start();
 		
 		SmartDashboard.putNumber("Ultra Sonic distance", RobotMap.ultraSonic.getRange() );
 		
