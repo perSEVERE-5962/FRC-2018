@@ -92,13 +92,14 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData("Reset Gyro", new ResetGyro());
 
 		encoder.setNumberOfEncoders(1);
+		encoder.reset();
 		
 		SmartDashboard.putNumber("Ultra Sonic distance", RobotMap.ultraSonic.getRange() );
 		
 		setUpAutonomousPosition();
 		setUpAutonomousAction();
 		
-		SmartDashboard.putNumber("P Value:", 0);
+		SmartDashboard.putNumber("P Value:", 0.25);
 		SmartDashboard.putNumber("I Value:", 0);
 		SmartDashboard.putNumber("D Value:", 0);
 		

@@ -25,7 +25,7 @@ public class DropIntake {
 	
 	public static double getDistance() {
 		
-		double encoderDistance = RobotMap.dropBoxIntake.getSensorCollection().getQuadraturePosition;
+		double encoderDistance = RobotMap.dropBoxIntake.getSensorCollection().getQuadraturePosition();
 		DriverStation.reportWarning(encoderDistance + "", false);
 		//Determines distance of the string by 2*pi*(1) / 420;
 		double distance = encoderDistance * .0149;
