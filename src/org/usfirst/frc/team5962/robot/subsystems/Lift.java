@@ -9,7 +9,7 @@ public class Lift {
 	
 	public static void lift() {
 		
-		RobotMap.lift.set(Robot.oi.xBoxLeftAxis());
+		RobotMap.lift.set(Robot.oi.xBoxLeftAxis()/2);
 	}
 	
 	public static void checkHeight() {

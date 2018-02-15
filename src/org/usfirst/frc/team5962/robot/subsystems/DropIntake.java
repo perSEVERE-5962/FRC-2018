@@ -12,7 +12,7 @@ public class DropIntake {
 	final static double STRINGLENGTH = 16;
 	public static void dropIntake() {
 		
-		RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, Robot.oi.xBoxRightAxis());
+		RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, Robot.oi.xBoxRightAxis()/4);
 	}
 	
 	public static void checkParallel() {

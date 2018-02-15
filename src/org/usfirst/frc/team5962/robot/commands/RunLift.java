@@ -14,7 +14,7 @@ public class RunLift extends Command{
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	Lift.lift();
-    	Lift.checkHeight();
+    	//Lift.checkHeight();
     }
 
     // Make this return true when this Command no longer needs to run execute()
