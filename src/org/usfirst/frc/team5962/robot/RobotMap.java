@@ -69,9 +69,11 @@ public class RobotMap {
 		robotRightVictor2 = new Victor(PWM_CHANNEL_3);
 		leftDrive = new MultiSpeedController(robotLeftVictor1, robotLeftVictor2);
 		rightDrive = new MultiSpeedController(robotRightVictor1, robotRightVictor2);
+		leftDrive.setInverted(true);
+		rightDrive.setInverted(true);
 		myRobot = new DifferentialDrive(leftDrive, rightDrive);
-		
 		leftBoxIntake = new TalonSRX(12);
+		leftBoxIntake.setInverted(true);
 		rightBoxIntake = new TalonSRX(13);
 		
 		dropBoxIntake = new TalonSRX(14);
