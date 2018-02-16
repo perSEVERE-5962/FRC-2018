@@ -39,7 +39,7 @@ public class BoxIntake {
 	
 	public static void boxSpin() {
 		
-		double speed = (Robot.oi.joystickLeftThrottleAxis() + 1) / 2;
+		double speed = (Robot.oi.joystickLeftThrottleAxis() + 1) / 8;
 		
 		RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, speed);
 		RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, -1 * speed);
