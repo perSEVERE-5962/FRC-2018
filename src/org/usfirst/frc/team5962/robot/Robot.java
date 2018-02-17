@@ -23,6 +23,8 @@ import org.usfirst.frc.team5962.robot.commands.RunDropIntake;
 import org.usfirst.frc.team5962.robot.commands.RunLift;
 import org.usfirst.frc.team5962.robot.commands.Throttle;
 import org.usfirst.frc.team5962.robot.sensors.ADIS16448_IMU;
+import org.usfirst.frc.team5962.robot.sensors.BagMotorEncoder;
+import org.usfirst.frc.team5962.robot.sensors.NeveRestGearMotorEncoder;
 import org.usfirst.frc.team5962.robot.sensors.RobotEncoder;
 import org.usfirst.frc.team5962.robot.sensors.RobotGyro;
 import org.usfirst.frc.team5962.robot.subsystems.Drive;
@@ -42,6 +44,8 @@ public class Robot extends IterativeRobot {
 	public static Gyro gyro = new Gyro();
 	public static RobotGyro robotGyro = new RobotGyro();
 	public static RobotEncoder encoder = new RobotEncoder();
+	public static NeveRestGearMotorEncoder dropIntakeEncoder = new NeveRestGearMotorEncoder();
+	public static BagMotorEncoder slideEncoder = new BagMotorEncoder();
 //	public static RunBoxIntake runBoxIntake = new RunBoxIntake();
 //	public static RunBoxOutake runBoxOutake = new RunBoxOutake();
 //	public static ADIS16448_IMU robotGyro = new ADIS16448_IMU();
@@ -93,6 +97,8 @@ public class Robot extends IterativeRobot {
 
 		encoder.setNumberOfEncoders(1);
 		encoder.reset();
+		dropIntakeEncoder.reset();
+		slideEncoder.reset();
 		
 		SmartDashboard.putNumber("Ultra Sonic distance", RobotMap.ultraSonic.getRange() );
 		
@@ -147,7 +153,6 @@ public class Robot extends IterativeRobot {
 
 		if (autonomousCommand != null) {
 			autonomousCommand.start();
-			robotGyro.resetGyro();
 		}
 
 	}

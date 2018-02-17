@@ -13,13 +13,11 @@ public class PIDDropIntakeSource {
 		
 	}
 	
-	@Override
 	public PIDSourceType getPIDSourceType() {
 		// TODO Auto-generated method stub
 		return PIDSourceType.kDisplacement;
 	}
 
-	@Override
 	public double pidGet() {
 		// TODO Auto-generated method stub
 		return (Robot.encoder.getDistance());
