@@ -1,5 +1,7 @@
 package org.usfirst.frc.team5962.robot.subsystems;
 
-public class PIDDropIntakeSubsystem {
+import edu.wpi.first.wpilibj.command.PIDSubsystem;
 
+public class PIDDropIntakeSubsystem{
+	
 }

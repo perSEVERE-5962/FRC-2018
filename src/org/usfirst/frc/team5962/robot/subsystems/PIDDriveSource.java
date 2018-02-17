@@ -23,8 +23,8 @@ public class PIDDriveSource implements PIDSource{
 	@Override
 	public double pidGet() {
 		// TODO Auto-generated method stub
-		DriverStation.reportWarning("ENCODER DISTANCE: " + (Robot.encoder.getDistance()), false);
-		return (Robot.encoder.getDistance());
+		DriverStation.reportWarning("ENCODER DISTANCE: " + (Robot.encoder.getDistance() * -1), false);
+		return (Robot.encoder.getDistance() * -1);
 	}
 
 }

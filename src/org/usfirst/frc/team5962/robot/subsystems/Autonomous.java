@@ -28,7 +28,7 @@ public class Autonomous extends Subsystem {
 	public PIDDriveOutput pidDriveOutput;
 	public PIDDriveSource pidDriveSource;
 	public PIDController pidDriveController;
-
+	
 	//Enum for what action the bot is doing at the moment
 	public static enum CurrentState{
 		
@@ -364,7 +364,7 @@ public class Autonomous extends Subsystem {
 					
 					if (!actionStarted) {
 						DriverStation.reportWarning("YOU ARE HERE", true);
-						//pidDriveController.setOutputRange(0.25, 1.0);
+						pidDriveController.setOutputRange(0.5, 0.5);
 						pidDriveController.setInputRange(0,62);
 						pidDriveController.setSetpoint(60);
 						pidDriveController.setPercentTolerance(1);
