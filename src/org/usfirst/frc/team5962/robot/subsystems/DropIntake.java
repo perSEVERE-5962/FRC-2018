@@ -7,10 +7,16 @@ import org.usfirst.frc.team5962.robot.sensors.NeveRestGearMotorEncoder;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PIDController;
 
 public class DropIntake {
 
-	final static double STRINGLENGTH = 16;
+	public PIDDropIntakeOutput pidDropIntakeOutput;
+	public PIDDropIntakeSource pidDropIntakeSource;
+	public PIDController pidDropIntakeController;
+	
+	final double STRINGLENGTH = 16;
+	
 	public static void dropIntake() {
 		
 		RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, Robot.oi.xBoxRightAxis());
@@ -18,12 +24,16 @@ public class DropIntake {
 		
 	}
 	
-	public static void checkParallel() {
+	public void checkParallel() {
 		
 		//Makes sure the intake is parrallel to the gorund so the intake won't move back
 		//if (getDistance() >= STRINGLENGTH) {
 		//	RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, 0);
 		//}
+		
+		
+		//pidDropIntakeController.setSetpoint(16);
+
 		
 		
 	}
@@ -36,4 +46,16 @@ public class DropIntake {
 		//double distance = encoderDistance * .0149;
 		//return distance;
 	//}
+	
+	public void init() {
+		
+		pidDropIntakeOutput = new PIDDropIntakeOutput();
+		pidDropIntakeSource = new PIDDropIntakeSource();
+		
+		double kp = 0;
+		double ki = 0;
+		double kd = 0;
+		
+		pidDropIntakeController = new PIDController(kp,ki,kd,pidDropIntakeSource,pidDropIntakeOutput);
+	}
 }

@@ -56,6 +56,7 @@ public class RobotMap {
 	
 	public static TalonSRX dropBoxIntake;
 	public static Victor lift;
+	public static Victor climber;
 	
 	public static RobotUltrasonicAnalog ultraSonic;
 	
@@ -78,8 +79,10 @@ public class RobotMap {
 		
 		dropBoxIntake = new TalonSRX(14);
 		lift = new Victor(PWM_CHANNEL_4);
+		climber = new Victor(PWM_CHANNEL_5);
 		
 		dropBoxIntake.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+		dropBoxIntake.getSensorCollection().setQuadraturePosition(0, 10);
 		
 		ultraSonic = new RobotUltrasonicAnalog(DIO_CHANNEL_0);
 		
