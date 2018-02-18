@@ -4,6 +4,8 @@ import org.usfirst.frc.team5962.robot.commands.RunBoxIntake;
 import org.usfirst.frc.team5962.robot.commands.RunBoxOutake;
 import org.usfirst.frc.team5962.robot.commands.RunBoxSpin;
 import org.usfirst.frc.team5962.robot.commands.RunJoystickTank;
+import org.usfirst.frc.team5962.robot.commands.RunLeftWingDeploy;
+import org.usfirst.frc.team5962.robot.commands.RunRightWingDeploy;
 import org.usfirst.frc.team5962.robot.commands.RunWingDeploy;
 import org.usfirst.frc.team5962.robot.commands.StopBoxIntake;
 import org.usfirst.frc.team5962.robot.commands.StopBoxOutake;
@@ -32,7 +34,9 @@ public class OI {
 	public Button jsIntake;
 	public Button jsOutake;
 	public Button jsBoxSpin;
-	//public Button deployWings;
+	public Button deployWings;
+	public Button deployLeftWing;
+	public Button deployRightWing;
 	
 	public Trigger intake;
 	public Trigger outake;
@@ -61,6 +65,15 @@ public class OI {
 		jsBoxSpin = new JoystickButton(joystickLeft, 4);
 		jsBoxSpin.whenPressed(new RunBoxSpin());
 		jsBoxSpin.whenReleased(new StopBoxSpin());
+		
+		deployWings = new JoystickButton(gamepad1, 1);
+		deployWings.whenPressed(new RunWingDeploy());
+		
+		deployLeftWing = new JoystickButton(gamepad1, 2);
+		deployLeftWing.whenPressed(new RunLeftWingDeploy());
+		
+		deployRightWing = new JoystickButton(gamepad1, 3);
+		deployRightWing.whenPressed(new RunRightWingDeploy());
 		
 		//deployWings = new JoystickButton(joystickRight, 3);
 		//deployWings.whenPressed(new RunWingDeploy());
