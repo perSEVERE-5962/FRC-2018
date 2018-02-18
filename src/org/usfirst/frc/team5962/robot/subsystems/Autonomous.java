@@ -46,6 +46,7 @@ public class Autonomous extends Subsystem {
 		moveForwardToSwitch,
 		
 		driveBackwards,
+		driveBackwardsSlightly,
 		
 		intoExchange,
 		intoSwitch,
@@ -54,6 +55,7 @@ public class Autonomous extends Subsystem {
 		turn180,
 		turn45Left,
 		turn45Right,
+		turnADegree,
 		backToForward,
 		
 		nothing
@@ -403,17 +405,95 @@ public class Autonomous extends Subsystem {
 					break;
 						
 				case drivePastSwitch:
-					substeps++;
+					if (!actionStarted) {
+						//DriverStation.reportWarning("YOU ARE HERE", true);
+						pidDriveController.setOutputRange(0.5, 0.5);
+						pidDriveController.setInputRange(0,160);
+						pidDriveController.setSetpoint(144.5);
+						pidDriveController.setPercentTolerance(1);
+						pidDriveController.enable();
+						actionStarted = true;
+					} else if (pidDriveController.onTarget()) {
+						DriverStation.reportWarning("YOU ARE ON TARGET", true);
+						pidDriveController.disable();
+						actionStarted = false;
+						substeps++;
+					}
 					break;
 						
 				case driveAcrossSwitch:
-					substeps++;
+					if (!actionStarted) {
+						//DriverStation.reportWarning("YOU ARE HERE", true);
+						pidDriveController.setOutputRange(0.5, 0.5);
+						pidDriveController.setInputRange(0,200);
+						pidDriveController.setSetpoint(171.625);
+						pidDriveController.setPercentTolerance(1);
+						pidDriveController.enable();
+						actionStarted = true;
+					} else if (pidDriveController.onTarget()) {
+						DriverStation.reportWarning("YOU ARE ON TARGET", true);
+						pidDriveController.disable();
+						actionStarted = false;
+						substeps++;
+					}
+					break;
+					
+				case driveHalfwayPastSwitch:
+					if (!actionStarted) {
+						//DriverStation.reportWarning("YOU ARE HERE", true);
+						pidDriveController.setOutputRange(0.5, 0.5);
+						pidDriveController.setInputRange(0,100);
+						pidDriveController.setSetpoint(76);
+						pidDriveController.setPercentTolerance(1);
+						pidDriveController.enable();
+						actionStarted = true;
+					} else if (pidDriveController.onTarget()) {
+						DriverStation.reportWarning("YOU ARE ON TARGET", true);
+						pidDriveController.disable();
+						actionStarted = false;
+						substeps++;
+					}
+					
 					break;
 						
 				case moveForwardToSwitch:
 					substeps++;
 					break;
 						
+				case driveBackwards:
+					if (!actionStarted) {
+						//DriverStation.reportWarning("YOU ARE HERE", true);
+						pidDriveController.setOutputRange(-0.5, -0.5);
+						pidDriveController.setInputRange(-120,0);
+						pidDriveController.setSetpoint(-100);
+						pidDriveController.setPercentTolerance(1);
+						pidDriveController.enable();
+						actionStarted = true;
+					} else if (pidDriveController.onTarget()) {
+						DriverStation.reportWarning("YOU ARE ON TARGET", true);
+						pidDriveController.disable();
+						actionStarted = false;
+						substeps++;
+					}
+					break;
+					
+				case driveBackwardsSlightly:
+					if (!actionStarted) {
+						//DriverStation.reportWarning("YOU ARE HERE", true);
+						pidDriveController.setOutputRange(-0.5, -0.5);
+						pidDriveController.setInputRange(-30,0);
+						pidDriveController.setSetpoint(-17);
+						pidDriveController.setPercentTolerance(1);
+						pidDriveController.enable();
+						actionStarted = true;
+					} else if (pidDriveController.onTarget()) {
+						DriverStation.reportWarning("YOU ARE ON TARGET", true);
+						pidDriveController.disable();
+						actionStarted = false;
+						substeps++;
+					}
+					break;
+					
 				case intoExchange:
 					substeps++;
 					break;
@@ -427,23 +507,11 @@ public class Autonomous extends Subsystem {
 					break;
 						
 				case turn180:
-					substeps++;
-					break;
-						
-				case turn45Left:
-					substeps++;
-					break;
-						
-				case turn45Right:
-					substeps++;
-					break;
-						
-				case backToForward:
 					if (!actionStarted) {
 						//DriverStation.reportWarning("YOU ARE HERE", true);
-						pidTurningDriveController.setOutputRange(0.5, 0.5);
+						pidTurningDriveController.setOutputRange(-0.5, 0.5);
 						pidTurningDriveController.setInputRange(-360, 360);
-						pidTurningDriveController.setSetpoint(0);
+						pidTurningDriveController.setSetpoint(180);
 						pidTurningDriveController.setPercentTolerance(1);
 						pidTurningDriveController.enable();
 						actionStarted = true;
@@ -451,6 +519,85 @@ public class Autonomous extends Subsystem {
 						DriverStation.reportWarning("YOU ARE ON TARGET", true);
 						pidTurningDriveController.disable();
 						actionStarted = false;
+						Robot.robotGyro.resetGyro();
+						substeps++;
+					}
+					break;
+						
+				case turn45Left:
+					if (!actionStarted) {
+						//DriverStation.reportWarning("YOU ARE HERE", true);
+						pidTurningDriveController.setOutputRange(-0.5, 0.5);
+						pidTurningDriveController.setInputRange(-360, 360);
+						pidTurningDriveController.setSetpoint(-45);
+						pidTurningDriveController.setPercentTolerance(1);
+						pidTurningDriveController.enable();
+						actionStarted = true;
+					} else if (pidDriveController.onTarget()) {
+						DriverStation.reportWarning("YOU ARE ON TARGET", true);
+						pidTurningDriveController.disable();
+						actionStarted = false;
+						Robot.robotGyro.resetGyro();
+						substeps++;
+					}
+					break;
+						
+				case turn45Right:
+					if (!actionStarted) {
+						//DriverStation.reportWarning("YOU ARE HERE", true);
+						pidTurningDriveController.setOutputRange(-0.5, 0.5);
+						pidTurningDriveController.setInputRange(-360, 360);
+						pidTurningDriveController.setSetpoint(45);
+						pidTurningDriveController.setPercentTolerance(1);
+						pidTurningDriveController.enable();
+						actionStarted = true;
+					} else if (pidDriveController.onTarget()) {
+						DriverStation.reportWarning("YOU ARE ON TARGET TURNING", true);
+						pidTurningDriveController.disable();
+						actionStarted = false;
+						Robot.robotGyro.resetGyro();
+						substeps++;
+					}
+					break;
+					
+				case turnADegree:
+					if (!actionStarted) {
+						//DriverStation.reportWarning("YOU ARE HERE", true);
+						pidTurningDriveController.setOutputRange(-0.5, 0.5);
+						pidTurningDriveController.setInputRange(-360, 360);
+						if (location == Robot.Location.switchLeft ||
+							location == Robot.Location.switchRight) {
+							
+							pidTurningDriveController.setSetpoint(leftRightValue * 29.5433);
+						} else if (location == Robot.Location.middle) {
+							
+							pidTurningDriveController.setSetpoint(-1 * leftRightValue * 36.1225);
+						}
+						pidTurningDriveController.setPercentTolerance(1);
+						pidTurningDriveController.enable();
+						actionStarted = true;
+					} else if (pidDriveController.onTarget()) {
+						DriverStation.reportWarning("YOU ARE ON TARGET TURNING", true);
+						pidTurningDriveController.disable();
+						actionStarted = false;
+						Robot.robotGyro.resetGyro();
+						substeps++;
+					}
+						
+				case backToForward:
+					if (!actionStarted) {
+						//DriverStation.reportWarning("YOU ARE HERE", true);
+						pidTurningDriveController.setOutputRange(-0.5, 0.5);
+						pidTurningDriveController.setInputRange(-360, 360);
+						pidTurningDriveController.setSetpoint(0);
+						pidTurningDriveController.setPercentTolerance(1);
+						pidTurningDriveController.enable();
+						actionStarted = true;
+					} else if (pidDriveController.onTarget()) {
+						DriverStation.reportWarning("YOU ARE ON TARGET TURNING", true);
+						pidTurningDriveController.disable();
+						actionStarted = false;
+						Robot.robotGyro.resetGyro();
 						substeps++;
 					}
 					break;
