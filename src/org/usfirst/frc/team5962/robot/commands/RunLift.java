@@ -23,7 +23,7 @@ public class RunLift extends Command{
     	//Lift.lift();
     	//Lift.checkHeight();
     	if (Robot.oi.xBoxLeftAxis() < 0) {
-    		pidLiftSubsystem.setSetPoint(42);
+    		pidLiftSubsystem.setSetPoint(40);
     	} else if (Robot.oi.xBoxRightAxis() > 0){
     		pidLiftSubsystem.setSetPoint(0);
     	}
