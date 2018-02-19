@@ -84,7 +84,7 @@ public class RobotMap {
 		dropBoxIntake.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
 		dropBoxIntake.getSensorCollection().setQuadraturePosition(0, 10);
 		
-		ultraSonic = new RobotUltrasonicAnalog(DIO_CHANNEL_0);
+		ultraSonic = new RobotUltrasonicAnalog(0);
 		
 
 	}
