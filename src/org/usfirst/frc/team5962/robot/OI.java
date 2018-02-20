@@ -36,6 +36,8 @@ public class OI {
 	
 	public Trigger intake;
 	public Trigger outake;
+	public Trigger xBoxClimbUp;
+	public Trigger xBoxClimbDown;
 	
 	private boolean throttleEnabled = false;
 
@@ -44,7 +46,6 @@ public class OI {
 		joystickRight = new Joystick(2);
 		gamepad1 = new Joystick(0);
 		xBoxController = new Joystick(3);
-		
 		
 		jsIntake = new JoystickButton(joystickLeft,1);
 		jsIntake.whenPressed(new RunBoxIntake());
@@ -108,6 +109,14 @@ public class OI {
 	
 	public double xBoxRightAxis() {
 		return xBoxController.getRawAxis(5);
+	}
+	
+	public double xBoxLeftTrigger() {
+		return xBoxController.getRawAxis(2);
+	}
+	
+	public double xBoxRightTrigger() {
+		return xBoxController.getRawAxis(3);
 	}
 	
 	public boolean isThrottleEnabled() {

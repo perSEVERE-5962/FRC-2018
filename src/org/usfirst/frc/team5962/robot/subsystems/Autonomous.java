@@ -29,6 +29,10 @@ public class Autonomous extends Subsystem {
 	public PIDDriveSource pidDriveSource;
 	public PIDController pidDriveController;
 	
+	public PIDTurningDriveOutput pidTurningDriveOutput;
+	public PIDTurningDriveSource pidTurningDriveSource;
+	public PIDController pidTurningDriveController;
+	
 	//Enum for what action the bot is doing at the moment
 	public static enum CurrentState{
 		
@@ -42,6 +46,7 @@ public class Autonomous extends Subsystem {
 		moveForwardToSwitch,
 		
 		driveBackwards,
+		driveBackwardsSlightly,
 		
 		intoExchange,
 		intoSwitch,
@@ -50,6 +55,7 @@ public class Autonomous extends Subsystem {
 		turn180,
 		turn45Left,
 		turn45Right,
+		turnADegree,
 		backToForward,
 		
 		nothing
@@ -60,7 +66,7 @@ public class Autonomous extends Subsystem {
 	private CurrentState currentState;
 	private PlatesLocation platesLocation;
 	
-	//Variables for default state of the bot in Autonomous
+	//Variables for default state of the robot in Autonomouse
 	private Robot.Location location = Robot.Location.farRight;
 	private Robot.Action action = Robot.Action.nothing;
 			
@@ -82,12 +88,19 @@ public class Autonomous extends Subsystem {
 		//initialize PID
 		pidDriveOutput = new PIDDriveOutput();
 		pidDriveSource = new PIDDriveSource();
+		pidTurningDriveOutput = new PIDTurningDriveOutput();
+		pidTurningDriveSource = new PIDTurningDriveSource();
 		double Kp = SmartDashboard.getNumber("P Value:", 0);
 		double Ki = SmartDashboard.getNumber("I Value:", 0);
 		double Kd = SmartDashboard.getNumber("D Value:", 0);
+		double Tp = SmartDashboard.getNumber("P t Value:", 0);
+		double Ti = SmartDashboard.getNumber("I t Value:", 0);
+		double Td = SmartDashboard.getNumber("D t Value:", 0);
 		pidDriveController = new PIDController(Kp,Ki,Kd,pidDriveSource,pidDriveOutput);
+		pidTurningDriveController = new PIDController(Tp, Ti, Td, pidTurningDriveSource, pidTurningDriveOutput);
 		//pidDriveController.setPID(1,  0,  0);
 		pidDriveController.disable();
+		pidTurningDriveController.disable();
 		
 		//Set up for state cases
 		platesLocation = fmsDataRetrieval.fieldDataRetrieval();
@@ -243,11 +256,15 @@ public class Autonomous extends Subsystem {
 		
 		//Moves to the switch if it is on the same side
 		public void turnToSwitch() {
+			  
 			  if (substeps == 0) {
+				  currentState = CurrentState.backToForward;
+				  
+			  } else if (substeps == 1) {
 					currentState = CurrentState.driveHalfwayPastSwitch;
 				
 				//Turns based on which switch we own
-			  } else if(substeps == 1) {
+			  } else if(substeps == 2) {
 				  if (leftRightValue == -1) {
 					  currentState = CurrentState.turn45Left;
 				  }
@@ -256,9 +273,9 @@ public class Autonomous extends Subsystem {
 				  }
 					  
 				
-			  } else if (substeps == 2) {
+			  } else if (substeps == 3) {
 				  currentState = CurrentState.moveForwardToSwitch;
-		      }else if(substeps == 3) {
+		      }else if(substeps == 4) {
 		    	  currentState = CurrentState.intoSwitch;
 			  } else {
 				  substeps = 0;
@@ -349,11 +366,13 @@ public class Autonomous extends Subsystem {
 			
 			switch (currentState){
 				case nothing:
+					//pidTurningDriveController.disable();
+					//pidDriveController.disable();
 					RobotMap.myRobot.tankDrive(0, 0);
 					break;
 						
 				case crossLineStraight:
-//					if (Robot.encoder.getDistance() < 20) {
+//					if (Robot.encoder.getDistance() < 20) { 
 //						RobotMap.myRobot.tankDrive(-.5, -.5);
 //						DriverStation.reportError("YOU ARE HERE", true);
 //					} else {
@@ -363,18 +382,24 @@ public class Autonomous extends Subsystem {
 					//RobotMap.myRobot.setMaxOutput(0.5);
 					
 					if (!actionStarted) {
-						DriverStation.reportWarning("YOU ARE HERE", true);
-						pidDriveController.setOutputRange(0.5, 0.5);
-						pidDriveController.setInputRange(0,62);
+						//DriverStation.reportWarning("YOU ARE HERE", true);
+						pidTurningDriveController.disable();
+						pidDriveController.disable();
+						double Kp = SmartDashboard.getNumber("P Value:", 0);
+						double Ki = SmartDashboard.getNumber("I Value:", 0);
+						double Kd = SmartDashboard.getNumber("D Value:", 0);
+						pidDriveController.setPID(Kp, Ki, Kd);
+						pidDriveController.setOutputRange(-0.5,0.5);
+						pidDriveController.setInputRange(0,80);
 						pidDriveController.setSetpoint(60);
 						pidDriveController.setPercentTolerance(1);
 						pidDriveController.enable();
 						actionStarted = true;
+						
 					} else if (pidDriveController.onTarget()) {
 						DriverStation.reportWarning("YOU ARE ON TARGET", true);
-						//pidDriveController.disable();
-						//actionStarted = false;
-						//steps++;
+						actionStarted = false;  
+						steps++;
 					}
 						
 					break;
@@ -388,17 +413,100 @@ public class Autonomous extends Subsystem {
 					break;
 						
 				case drivePastSwitch:
-					substeps++;
+					if (!actionStarted) {
+						//DriverStation.reportWarning("YOU ARE HERE", true);
+						pidTurningDriveController.disable();
+						pidDriveController.disable();
+						pidDriveController.setOutputRange(0.5, 0.5);
+						pidDriveController.setInputRange(0,160);
+						pidDriveController.setSetpoint(144.5);
+						pidDriveController.setPercentTolerance(1);
+						pidDriveController.enable();
+						actionStarted = true;
+					} else if (pidDriveController.onTarget()) {
+						DriverStation.reportWarning("YOU ARE ON TARGET", true);
+						actionStarted = false;
+						substeps++;
+					}
 					break;
 						
 				case driveAcrossSwitch:
-					substeps++;
+					if (!actionStarted) {
+						//DriverStation.reportWarning("YOU ARE HERE", true);
+						pidTurningDriveController.disable();
+						pidDriveController.disable();
+						pidDriveController.setOutputRange(0.5, 0.5);
+						pidDriveController.setInputRange(0,200);
+						pidDriveController.setSetpoint(171.625);
+						pidDriveController.setPercentTolerance(1);
+						pidDriveController.enable();
+						actionStarted = true;
+					} else if (pidDriveController.onTarget()) {
+						DriverStation.reportWarning("YOU ARE ON TARGET", true);
+						actionStarted = false;
+						substeps++;
+					}
+					break;
+					
+				case driveHalfwayPastSwitch:
+					if (!actionStarted) {
+						//DriverStation.reportWarning("YOU ARE HERE", true);
+						pidTurningDriveController.disable();
+						pidDriveController.disable();
+						pidDriveController.setOutputRange(0.5, 0.5);
+						pidDriveController.setInputRange(0,100);
+						pidDriveController.setSetpoint(76);
+						pidDriveController.setPercentTolerance(1);
+						pidDriveController.enable();
+						actionStarted = true;
+					} else if (pidDriveController.onTarget()) {
+						DriverStation.reportWarning("YOU ARE ON TARGET", true);
+						actionStarted = false;
+						substeps++;
+					}
+					
 					break;
 						
 				case moveForwardToSwitch:
 					substeps++;
 					break;
 						
+				case driveBackwards:
+					if (!actionStarted) {
+						//DriverStation.reportWarning("YOU ARE HERE", true);
+						pidTurningDriveController.disable();
+						pidDriveController.disable();
+						pidDriveController.setOutputRange(-0.5, -0.5);
+						pidDriveController.setInputRange(-120,0);
+						pidDriveController.setSetpoint(-100);
+						pidDriveController.setPercentTolerance(1);
+						pidDriveController.enable();
+						actionStarted = true;
+					} else if (pidDriveController.onTarget()) {
+						DriverStation.reportWarning("YOU ARE ON TARGET", true);
+						actionStarted = false;
+						substeps++;
+					}
+					break;
+					
+				case driveBackwardsSlightly:
+					if (!actionStarted) {
+						//DriverStation.reportWarning("YOU ARE HERE", true);
+						pidTurningDriveController.disable();
+						pidDriveController.disable();
+						pidDriveController.setOutputRange(-0.5, -0.5);
+						pidDriveController.setInputRange(-30,0);
+						pidDriveController.setSetpoint(-17);
+						pidDriveController.setPercentTolerance(1);
+						pidDriveController.enable();
+						actionStarted = true;
+					} else if (pidDriveController.onTarget()) {
+						DriverStation.reportWarning("YOU ARE ON TARGET", true);
+						actionStarted = false;
+						substeps++;
+					}
+					break;
+					
 				case intoExchange:
 					substeps++;
 					break;
@@ -412,19 +520,104 @@ public class Autonomous extends Subsystem {
 					break;
 						
 				case turn180:
-					substeps++;
+					if (!actionStarted) {
+						//DriverStation.reportWarning("YOU ARE HERE", true);
+						pidTurningDriveController.disable();
+						pidDriveController.disable();
+						pidTurningDriveController.setOutputRange(-0.5, 0.5);
+						pidTurningDriveController.setInputRange(-360, 360);
+						pidTurningDriveController.setSetpoint(180);
+						pidTurningDriveController.setPercentTolerance(1);
+						pidTurningDriveController.enable();
+						actionStarted = true;
+					} else if (pidDriveController.onTarget()) {
+						DriverStation.reportWarning("YOU ARE ON TARGET", true);
+						actionStarted = false;
+						Robot.robotGyro.resetGyro();
+						substeps++;
+					}
 					break;
 						
 				case turn45Left:
-					substeps++;
+					if (!actionStarted) {
+						//DriverStation.reportWarning("YOU ARE HERE", true);
+						pidTurningDriveController.disable();
+						pidDriveController.disable();
+						pidTurningDriveController.setOutputRange(-0.5, 0.5);
+						pidTurningDriveController.setInputRange(-360, 360);
+						pidTurningDriveController.setSetpoint(-45);
+						pidTurningDriveController.setPercentTolerance(1);
+						pidTurningDriveController.enable();
+						actionStarted = true;
+					} else if (pidDriveController.onTarget()) {
+						DriverStation.reportWarning("YOU ARE ON TARGET", true);
+						actionStarted = false;
+						Robot.robotGyro.resetGyro();
+						substeps++;
+					}
 					break;
 						
 				case turn45Right:
-					substeps++;
+					if (!actionStarted) {
+						//DriverStation.reportWarning("YOU ARE HERE", true);
+						pidTurningDriveController.disable();
+						pidDriveController.disable();
+						pidTurningDriveController.setOutputRange(-0.5, 0.5);
+						pidTurningDriveController.setInputRange(-360, 360);
+						pidTurningDriveController.setSetpoint(45);
+						pidTurningDriveController.setPercentTolerance(1);
+						pidTurningDriveController.enable();
+						actionStarted = true;
+					} else if (pidDriveController.onTarget()) {
+						DriverStation.reportWarning("YOU ARE ON TARGET TURNING", true);
+						actionStarted = false;
+						Robot.robotGyro.resetGyro();
+						substeps++;
+					}
 					break;
+					
+				case turnADegree:
+					if (!actionStarted) {
+						//DriverStation.reportWarning("YOU ARE HERE", true);
+						pidTurningDriveController.disable();
+						pidDriveController.disable();
+						pidTurningDriveController.setOutputRange(-0.5, 0.5);
+						pidTurningDriveController.setInputRange(-360, 360);
+						if (location == Robot.Location.switchLeft ||
+							location == Robot.Location.switchRight) {
+							
+							pidTurningDriveController.setSetpoint(leftRightValue * 29.5433);
+						} else if (location == Robot.Location.middle) {
+							
+							pidTurningDriveController.setSetpoint(-1 * leftRightValue * 36.1225);
+						}
+						pidTurningDriveController.setPercentTolerance(1);
+						pidTurningDriveController.enable();
+						actionStarted = true;
+					} else if (pidDriveController.onTarget()) {
+						DriverStation.reportWarning("YOU ARE ON TARGET TURNING", true);
+						actionStarted = false;
+						Robot.robotGyro.resetGyro();
+						substeps++;
+					}
 						
 				case backToForward:
-					substeps++;
+					if (!actionStarted) {
+						//DriverStation.reportWarning("YOU ARE HERE", true);
+						pidTurningDriveController.disable();
+						pidDriveController.disable();
+						pidTurningDriveController.setOutputRange(-0.5, 0.5);
+						pidTurningDriveController.setInputRange(-360, 360);
+						pidTurningDriveController.setSetpoint(0);
+						pidTurningDriveController.setPercentTolerance(1);
+						pidTurningDriveController.enable();
+						actionStarted = true;
+					} else if (pidDriveController.onTarget()) {
+						DriverStation.reportWarning("YOU ARE ON TARGET TURNING", true);
+						actionStarted = false;
+						Robot.robotGyro.resetGyro();
+						substeps++;
+					}
 					break;
 						
 				default:

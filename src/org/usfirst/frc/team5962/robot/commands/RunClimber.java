@@ -1,46 +1,41 @@
 package org.usfirst.frc.team5962.robot.commands;
 
 import org.usfirst.frc.team5962.robot.Robot;
-import org.usfirst.frc.team5962.robot.subsystems.Lift;
+import org.usfirst.frc.team5962.robot.subsystems.PIDClimberSubsystem;
+import org.usfirst.frc.team5962.robot.subsystems.PIDDropIntakeSubsystem;
 
-import org.usfirst.frc.team5962.robot.subsystems.PIDLiftSubsystem;
-
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
-public class RunLift extends Command{
+public class RunClimber extends Command{
 
-	PIDLiftSubsystem pidLiftSubsystem;
+	PIDClimberSubsystem pidClimberSubsystem;
 	
 	// Called just before this Command runs the first time
     protected void initialize() {
-    	
-    	pidLiftSubsystem = new PIDLiftSubsystem(.3,0,.3);
-    	pidLiftSubsystem.enable();
+
+    	pidClimberSubsystem = new PIDClimberSubsystem(.3, 0, .3);
+    	pidClimberSubsystem.enable();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	//Lift.lift();
-    	//Lift.checkHeight();
-    	if (Robot.oi.xBoxLeftAxis() < 0) {
-    		pidLiftSubsystem.setSetPoint(40);
-    	} else if (Robot.oi.xBoxRightAxis() > 0){
-    		pidLiftSubsystem.setSetPoint(0);
-    	}
     	
-    	//pidLiftSubsystem.enable();
+    	if (Robot.oi.xBoxLeftTrigger() > 0)
+    	{
+    		pidClimberSubsystem.setSetPoint(60);
+    	} else if (Robot.oi.xBoxRightTrigger() > 0)
+    	{
+    		pidClimberSubsystem.setSetPoint(0);
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
 
-    	if (pidLiftSubsystem.ifOnTarget())
+    	if (pidClimberSubsystem.ifOnTarget())
     	{
-    		pidLiftSubsystem.disable();
-    	} 
-    		return false;
-    	
-    	
+    		pidClimberSubsystem.disable();
+    	}
+    	return false;
     }
 
     // Called once after isFinished returns true
