@@ -79,6 +79,11 @@ public class Autonomous extends Subsystem {
 	
 	//Variable on whether the switch ownership is left or right
 	int leftRightValue;
+	
+	//Variable for on Target
+	boolean onTarget = false;
+	double onTargetFirstTime = 0;
+	double onTargetCurrentTime = 0;
 
 	boolean actionStarted = false;
 
@@ -366,8 +371,8 @@ public class Autonomous extends Subsystem {
 			
 			switch (currentState){
 				case nothing:
-					//pidTurningDriveController.disable();
-					//pidDriveController.disable();
+					pidTurningDriveController.disable();
+					pidDriveController.disable();
 					RobotMap.myRobot.tankDrive(0, 0);
 					break;
 						
@@ -385,18 +390,22 @@ public class Autonomous extends Subsystem {
 						//DriverStation.reportWarning("YOU ARE HERE", true);
 						pidTurningDriveController.disable();
 						pidDriveController.disable();
+						//Robot.robotGyro.resetGyro();
+						Robot.encoder.reset();
 						double Kp = SmartDashboard.getNumber("P Value:", 0);
 						double Ki = SmartDashboard.getNumber("I Value:", 0);
 						double Kd = SmartDashboard.getNumber("D Value:", 0);
 						pidDriveController.setPID(Kp, Ki, Kd);
 						pidDriveController.setOutputRange(-0.5,0.5);
-						pidDriveController.setInputRange(0,80);
-						pidDriveController.setSetpoint(60);
+						pidDriveController.setInputRange(0,90);
+						pidDriveController.setSetpoint(80.5);
 						pidDriveController.setPercentTolerance(1);
 						pidDriveController.enable();
 						actionStarted = true;
-						
-					} else if (pidDriveController.onTarget()) {
+					
+					} else if (pidDriveController.onTarget() &&
+							   RobotMap.robotLeftVictor1.getSpeed() == 0 &&
+							   RobotMap.robotRightVictor1.getSpeed() == 0) {
 						DriverStation.reportWarning("YOU ARE ON TARGET", true);
 						actionStarted = false;  
 						steps++;
@@ -416,8 +425,10 @@ public class Autonomous extends Subsystem {
 					if (!actionStarted) {
 						//DriverStation.reportWarning("YOU ARE HERE", true);
 						pidTurningDriveController.disable();
-						pidDriveController.disable();
-						pidDriveController.setOutputRange(0.5, 0.5);
+						//pidDriveController.disable();
+						Robot.encoder.reset();
+						Robot.robotGyro.resetGyro();
+						pidDriveController.setOutputRange(-0.5,0.5);
 						pidDriveController.setInputRange(0,160);
 						pidDriveController.setSetpoint(144.5);
 						pidDriveController.setPercentTolerance(1);
@@ -435,7 +446,9 @@ public class Autonomous extends Subsystem {
 						//DriverStation.reportWarning("YOU ARE HERE", true);
 						pidTurningDriveController.disable();
 						pidDriveController.disable();
-						pidDriveController.setOutputRange(0.5, 0.5);
+						Robot.encoder.reset();
+						//Robot.robotGyro.resetGyro();
+						pidDriveController.setOutputRange(-0.5, 0.5);
 						pidDriveController.setInputRange(0,200);
 						pidDriveController.setSetpoint(171.625);
 						pidDriveController.setPercentTolerance(1);
@@ -453,7 +466,9 @@ public class Autonomous extends Subsystem {
 						//DriverStation.reportWarning("YOU ARE HERE", true);
 						pidTurningDriveController.disable();
 						pidDriveController.disable();
-						pidDriveController.setOutputRange(0.5, 0.5);
+						//Robot.robotGyro.resetGyro();
+						Robot.encoder.reset();
+						pidDriveController.setOutputRange(-0.5, 0.5);
 						pidDriveController.setInputRange(0,100);
 						pidDriveController.setSetpoint(76);
 						pidDriveController.setPercentTolerance(1);
@@ -476,12 +491,19 @@ public class Autonomous extends Subsystem {
 						//DriverStation.reportWarning("YOU ARE HERE", true);
 						pidTurningDriveController.disable();
 						pidDriveController.disable();
-						pidDriveController.setOutputRange(-0.5, -0.5);
+						//Robot.robotGyro.resetGyro();
+						Robot.encoder.reset();
+						pidDriveController.setOutputRange(-0.5, 0.5);
 						pidDriveController.setInputRange(-120,0);
 						pidDriveController.setSetpoint(-100);
 						pidDriveController.setPercentTolerance(1);
 						pidDriveController.enable();
 						actionStarted = true;
+					
+					} else if (pidDriveController.onTarget() && !onTarget) {
+						
+						onTarget = true;
+						
 					} else if (pidDriveController.onTarget()) {
 						DriverStation.reportWarning("YOU ARE ON TARGET", true);
 						actionStarted = false;
@@ -494,7 +516,9 @@ public class Autonomous extends Subsystem {
 						//DriverStation.reportWarning("YOU ARE HERE", true);
 						pidTurningDriveController.disable();
 						pidDriveController.disable();
-						pidDriveController.setOutputRange(-0.5, -0.5);
+						//Robot.robotGyro.resetGyro();
+						Robot.encoder.reset();
+						pidDriveController.setOutputRange(-0.5, 0.5);
 						pidDriveController.setInputRange(-30,0);
 						pidDriveController.setSetpoint(-17);
 						pidDriveController.setPercentTolerance(1);
@@ -524,6 +548,8 @@ public class Autonomous extends Subsystem {
 						//DriverStation.reportWarning("YOU ARE HERE", true);
 						pidTurningDriveController.disable();
 						pidDriveController.disable();
+						//Robot.robotGyro.resetGyro();
+						Robot.encoder.reset();
 						pidTurningDriveController.setOutputRange(-0.5, 0.5);
 						pidTurningDriveController.setInputRange(-360, 360);
 						pidTurningDriveController.setSetpoint(180);
@@ -543,6 +569,8 @@ public class Autonomous extends Subsystem {
 						//DriverStation.reportWarning("YOU ARE HERE", true);
 						pidTurningDriveController.disable();
 						pidDriveController.disable();
+						//Robot.robotGyro.resetGyro();
+						Robot.encoder.reset();
 						pidTurningDriveController.setOutputRange(-0.5, 0.5);
 						pidTurningDriveController.setInputRange(-360, 360);
 						pidTurningDriveController.setSetpoint(-45);
@@ -562,6 +590,8 @@ public class Autonomous extends Subsystem {
 						//DriverStation.reportWarning("YOU ARE HERE", true);
 						pidTurningDriveController.disable();
 						pidDriveController.disable();
+						//Robot.robotGyro.resetGyro();
+						Robot.encoder.reset();
 						pidTurningDriveController.setOutputRange(-0.5, 0.5);
 						pidTurningDriveController.setInputRange(-360, 360);
 						pidTurningDriveController.setSetpoint(45);
@@ -581,6 +611,8 @@ public class Autonomous extends Subsystem {
 						//DriverStation.reportWarning("YOU ARE HERE", true);
 						pidTurningDriveController.disable();
 						pidDriveController.disable();
+						//Robot.robotGyro.resetGyro();
+						Robot.encoder.reset();
 						pidTurningDriveController.setOutputRange(-0.5, 0.5);
 						pidTurningDriveController.setInputRange(-360, 360);
 						if (location == Robot.Location.switchLeft ||
@@ -606,6 +638,8 @@ public class Autonomous extends Subsystem {
 						//DriverStation.reportWarning("YOU ARE HERE", true);
 						pidTurningDriveController.disable();
 						pidDriveController.disable();
+						//Robot.robotGyro.resetGyro();
+						Robot.encoder.reset();
 						pidTurningDriveController.setOutputRange(-0.5, 0.5);
 						pidTurningDriveController.setInputRange(-360, 360);
 						pidTurningDriveController.setSetpoint(0);
