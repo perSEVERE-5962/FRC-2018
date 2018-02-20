@@ -29,6 +29,10 @@ public class Autonomous extends Subsystem {
 	public PIDDriveSource pidDriveSource;
 	public PIDController pidDriveController;
 	
+	public PIDTurningDriveOutput pidTurningDriveOutput;
+	public PIDTurningDriveSource pidTurningDriveSource;
+	public PIDController pidTurningDriveController;
+	
 	//Enum for what action the bot is doing at the moment
 	public static enum CurrentState{
 		
@@ -89,12 +93,19 @@ public class Autonomous extends Subsystem {
 		//initialize PID
 		pidDriveOutput = new PIDDriveOutput();
 		pidDriveSource = new PIDDriveSource();
+		pidTurningDriveOutput = new PIDTurningDriveOutput();
+		pidTurningDriveSource = new PIDTurningDriveSource();
 		double Kp = SmartDashboard.getNumber("P Value:", 0);
 		double Ki = SmartDashboard.getNumber("I Value:", 0);
 		double Kd = SmartDashboard.getNumber("D Value:", 0);
+		double Tp = SmartDashboard.getNumber("P t Value:", 0);
+		double Ti = SmartDashboard.getNumber("I t Value:", 0);
+		double Td = SmartDashboard.getNumber("D t Value:", 0);
 		pidDriveController = new PIDController(Kp,Ki,Kd,pidDriveSource,pidDriveOutput);
+		pidTurningDriveController = new PIDController(Tp, Ti, Td, pidTurningDriveSource, pidTurningDriveOutput);
 		//pidDriveController.setPID(1,  0,  0);
 		pidDriveController.disable();
+		pidTurningDriveController.disable();
 		
 		//Set up for state cases
 		platesLocation = fmsDataRetrieval.fieldDataRetrieval();
@@ -181,7 +192,6 @@ public class Autonomous extends Subsystem {
 			break;
 			
 		case middle:
-			// Crosses line if in middle, proceeds to switch if the action is stated.
 			if (steps == 0 && (action == Robot.Action.crossLine ||
 				   			   action == Robot.Action.switch1)) {
 				currentState = CurrentState.crossLineFromMiddle;
@@ -192,7 +202,6 @@ public class Autonomous extends Subsystem {
 			
 			break;
 		case vault:
-			// Heads to Vault if it has crossed line or been at the exchange.
 			if (steps == 0 && (action == Robot.Action.exchange ||
 							   action == Robot.Action.crossLine)) {
 				intoVault();
@@ -252,11 +261,15 @@ public class Autonomous extends Subsystem {
 		
 		//Moves to the switch if it is on the same side
 		public void turnToSwitch() {
+			  
 			  if (substeps == 0) {
+				  currentState = CurrentState.backToForward;
+				  
+			  } else if (substeps == 1) {
 					currentState = CurrentState.driveHalfwayPastSwitch;
 				
 				//Turns based on which switch we own
-			  } else if(substeps == 1) {
+			  } else if(substeps == 2) {
 				  if (leftRightValue == -1) {
 					  currentState = CurrentState.turn45Left;
 				  }
@@ -265,9 +278,9 @@ public class Autonomous extends Subsystem {
 				  }
 					  
 				
-			  } else if (substeps == 2) {
+			  } else if (substeps == 3) {
 				  currentState = CurrentState.moveForwardToSwitch;
-		      }else if(substeps == 3) {
+		      }else if(substeps == 4) {
 		    	  currentState = CurrentState.intoSwitch;
 			  } else {
 				  substeps = 0;
