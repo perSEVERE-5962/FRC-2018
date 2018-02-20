@@ -6,15 +6,16 @@ import org.usfirst.frc.team5962.robot.subsystems.WingDeploy;
 import edu.wpi.first.wpilibj.command.Command;
 public class RunWingDeploy extends Command{
 
-	private WingDeploy wingDeploy = new WingDeploy();
 	// Called just before this Command runs the first time
     protected void initialize() {
-
+       WingDeploy.leftWingOff();
+       WingDeploy.rightWingOff();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	wingDeploy.dropWings();
+    	WingDeploy.leftWingDeploy();
+    	WingDeploy.rightWingDeploy();
     }
 
     // Make this return true when this Command no longer needs to run execute()
