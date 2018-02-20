@@ -19,10 +19,14 @@ import org.usfirst.frc.team5962.robot.commands.RunAutonomous;
 import org.usfirst.frc.team5962.robot.commands.Throttle;
 import org.usfirst.frc.team5962.robot.commands.RunBoxIntake;
 import org.usfirst.frc.team5962.robot.commands.RunBoxOutake;
+import org.usfirst.frc.team5962.robot.commands.RunClimber;
 import org.usfirst.frc.team5962.robot.commands.RunDropIntake;
 import org.usfirst.frc.team5962.robot.commands.RunLift;
 import org.usfirst.frc.team5962.robot.commands.Throttle;
 import org.usfirst.frc.team5962.robot.sensors.ADIS16448_IMU;
+import org.usfirst.frc.team5962.robot.sensors.AMT103_V;
+import org.usfirst.frc.team5962.robot.sensors.BagMotorEncoder;
+import org.usfirst.frc.team5962.robot.sensors.NeveRestGearMotorEncoder;
 import org.usfirst.frc.team5962.robot.sensors.RobotEncoder;
 import org.usfirst.frc.team5962.robot.sensors.RobotGyro;
 import org.usfirst.frc.team5962.robot.subsystems.Drive;
@@ -42,11 +46,15 @@ public class Robot extends IterativeRobot {
 	public static Gyro gyro = new Gyro();
 	public static RobotGyro robotGyro = new RobotGyro();
 	public static RobotEncoder encoder = new RobotEncoder();
+	public static NeveRestGearMotorEncoder dropIntakeEncoder = new NeveRestGearMotorEncoder();
+	public static BagMotorEncoder slideEncoder = new BagMotorEncoder();
+	public static AMT103_V amt103 = new AMT103_V();
 //	public static RunBoxIntake runBoxIntake = new RunBoxIntake();
 //	public static RunBoxOutake runBoxOutake = new RunBoxOutake();
 //	public static ADIS16448_IMU robotGyro = new ADIS16448_IMU();
 	public static RunDropIntake runDropIntake = new RunDropIntake();
 	public static RunLift runLift = new RunLift();
+	public static RunClimber runClimber = new RunClimber();
 	
 	//Variables for Shuffleboard
     SendableChooser<Location> position;
@@ -93,15 +101,19 @@ public class Robot extends IterativeRobot {
 
 		encoder.setNumberOfEncoders(1);
 		encoder.reset();
+		dropIntakeEncoder.reset();
+		RobotMap.dropBoxIntake.getSensorCollection().setQuadraturePosition(0, 10);
+		slideEncoder.reset();
+		amt103.reset();
 		
 		SmartDashboard.putNumber("Ultra Sonic distance", RobotMap.ultraSonic.getRange() );
 		
 		setUpAutonomousPosition();
 		setUpAutonomousAction();
 		
-		SmartDashboard.putNumber("P Value:", 0.49);
+		SmartDashboard.putNumber("P Value:", 0);
 		SmartDashboard.putNumber("I Value:", 0);
-		SmartDashboard.putNumber("D Value:", 0.49);
+		SmartDashboard.putNumber("D Value:", 0);
 		
 
 
@@ -147,7 +159,6 @@ public class Robot extends IterativeRobot {
 
 		if (autonomousCommand != null) {
 			autonomousCommand.start();
-			robotGyro.resetGyro();
 		}
 
 	}
@@ -165,6 +176,7 @@ public class Robot extends IterativeRobot {
 		robotGyro.resetGyro();
 		//runBoxIntake.start();
 		//runBoxOutake.start();
+		runClimber.start();
 		runDropIntake.start();
 		runLift.start();
 		

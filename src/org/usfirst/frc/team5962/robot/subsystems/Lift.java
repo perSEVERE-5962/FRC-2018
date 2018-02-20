@@ -14,6 +14,7 @@ public class Lift {
 	
 	public static void checkHeight() {
 		
+		Robot.slideEncoder.getDistance();
 	}
 	
 	public static void getDistance() {

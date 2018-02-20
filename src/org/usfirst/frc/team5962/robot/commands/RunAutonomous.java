@@ -17,9 +17,6 @@ public class RunAutonomous extends Command {
 	private boolean targetReached = false;
 	private Autonomous autonomousSubsystem = new Autonomous();
 	
-//	double P = 1;
-//	double I = 0;
-//	double D = 0;
 
 	//Constructor for Run Autonomous
 	public RunAutonomous(Robot.Location location, Robot.Action action) {
@@ -32,11 +29,6 @@ public class RunAutonomous extends Command {
 	//Initializes the timer, switch location
 	protected void initialize(){
 		
-		//Robot.drive.pidDriveController.enable();
-		//Robot.drive.pidDriveController.setPID(P, I, D);
-//	SmartDashboard.putNumber("P Value:", P);
-//	SmartDashboard.putNumber("I Value:", I);
-//	SmartDashboard.putNumber("D Value:", D);
 		autonomousSubsystem.init();
 		
 		
@@ -45,24 +37,10 @@ public class RunAutonomous extends Command {
 	//Runs until we reach our end goal
 	protected void execute() 
 	{	
-//		SmartDashboard.putNumber("P Value:", P);
-//		SmartDashboard.putNumber("I Value:", I);
-//		SmartDashboard.putNumber("D Value:", D);
 		autonomousSubsystem.elapsedTime();
 		
 		autonomousSubsystem.locationOnField();
 		autonomousSubsystem.actionOnField();
-		
-		//if (isFinished || targetReached)
-		//{
-		//	RobotMap.myRobot.tankDrive(0, 0);
-			
-		//} else if(!targetReached) {
-		//	autonomousSubsystem.locationOnField();
-			
-		//} else {
-		//	RobotMap.myRobot.tankDrive(0, 0);
-		//}
 		
 	}
 
