@@ -53,8 +53,8 @@ public class Autonomous extends Subsystem {
 		pickUpBlock,
 		
 		turn180,
-		turn45Left,
-		turn45Right,
+		turn90Left,
+		turn90Right,
 		turnADegree,
 		backToForward,
 		
@@ -165,7 +165,8 @@ public class Autonomous extends Subsystem {
 			} else if (leftRightValue == 1 && steps == 1 && action == Robot.Action.switch1) {
 				aroundSwitch();
 				
-			} else {
+			} 
+			else {
 				currentState = CurrentState.nothing;
 			}
 			break;
@@ -271,10 +272,10 @@ public class Autonomous extends Subsystem {
 				//Turns based on which switch we own
 			  } else if(substeps == 2) {
 				  if (leftRightValue == -1) {
-					  currentState = CurrentState.turn45Left;
+					  currentState = CurrentState.turn90Left;
 				  }
 				  else if(leftRightValue == 1) {
-					  currentState = CurrentState.turn45Right;
+					  currentState = CurrentState.turn90Right;
 				  }
 					  
 				
@@ -300,9 +301,9 @@ public class Autonomous extends Subsystem {
 				//Turns based on which switch we own
 			}else if ( substeps == 2){
 				if (leftRightValue == 1) {
-					currentState = CurrentState.turn45Left;
+					currentState = CurrentState.turn90Left;
 				}else if (leftRightValue == -1) {
-					currentState = CurrentState.turn45Right;
+					currentState = CurrentState.turn90Right;
 				}
 				
 			} else if (substeps == 3){
@@ -311,9 +312,9 @@ public class Autonomous extends Subsystem {
 				//Turns based on which switch we own
 			} else if (substeps == 4) {
 				if (leftRightValue == 1) {
-					currentState = CurrentState.turn45Left;
+					currentState = CurrentState.turn90Left;
 				}else if (leftRightValue == -1) {
-					currentState = CurrentState.turn45Right;
+					currentState = CurrentState.turn90Right;
 				}
 				
 			} else if (substeps == 5) {
@@ -371,9 +372,10 @@ public class Autonomous extends Subsystem {
 			
 			switch (currentState){
 				case nothing:
-					pidTurningDriveController.disable();
-					pidDriveController.disable();
+					//pidTurningDriveController.disable();
+					//pidDriveController.disable();
 					RobotMap.myRobot.tankDrive(0, 0);
+					DriverStation.reportWarning("YOU ARE HEREDEAEFEAFEFSEFSEFSEF", true);
 					break;
 						
 				case crossLineStraight:
@@ -391,23 +393,23 @@ public class Autonomous extends Subsystem {
 						pidTurningDriveController.disable();
 						pidDriveController.disable();
 						//Robot.robotGyro.resetGyro();
-						Robot.encoder.reset();
-						double Kp = SmartDashboard.getNumber("P Value:", 0);
+						//Robot.encoder.reset();
+						double Kp = SmartDashboard.getNumber("P Value:", 0.15);
 						double Ki = SmartDashboard.getNumber("I Value:", 0);
 						double Kd = SmartDashboard.getNumber("D Value:", 0);
 						pidDriveController.setPID(Kp, Ki, Kd);
 						pidDriveController.setOutputRange(-0.5,0.5);
-						pidDriveController.setInputRange(0,90);
-						pidDriveController.setSetpoint(80.5);
+						pidDriveController.setInputRange(0, 98);
+						pidDriveController.setSetpoint(96);
 						pidDriveController.setPercentTolerance(1);
 						pidDriveController.enable();
 						actionStarted = true;
 					
-					} else if (pidDriveController.onTarget() &&
-							   RobotMap.robotLeftVictor1.getSpeed() == 0 &&
-							   RobotMap.robotRightVictor1.getSpeed() == 0) {
+					} else if (pidDriveController.onTarget()) { //&&
+							   //RobotMap.robotLeftVictor1.getSpeed() == 0 &&
+							   //RobotMap.robotRightVictor1.getSpeed() == 0) {
 						DriverStation.reportWarning("YOU ARE ON TARGET", true);
-						actionStarted = false;  
+						actionStarted = false;
 						steps++;
 					}
 						
@@ -426,7 +428,7 @@ public class Autonomous extends Subsystem {
 						//DriverStation.reportWarning("YOU ARE HERE", true);
 						pidTurningDriveController.disable();
 						//pidDriveController.disable();
-						Robot.encoder.reset();
+						//Robot.encoder.reset();
 						Robot.robotGyro.resetGyro();
 						pidDriveController.setOutputRange(-0.5,0.5);
 						pidDriveController.setInputRange(0,160);
@@ -564,7 +566,7 @@ public class Autonomous extends Subsystem {
 					}
 					break;
 						
-				case turn45Left:
+				case turn90Left:
 					if (!actionStarted) {
 						//DriverStation.reportWarning("YOU ARE HERE", true);
 						pidTurningDriveController.disable();
@@ -573,7 +575,7 @@ public class Autonomous extends Subsystem {
 						Robot.encoder.reset();
 						pidTurningDriveController.setOutputRange(-0.5, 0.5);
 						pidTurningDriveController.setInputRange(-360, 360);
-						pidTurningDriveController.setSetpoint(-45);
+						pidTurningDriveController.setSetpoint(-90);
 						pidTurningDriveController.setPercentTolerance(1);
 						pidTurningDriveController.enable();
 						actionStarted = true;
@@ -585,7 +587,7 @@ public class Autonomous extends Subsystem {
 					}
 					break;
 						
-				case turn45Right:
+				case turn90Right:
 					if (!actionStarted) {
 						//DriverStation.reportWarning("YOU ARE HERE", true);
 						pidTurningDriveController.disable();
@@ -594,7 +596,7 @@ public class Autonomous extends Subsystem {
 						Robot.encoder.reset();
 						pidTurningDriveController.setOutputRange(-0.5, 0.5);
 						pidTurningDriveController.setInputRange(-360, 360);
-						pidTurningDriveController.setSetpoint(45);
+						pidTurningDriveController.setSetpoint(90);
 						pidTurningDriveController.setPercentTolerance(1);
 						pidTurningDriveController.enable();
 						actionStarted = true;

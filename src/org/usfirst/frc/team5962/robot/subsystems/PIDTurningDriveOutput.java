@@ -12,7 +12,7 @@ public class PIDTurningDriveOutput implements PIDOutput{
 
 	@Override
 	public void pidWrite(double output) {
-		double angle =Robot.robotGyro.getGyroAngle();
+		double angle = Robot.robotGyro.getGyroAngle();
 		double counterTurn = 0 - angle;
 		RobotMap.myRobot.curvatureDrive(-output, counterTurn , true);
 		// TODO Auto-generated method stub
