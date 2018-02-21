@@ -167,6 +167,7 @@ public class Autonomous extends Subsystem {
 				
 			} 
 			else {
+				DriverStation.reportWarning("GANESH LOOK HERE" , false);
 				currentState = CurrentState.nothing;
 			}
 			break;
@@ -471,7 +472,7 @@ public class Autonomous extends Subsystem {
 						//Robot.robotGyro.resetGyro();
 						Robot.encoder.reset();
 						pidDriveController.setOutputRange(-0.5, 0.5);
-						pidDriveController.setInputRange(0,100);
+						pidDriveController.setInputRange(0,80);
 						pidDriveController.setSetpoint(76);
 						pidDriveController.setPercentTolerance(1);
 						pidDriveController.enable();
