@@ -29,6 +29,7 @@ import org.usfirst.frc.team5962.robot.sensors.BagMotorEncoder;
 import org.usfirst.frc.team5962.robot.sensors.NeveRestGearMotorEncoder;
 import org.usfirst.frc.team5962.robot.sensors.RobotEncoder;
 import org.usfirst.frc.team5962.robot.sensors.RobotGyro;
+import org.usfirst.frc.team5962.robot.subsystems.Autonomous;
 import org.usfirst.frc.team5962.robot.subsystems.Drive;
 import org.usfirst.frc.team5962.robot.subsystems.Gyro;
 
@@ -99,7 +100,7 @@ public class Robot extends IterativeRobot {
 		robotGyro.resetGyro();
 		SmartDashboard.putData("Reset Gyro", new ResetGyro());
 
-		encoder.setNumberOfEncoders(1);
+		encoder.setNumberOfEncoders(2);
 		encoder.reset();
 		dropIntakeEncoder.reset();
 		RobotMap.dropBoxIntake.getSensorCollection().setQuadraturePosition(0, 10);
@@ -114,6 +115,10 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("P Value:", 0);
 		SmartDashboard.putNumber("I Value:", 0);
 		SmartDashboard.putNumber("D Value:", 0);
+		
+		SmartDashboard.putNumber("P t Value:", 0);
+		SmartDashboard.putNumber("I t Value:", 0);
+		SmartDashboard.putNumber("D t Value:", 0);
 		
 
 
@@ -156,7 +161,8 @@ public class Robot extends IterativeRobot {
 		Action action = (Action) state.getSelected();
 		
 		autonomousCommand = new RunAutonomous(location, action);
-
+		robotGyro.resetGyro();
+		
 		if (autonomousCommand != null) {
 			autonomousCommand.start();
 		}
@@ -174,6 +180,10 @@ public class Robot extends IterativeRobot {
 	public void teleopInit() {
 		oi.startDriveCommand();
 		robotGyro.resetGyro();
+		
+		Autonomous.pidDriveController.disable();
+		Autonomous.pidTurningDriveController.disable();
+		
 		//runBoxIntake.start();
 		//runBoxOutake.start();
 		runClimber.start();

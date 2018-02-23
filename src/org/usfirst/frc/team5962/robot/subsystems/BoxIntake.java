@@ -17,7 +17,7 @@ public class BoxIntake {
 		
 		double speed = (Robot.oi.joystickLeftThrottleAxis() + 1) / 2;
 		
-		RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, speed);
+		RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, -speed);
 		RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, speed);
 		SmartDashboard.putNumber("Speed of Intake", speed);
 	}
@@ -32,7 +32,7 @@ public class BoxIntake {
 		
 		double speed =  -1 * (Robot.oi.joystickLeftThrottleAxis() + 1) / 2;
 		
-		RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, speed);
+		RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, -speed);
 		RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, speed);
 		SmartDashboard.putNumber("Speed of Intake", speed);
 	}
@@ -42,7 +42,7 @@ public class BoxIntake {
 		double speed = (Robot.oi.joystickLeftThrottleAxis() + 1) / 8;
 		
 		RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, speed);
-		RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, -1 * speed);
+		RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, speed);
 		SmartDashboard.putNumber("Speed of Intake", speed);
 	}
 	

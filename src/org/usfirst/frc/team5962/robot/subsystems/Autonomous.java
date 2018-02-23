@@ -17,8 +17,6 @@ public class Autonomous extends Subsystem {
 		// TODO Auto-generated method stub
 	}
 	
-	//Variable for the position of the switches
-	public static FmsDataRetrieval fmsDataRetrieval = new FmsDataRetrieval();
 	
 	//All Constant variables
 	private final double DISTANCETOLINE = 80.625;
@@ -27,11 +25,11 @@ public class Autonomous extends Subsystem {
 	
 	public PIDDriveOutput pidDriveOutput;
 	public PIDDriveSource pidDriveSource;
-	public PIDController pidDriveController;
+	public static PIDController pidDriveController;
 	
 	public PIDTurningDriveOutput pidTurningDriveOutput;
 	public PIDTurningDriveSource pidTurningDriveSource;
-	public PIDController pidTurningDriveController;
+	public static PIDController pidTurningDriveController;
 	
 	//Enum for what action the bot is doing at the moment
 	public static enum CurrentState{
@@ -63,8 +61,7 @@ public class Autonomous extends Subsystem {
 	}
 	
 	//Variables for the switch case
-	private CurrentState currentState;
-	private PlatesLocation platesLocation;
+	private CurrentState currentState = CurrentState.nothing;
 	
 	//Variables for default state of the robot in Autonomouse
 	private Robot.Location location = Robot.Location.farRight;
@@ -78,7 +75,7 @@ public class Autonomous extends Subsystem {
 	int substeps = 0;
 	
 	//Variable on whether the switch ownership is left or right
-	int leftRightValue;
+	int platesLocation;
 	
 	//Variable for on Target
 	boolean onTarget = false;
@@ -107,26 +104,14 @@ public class Autonomous extends Subsystem {
 		pidDriveController.disable();
 		pidTurningDriveController.disable();
 		
-		//Set up for state cases
-		platesLocation = fmsDataRetrieval.fieldDataRetrieval();
+		//If left: 1
+		//If Right: -1
+		//else 0
+		platesLocation = FmsDataRetrieval.fieldDataRetrieval();
+		
 				
 		//Sets up the start timer
 		end = System.currentTimeMillis() + 16000;
-		
-		//Variable for the whether there should be right or left decisions
-		//Left will be 1
-		//Right will be -1
-		int leftRightValue;
-		if (platesLocation == FmsDataRetrieval.PlatesLocation.leftSwitchOwnership)
-		{
-			leftRightValue = 1;
-		} else if (platesLocation == FmsDataRetrieval.PlatesLocation.rightSwitchOwnership){
-			
-			leftRightValue = -1;
-		} else {
-			leftRightValue = 0;
-		}
-		
 
 	}
 	
@@ -151,42 +136,45 @@ public class Autonomous extends Subsystem {
 	{
 		switch (location){
 		case farRight:
+			
+			//SmartDashboard.putString("DEBUG: " , steps + "");
 			//Crosses the line
 			if (steps == 0 && (action == Robot.Action.crossLine ||
 							   action == Robot.Action.switch1)){
-				
+		
 				currentState = CurrentState.crossLineStraight;
 			
 			//Moves directly to switch after crossing the line
-			} else if (leftRightValue == -1 && steps == 1 && action == Robot.Action.switch1) {
+			} else if (platesLocation == -1 && steps == 1 && action == Robot.Action.switch1) {
+				
 				turnToSwitch();
 				
 			//Moves along the backside of the switch to drop the cube
-			} else if (leftRightValue == 1 && steps == 1 && action == Robot.Action.switch1) {
+			} else if (platesLocation == 1 && steps == 1 && action == Robot.Action.switch1) {
 				aroundSwitch();
 				
 			} 
 			else {
-				DriverStation.reportWarning("GANESH LOOK HERE" , false);
+				//DriverStation.reportWarning("GANESH LOOK HERE" , false);
 				currentState = CurrentState.nothing;
 			}
 			break;
 			
 		case switchRight:
 			//Goes straight if switch is owned on the right side
-			if (leftRightValue == -1 && steps == 0 && (action == Robot.Action.crossLine ||
+			if (platesLocation == -1 && steps == 0 && (action == Robot.Action.crossLine ||
 			   				   						   action == Robot.Action.switch1)){
 				currentState = CurrentState.crossLineStraight;
 				
-			} else if (leftRightValue == -1 && steps == 1 && action == Robot.Action.switch1) {
+			} else if (platesLocation == -1 && steps == 1 && action == Robot.Action.switch1) {
 				straightToSwitch();
 				
 			//Turns if the switch is owned on the left side
-			} else if (leftRightValue == 1 && steps == 0 && (action == Robot.Action.crossLine ||
+			} else if (platesLocation == 1 && steps == 0 && (action == Robot.Action.crossLine ||
 						  									 action == Robot.Action.switch1)) {
 				currentState = CurrentState.crossLineDiagonal;
 				
-			} else if (leftRightValue == 1 && steps == 1 && action == Robot.Action.switch1) {
+			} else if (platesLocation == 1 && steps == 1 && action == Robot.Action.switch1) {
 				aroundSwitch();
 			} else
 				currentState = CurrentState.nothing;
@@ -215,19 +203,19 @@ public class Autonomous extends Subsystem {
 		case switchLeft:
 			
 			//Goes straight if switch is owned on the left side
-			if (leftRightValue == 1 && steps == 0 && (action == Robot.Action.crossLine ||
+			if (platesLocation == 1 && steps == 0 && (action == Robot.Action.crossLine ||
 			   				   						   action == Robot.Action.switch1)){
 				currentState = CurrentState.crossLineStraight;
 				
-			} else if (leftRightValue == 1 && steps == 1 && action == Robot.Action.switch1) {
+			} else if (platesLocation == 1 && steps == 1 && action == Robot.Action.switch1) {
 				straightToSwitch();
 				
 			//Turns if the switch is owned on the left side
-			} else if (leftRightValue == -1 && steps == 0 && (action == Robot.Action.crossLine ||
+			} else if (platesLocation == -1 && steps == 0 && (action == Robot.Action.crossLine ||
 						  									 action == Robot.Action.switch1)) {
 				currentState = CurrentState.crossLineDiagonal;
 				
-			} else if (leftRightValue == -1 && steps == 1 && action == Robot.Action.switch1) {
+			} else if (platesLocation == -1 && steps == 1 && action == Robot.Action.switch1) {
 				aroundSwitch();
 			} else
 				currentState = CurrentState.nothing;
@@ -242,11 +230,11 @@ public class Autonomous extends Subsystem {
 				currentState = CurrentState.crossLineStraight;
 
 			//Moves directly to switch after crossing the line
-			} else if (leftRightValue == 1 && steps == 1 && action == Robot.Action.switch1) {
+			} else if (platesLocation == 1 && steps == 1 && action == Robot.Action.switch1) {
 				turnToSwitch();
 
 			//Moves along the backside of the switch to drop the cube
-			} else if (leftRightValue == -1 && steps == 1 && action == Robot.Action.switch1) {
+			} else if (platesLocation == -1 && steps == 1 && action == Robot.Action.switch1) {
 				aroundSwitch();
 
 			} else {
@@ -272,10 +260,10 @@ public class Autonomous extends Subsystem {
 				
 				//Turns based on which switch we own
 			  } else if(substeps == 2) {
-				  if (leftRightValue == -1) {
+				  if (platesLocation == -1) {
 					  currentState = CurrentState.turn90Left;
 				  }
-				  else if(leftRightValue == 1) {
+				  else if(platesLocation == 1) {
 					  currentState = CurrentState.turn90Right;
 				  }
 					  
@@ -301,9 +289,9 @@ public class Autonomous extends Subsystem {
 				
 				//Turns based on which switch we own
 			}else if ( substeps == 2){
-				if (leftRightValue == 1) {
+				if (platesLocation == 1) {
 					currentState = CurrentState.turn90Left;
-				}else if (leftRightValue == -1) {
+				}else if (platesLocation == -1) {
 					currentState = CurrentState.turn90Right;
 				}
 				
@@ -312,9 +300,9 @@ public class Autonomous extends Subsystem {
 				
 				//Turns based on which switch we own
 			} else if (substeps == 4) {
-				if (leftRightValue == 1) {
+				if (platesLocation == 1) {
 					currentState = CurrentState.turn90Left;
-				}else if (leftRightValue == -1) {
+				}else if (platesLocation == -1) {
 					currentState = CurrentState.turn90Right;
 				}
 				
@@ -376,7 +364,7 @@ public class Autonomous extends Subsystem {
 					//pidTurningDriveController.disable();
 					//pidDriveController.disable();
 					RobotMap.myRobot.tankDrive(0, 0);
-					DriverStation.reportWarning("YOU ARE HEREDEAEFEAFEFSEFSEFSEF", true);
+					DriverStation.reportWarning("YOU ARE HEREDEAEFEAFEFSEFSEFSEF", false);
 					break;
 						
 				case crossLineStraight:
@@ -409,7 +397,6 @@ public class Autonomous extends Subsystem {
 					} else if (pidDriveController.onTarget()) { //&&
 							   //RobotMap.robotLeftVictor1.getSpeed() == 0 &&
 							   //RobotMap.robotRightVictor1.getSpeed() == 0) {
-						DriverStation.reportWarning("YOU ARE ON TARGET", true);
 						actionStarted = false;
 						steps++;
 					}
@@ -438,7 +425,6 @@ public class Autonomous extends Subsystem {
 						pidDriveController.enable();
 						actionStarted = true;
 					} else if (pidDriveController.onTarget()) {
-						DriverStation.reportWarning("YOU ARE ON TARGET", true);
 						actionStarted = false;
 						substeps++;
 					}
@@ -458,7 +444,6 @@ public class Autonomous extends Subsystem {
 						pidDriveController.enable();
 						actionStarted = true;
 					} else if (pidDriveController.onTarget()) {
-						DriverStation.reportWarning("YOU ARE ON TARGET", true);
 						actionStarted = false;
 						substeps++;
 					}
@@ -478,7 +463,6 @@ public class Autonomous extends Subsystem {
 						pidDriveController.enable();
 						actionStarted = true;
 					} else if (pidDriveController.onTarget()) {
-						DriverStation.reportWarning("YOU ARE ON TARGET", true);
 						actionStarted = false;
 						substeps++;
 					}
@@ -508,7 +492,6 @@ public class Autonomous extends Subsystem {
 						onTarget = true;
 						
 					} else if (pidDriveController.onTarget()) {
-						DriverStation.reportWarning("YOU ARE ON TARGET", true);
 						actionStarted = false;
 						substeps++;
 					}
@@ -528,7 +511,6 @@ public class Autonomous extends Subsystem {
 						pidDriveController.enable();
 						actionStarted = true;
 					} else if (pidDriveController.onTarget()) {
-						DriverStation.reportWarning("YOU ARE ON TARGET", true);
 						actionStarted = false;
 						substeps++;
 					}
@@ -560,7 +542,6 @@ public class Autonomous extends Subsystem {
 						pidTurningDriveController.enable();
 						actionStarted = true;
 					} else if (pidDriveController.onTarget()) {
-						DriverStation.reportWarning("YOU ARE ON TARGET", true);
 						actionStarted = false;
 						Robot.robotGyro.resetGyro();
 						substeps++;
@@ -581,7 +562,6 @@ public class Autonomous extends Subsystem {
 						pidTurningDriveController.enable();
 						actionStarted = true;
 					} else if (pidDriveController.onTarget()) {
-						DriverStation.reportWarning("YOU ARE ON TARGET", true);
 						actionStarted = false;
 						Robot.robotGyro.resetGyro();
 						substeps++;
@@ -602,7 +582,6 @@ public class Autonomous extends Subsystem {
 						pidTurningDriveController.enable();
 						actionStarted = true;
 					} else if (pidDriveController.onTarget()) {
-						DriverStation.reportWarning("YOU ARE ON TARGET TURNING", true);
 						actionStarted = false;
 						Robot.robotGyro.resetGyro();
 						substeps++;
@@ -621,16 +600,15 @@ public class Autonomous extends Subsystem {
 						if (location == Robot.Location.switchLeft ||
 							location == Robot.Location.switchRight) {
 							
-							pidTurningDriveController.setSetpoint(leftRightValue * 29.5433);
+							pidTurningDriveController.setSetpoint(platesLocation * 29.5433);
 						} else if (location == Robot.Location.middle) {
 							
-							pidTurningDriveController.setSetpoint(-1 * leftRightValue * 36.1225);
+							pidTurningDriveController.setSetpoint(-1 * platesLocation * 36.1225);
 						}
 						pidTurningDriveController.setPercentTolerance(1);
 						pidTurningDriveController.enable();
 						actionStarted = true;
 					} else if (pidDriveController.onTarget()) {
-						DriverStation.reportWarning("YOU ARE ON TARGET TURNING", true);
 						actionStarted = false;
 						Robot.robotGyro.resetGyro();
 						substeps++;
@@ -650,7 +628,6 @@ public class Autonomous extends Subsystem {
 						pidTurningDriveController.enable();
 						actionStarted = true;
 					} else if (pidDriveController.onTarget()) {
-						DriverStation.reportWarning("YOU ARE ON TARGET TURNING", true);
 						actionStarted = false;
 						Robot.robotGyro.resetGyro();
 						substeps++;

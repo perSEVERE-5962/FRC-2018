@@ -22,14 +22,14 @@ public class RunDropIntake extends Command{
     	//pidDropIntakeSubsystem.enable();
     	//DropIntake.dropIntake();
     	//DropIntake.checkParallel();
-    	if (Robot.oi.xBoxRightAxis() < 0)
+    	if (Robot.oi.xBoxRightAxis() > 0)
     	{
     		pidDropIntakeSubsystem.setSetPoint(0);
     	}
-    	else if (Robot.oi.xBoxRightAxis() > 0) {
+    	else if (Robot.oi.xBoxRightAxis() < 0) {
     		pidDropIntakeSubsystem.setSetPoint(-16);
     	}
-    	    	
+    	   	
     	//pidDropIntakeSubsystem.enable();
     }
 
