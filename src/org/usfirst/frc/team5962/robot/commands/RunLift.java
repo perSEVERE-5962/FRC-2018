@@ -14,19 +14,19 @@ public class RunLift extends Command{
 	// Called just before this Command runs the first time
     protected void initialize() {
     	
-    	pidLiftSubsystem = new PIDLiftSubsystem(.3,0,.3);
-    	pidLiftSubsystem.enable();
+    	//pidLiftSubsystem = new PIDLiftSubsystem(.3,0,.3);
+    	//pidLiftSubsystem.enable();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	//Lift.lift();
+    	Lift.lift();
     	//Lift.checkHeight();
-    	if (Robot.oi.xBoxLeftAxis() < 0) {
-    		pidLiftSubsystem.setSetPoint(40);
-    	} else if (Robot.oi.xBoxRightAxis() > 0){
-    		pidLiftSubsystem.setSetPoint(0);
-    	}
+    	//if (Robot.oi.xBoxLeftAxis() < 0) {
+    	//	pidLiftSubsystem.setSetPoint(40);
+    	//} else if (Robot.oi.xBoxRightAxis() > 0){
+    	//	pidLiftSubsystem.setSetPoint(0);
+    	//}
     	
     	//pidLiftSubsystem.enable();
     }
@@ -34,10 +34,10 @@ public class RunLift extends Command{
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
 
-    	if (pidLiftSubsystem.ifOnTarget())
-    	{
-    		pidLiftSubsystem.disable();
-    	} 
+    	//if (pidLiftSubsystem.ifOnTarget())
+    	//{
+    	//	pidLiftSubsystem.disable();
+    	//} 
     		return false;
     	
     	

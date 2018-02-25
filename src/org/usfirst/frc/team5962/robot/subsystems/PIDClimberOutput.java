@@ -17,7 +17,7 @@ public class PIDClimberOutput implements PIDOutput{
 			output = -output;
 		}
 		
-		RobotMap.climber.set(output);
+		RobotMap.climber.set(ControlMode.PercentOutput, output);
 		// TODO Auto-generated method stub
 		
 	}

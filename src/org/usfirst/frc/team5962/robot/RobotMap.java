@@ -4,6 +4,7 @@ import org.usfirst.frc.team5962.robot.sensors.RobotUltrasonicAnalog;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -56,7 +57,7 @@ public class RobotMap {
 	
 	public static TalonSRX dropBoxIntake;
 	public static Victor lift;
-	public static Victor climber;
+	public static VictorSPX climber;
 	
 	public static RobotUltrasonicAnalog ultraSonic;
 	
@@ -79,7 +80,7 @@ public class RobotMap {
 		
 		dropBoxIntake = new TalonSRX(14);
 		lift = new Victor(PWM_CHANNEL_4);
-		climber = new Victor(PWM_CHANNEL_5);
+		climber = new VictorSPX(PWM_CHANNEL_5);
 		
 		dropBoxIntake.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
 		dropBoxIntake.getSensorCollection().setQuadraturePosition(0, 10);

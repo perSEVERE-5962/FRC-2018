@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5962.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class FmsDataRetrieval {
 
@@ -12,24 +13,24 @@ public static enum PlatesLocation {
 		
 	}
 	
-	public PlatesLocation fieldDataLocation;
+	static int fieldDataLocation = 0;
 	
-	public PlatesLocation fieldDataRetrieval(){
+	public static int fieldDataRetrieval(){
 		
 	String gameData = DriverStation.getInstance().getGameSpecificMessage();
-	fieldDataLocation = PlatesLocation.stop;
+	fieldDataLocation = 0;
 	
 		if(gameData.charAt(0) == 'L')
 		{
 		
-			fieldDataLocation = PlatesLocation.leftSwitchOwnership;
+			fieldDataLocation = 1;
 			
 		} else if (gameData.charAt(0) == 'R'){
 			
-			fieldDataLocation = PlatesLocation.rightSwitchOwnership;
+			fieldDataLocation = -1;
 		
 		}else{
-			fieldDataLocation = PlatesLocation.stop;
+			fieldDataLocation = 0;
 		}
 		
 		return fieldDataLocation;
