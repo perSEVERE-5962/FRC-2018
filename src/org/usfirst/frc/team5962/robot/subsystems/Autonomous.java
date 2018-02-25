@@ -393,6 +393,7 @@ public class Autonomous extends Subsystem {
 						pidDriveController.setPercentTolerance(1);
 						pidDriveController.enable();
 						actionStarted = true;
+						substeps++;
 					
 					} else if (pidDriveController.onTarget()) { //&&
 							   //RobotMap.robotLeftVictor1.getSpeed() == 0 &&
