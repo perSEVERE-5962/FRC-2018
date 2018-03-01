@@ -361,8 +361,8 @@ public class Autonomous extends Subsystem {
 			
 			switch (currentState){
 				case nothing:
-					//pidTurningDriveController.disable();
-					//pidDriveController.disable();
+					pidTurningDriveController.disable();
+					pidDriveController.disable();
 					RobotMap.myRobot.tankDrive(0, 0);
 					DriverStation.reportWarning("YOU ARE HEREDEAEFEAFEFSEFSEFSEF", false);
 					break;
@@ -415,7 +415,7 @@ public class Autonomous extends Subsystem {
 					if (!actionStarted) {
 						//DriverStation.reportWarning("YOU ARE HERE", true);
 						pidTurningDriveController.disable();
-						//pidDriveController.disable();
+						pidDriveController.disable();
 						//Robot.encoder.reset();
 						Robot.robotGyro.resetGyro();
 						pidDriveController.setOutputRange(-0.5,0.5);
@@ -555,7 +555,7 @@ public class Autonomous extends Subsystem {
 						pidDriveController.disable();
 						//Robot.robotGyro.resetGyro();
 						Robot.encoder.reset();
-						pidTurningDriveController.setOutputRange(-0.5, 0.5);
+						pidTurningDriveController.setOutputRange(-0.05, 0.05);
 						pidTurningDriveController.setInputRange(-360, 360);
 						pidTurningDriveController.setSetpoint(-90);
 						pidTurningDriveController.setPercentTolerance(1);
@@ -575,7 +575,7 @@ public class Autonomous extends Subsystem {
 						pidDriveController.disable();
 						//Robot.robotGyro.resetGyro();
 						Robot.encoder.reset();
-						pidTurningDriveController.setOutputRange(-0.5, 0.5);
+						pidTurningDriveController.setOutputRange(-0.05, 0.05);
 						pidTurningDriveController.setInputRange(-360, 360);
 						pidTurningDriveController.setSetpoint(90);
 						pidTurningDriveController.setPercentTolerance(1);
@@ -595,7 +595,7 @@ public class Autonomous extends Subsystem {
 						pidDriveController.disable();
 						//Robot.robotGyro.resetGyro();
 						Robot.encoder.reset();
-						pidTurningDriveController.setOutputRange(-0.5, 0.5);
+						pidTurningDriveController.setOutputRange(-0.25, 0.25);
 						pidTurningDriveController.setInputRange(-360, 360);
 						if (location == Robot.Location.switchLeft ||
 							location == Robot.Location.switchRight) {

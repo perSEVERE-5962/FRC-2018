@@ -11,7 +11,7 @@ public class PIDLiftOutput implements PIDOutput{
 	@Override
 	public void pidWrite(double output) {
 		
-		RobotMap.lift.set(output);
+		//RobotMap.lift.set(output);
 		// TODO Auto-generated method stub
 		
 	}

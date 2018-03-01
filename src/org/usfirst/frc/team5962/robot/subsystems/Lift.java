@@ -3,18 +3,30 @@ package org.usfirst.frc.team5962.robot.subsystems;
 import org.usfirst.frc.team5962.robot.Robot;
 import org.usfirst.frc.team5962.robot.RobotMap;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 public class Lift {
 
 	final static double HEIGHTOFROPE = 42;
 	
-	public static void lift() {
+	static boolean isEnabled;
+	
+	public static  void lift() {
 		
-		RobotMap.lift.set(Robot.oi.xBoxLeftAxis() * -1);
+		if (isEnabled){
+		RobotMap.lift.set(ControlMode.PercentOutput, 0.0);
+		}
+		else {
+		RobotMap.lift.set(ControlMode.PercentOutput, Robot.oi.xBoxLeftAxis() * -1);
+		}
+	
 	}
 	
-	public static void checkHeight() {
+	public  static void checkHeight() {
 		
-		Robot.slideEncoder.getDistance();
+		isEnabled = RobotMap.limitSwitchSlide.get();
+		
+		//Robot.slideEncoder.getDistance();
 	}
 	
 	public static void getDistance() {
@@ -22,3 +34,4 @@ public class Lift {
 		
 	}
 }
+	

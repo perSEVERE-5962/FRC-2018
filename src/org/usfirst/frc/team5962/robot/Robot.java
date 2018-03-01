@@ -181,8 +181,8 @@ public class Robot extends IterativeRobot {
 		oi.startDriveCommand();
 		robotGyro.resetGyro();
 		
-		Autonomous.pidDriveController.disable();
-		Autonomous.pidTurningDriveController.disable();
+		//Autonomous.pidDriveController.disable();
+		//Autonomous.pidTurningDriveController.disable();
 		
 		//runBoxIntake.start();
 		//runBoxOutake.start();

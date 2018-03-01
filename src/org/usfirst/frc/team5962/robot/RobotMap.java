@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
@@ -56,11 +57,12 @@ public class RobotMap {
 	public static TalonSRX rightBoxIntake;
 	
 	public static TalonSRX dropBoxIntake;
-	public static Victor lift;
+	public static VictorSPX lift;
 	public static VictorSPX climber;
 	
 	public static RobotUltrasonicAnalog ultraSonic;
 	
+	public static DigitalInput limitSwitchSlide = new DigitalInput(DIO_CHANNEL_8);
 	
 	
 	public static void init() {
@@ -79,7 +81,7 @@ public class RobotMap {
 		rightBoxIntake = new TalonSRX(13);
 		
 		dropBoxIntake = new TalonSRX(14);
-		lift = new Victor(PWM_CHANNEL_4);
+		lift = new VictorSPX(PWM_CHANNEL_4);
 		climber = new VictorSPX(PWM_CHANNEL_5);
 		
 		dropBoxIntake.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
