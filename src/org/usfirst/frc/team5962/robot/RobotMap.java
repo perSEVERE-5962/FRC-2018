@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 /**
@@ -45,10 +46,10 @@ public class RobotMap {
 	private final static int DIO_CHANNEL_9 = 9;
 	
 	
-	public static Victor robotLeftVictor1;
-	public static Victor robotLeftVictor2;
-	public static Victor robotRightVictor1;
-	public static Victor robotRightVictor2;
+	public static VictorSP robotLeftVictor1;
+	public static VictorSP robotLeftVictor2;
+	public static VictorSP robotRightVictor1;
+	public static VictorSP robotRightVictor2;
 	public static DifferentialDrive myRobot;
 	public static SpeedController leftDrive;
 	public static SpeedController rightDrive;
@@ -57,20 +58,20 @@ public class RobotMap {
 	public static TalonSRX rightBoxIntake;
 	
 	public static TalonSRX dropBoxIntake;
-	public static VictorSPX lift;
+	public static VictorSP lift;
 	public static VictorSPX climber;
 	
 	public static RobotUltrasonicAnalog ultraSonic;
 	
-	public static DigitalInput limitSwitchSlide = new DigitalInput(DIO_CHANNEL_8);
+	public static DigitalInput limitSwitchSlide;
 	
 	
 	public static void init() {
 
-		robotLeftVictor1 = new Victor(PWM_CHANNEL_0);
-		robotLeftVictor2 = new Victor(PWM_CHANNEL_1);
-		robotRightVictor1 = new Victor(PWM_CHANNEL_2);
-		robotRightVictor2 = new Victor(PWM_CHANNEL_3);
+		robotLeftVictor1 = new VictorSP(PWM_CHANNEL_0);
+		robotLeftVictor2 = new VictorSP(PWM_CHANNEL_1);
+		robotRightVictor1 = new VictorSP(PWM_CHANNEL_2);
+		robotRightVictor2 = new VictorSP(PWM_CHANNEL_3);
 		leftDrive = new MultiSpeedController(robotLeftVictor1, robotLeftVictor2);
 		rightDrive = new MultiSpeedController(robotRightVictor1, robotRightVictor2);
 		leftDrive.setInverted(true);
@@ -81,13 +82,14 @@ public class RobotMap {
 		rightBoxIntake = new TalonSRX(13);
 		
 		dropBoxIntake = new TalonSRX(14);
-		lift = new VictorSPX(PWM_CHANNEL_4);
+		lift = new VictorSP(PWM_CHANNEL_4);
 		climber = new VictorSPX(PWM_CHANNEL_5);
 		
 		dropBoxIntake.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
 		dropBoxIntake.getSensorCollection().setQuadraturePosition(0, 10);
 		
 		ultraSonic = new RobotUltrasonicAnalog(0);
+		limitSwitchSlide = new DigitalInput(DIO_CHANNEL_8);
 		
 
 	}

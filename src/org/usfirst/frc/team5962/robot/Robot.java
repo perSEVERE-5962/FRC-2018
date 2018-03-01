@@ -48,8 +48,8 @@ public class Robot extends IterativeRobot {
 	public static RobotGyro robotGyro = new RobotGyro();
 	public static RobotEncoder encoder = new RobotEncoder();
 	public static NeveRestGearMotorEncoder dropIntakeEncoder = new NeveRestGearMotorEncoder();
-	public static BagMotorEncoder slideEncoder = new BagMotorEncoder();
-	public static AMT103_V amt103 = new AMT103_V();
+//	public static BagMotorEncoder slideEncoder = new BagMotorEncoder();
+//	public static AMT103_V amt103 = new AMT103_V();
 //	public static RunBoxIntake runBoxIntake = new RunBoxIntake();
 //	public static RunBoxOutake runBoxOutake = new RunBoxOutake();
 //	public static ADIS16448_IMU robotGyro = new ADIS16448_IMU();
@@ -104,8 +104,8 @@ public class Robot extends IterativeRobot {
 		encoder.reset();
 		dropIntakeEncoder.reset();
 		RobotMap.dropBoxIntake.getSensorCollection().setQuadraturePosition(0, 10);
-		slideEncoder.reset();
-		amt103.reset();
+//		slideEncoder.reset();
+//		amt103.reset();
 		
 		SmartDashboard.putNumber("Ultra Sonic distance", RobotMap.ultraSonic.getRange() );
 		

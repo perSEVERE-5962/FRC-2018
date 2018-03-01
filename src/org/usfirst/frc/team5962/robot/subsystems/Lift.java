@@ -9,27 +9,27 @@ public class Lift {
 
 	final static double HEIGHTOFROPE = 42;
 	
-	static boolean isEnabled;
+	static boolean isEnabled = false;
 	
-	public static  void lift() {
+	public void lift() {
 		
-		if (isEnabled){
-		RobotMap.lift.set(ControlMode.PercentOutput, 0.0);
+		if (!isEnabled){
+		RobotMap.lift.set(0.0);
 		}
 		else {
-		RobotMap.lift.set(ControlMode.PercentOutput, Robot.oi.xBoxLeftAxis() * -1);
+		RobotMap.lift.set(Robot.oi.xBoxLeftAxis() * -1);
 		}
 	
 	}
 	
-	public  static void checkHeight() {
+	public  void checkHeight() {
 		
 		isEnabled = RobotMap.limitSwitchSlide.get();
 		
 		//Robot.slideEncoder.getDistance();
 	}
 	
-	public static void getDistance() {
+	public void getDistance() {
 		
 		
 	}
