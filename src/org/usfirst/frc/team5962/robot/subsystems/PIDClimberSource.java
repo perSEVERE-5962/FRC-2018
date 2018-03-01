@@ -24,7 +24,8 @@ public class PIDClimberSource implements PIDSource{
 	@Override
 	public double pidGet() {
 		// TODO Auto-generated method stub
-		return Robot.amt103.getDistance();
+		//return Robot.amt103.getDistance();
+		return 0;
 	}
 
 }

@@ -24,7 +24,8 @@ public class PIDLiftSource implements PIDSource{
 	@Override
 	public double pidGet() {
 		// TODO Auto-generated method stub
-		return (Robot.slideEncoder.getDistance());
+		//return (Robot.slideEncoder.getDistance());
+		return 0;
 	}
 
 }

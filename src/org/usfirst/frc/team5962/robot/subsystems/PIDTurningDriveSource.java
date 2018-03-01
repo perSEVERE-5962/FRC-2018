@@ -6,6 +6,7 @@ import org.usfirst.frc.team5962.robot.RobotMap;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class PIDTurningDriveSource implements PIDSource{
 
@@ -23,7 +24,7 @@ public class PIDTurningDriveSource implements PIDSource{
 
 	@Override
 	public double pidGet() {
-		DriverStation.reportWarning("GYRO ANGLE: " + Robot.robotGyro.getGyroAngle(), false);
+		SmartDashboard.putString("GYRO ANGLE: ", + Robot.robotGyro.getGyroAngle() + "");
 		return Robot.robotGyro.getGyroAngle();
 	}
 

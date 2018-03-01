@@ -11,16 +11,16 @@ import edu.wpi.first.wpilibj.PIDController;
 
 public class DropIntake {
 
-	public PIDDropIntakeOutput pidDropIntakeOutput;
-	public PIDDropIntakeSource pidDropIntakeSource;
-	public PIDController pidDropIntakeController;
+	//public PIDDropIntakeOutput pidDropIntakeOutput;
+	//public PIDDropIntakeSource pidDropIntakeSource;
+	//public PIDController pidDropIntakeController;
 	
 	final double STRINGLENGTH = 16;
 	
 	public static void dropIntake() {
 		
 		RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, Robot.oi.xBoxRightAxis());
-		Robot.dropIntakeEncoder.getDistance();
+		//Robot.dropIntakeEncoder.getDistance();
 		
 	}
 	
@@ -49,13 +49,13 @@ public class DropIntake {
 	
 	public void init() {
 		
-		pidDropIntakeOutput = new PIDDropIntakeOutput();
-		pidDropIntakeSource = new PIDDropIntakeSource();
+		//pidDropIntakeOutput = new PIDDropIntakeOutput();
+		//pidDropIntakeSource = new PIDDropIntakeSource();
 		
-		double kp = 0;
-		double ki = 0;
-		double kd = 0;
+		//double kp = 0;
+		//double ki = 0;
+		//double kd = 0;
 		
-		pidDropIntakeController = new PIDController(kp,ki,kd,pidDropIntakeSource,pidDropIntakeOutput);
+		//pidDropIntakeController = new PIDController(kp,ki,kd,pidDropIntakeSource,pidDropIntakeOutput);
 	}
 }
