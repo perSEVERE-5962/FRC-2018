@@ -99,7 +99,6 @@ public class Autonomous extends Subsystem {
 		double Kd = SmartDashboard.getNumber("D Value:", 0);
 		pidDriveController = new PIDController(Kp,Ki,Kd,pidDriveSource,pidDriveOutput);
 		pidDriveController.disable();
-
 		
 		//If left: 1
 		//If Right: -1
@@ -377,7 +376,7 @@ public class Autonomous extends Subsystem {
 					
 					//RobotMap.myRobot.setMaxOutput(0.5);
 					
-					/*if (!actionStarted) {
+					if (!actionStarted) {
 						pidDriveController.disable();
 						
 						//Robot.encoder.reset();
@@ -391,11 +390,10 @@ public class Autonomous extends Subsystem {
 						pidDriveController.setPercentTolerance(1);
 						pidDriveController.enable();
 						actionStarted = true;
-						substeps++;
 					
 					} else if (pidDriveController.onTarget()  &&
-							   (RobotMap.robotLeftVictor1.getSpeed() == 0 &&
-							   RobotMap.robotRightVictor1.getSpeed() == 0)) {
+							   RobotMap.robotLeftVictor1.getSpeed() == 0 &&
+							   RobotMap.robotRightVictor1.getSpeed() == 0) {
 						actionStarted = false;
 						steps++;
 					}

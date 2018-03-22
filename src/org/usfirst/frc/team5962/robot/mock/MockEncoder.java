@@ -14,8 +14,8 @@ public class MockEncoder extends RobotEncoder {
 		SmartDashboard.putString("Encoder Distance", "" + distance);
 		return distance;
 	}
-	//private boolean isInverted() {
-		// TODO Auto-generated method stub
-	//	return false;
-	//}
+//	private boolean isInverted() {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
 }
