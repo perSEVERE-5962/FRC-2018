@@ -9,11 +9,15 @@ public class Climber {
 
 	public static void climbUp(){
 		
-		RobotMap.climber.set(ControlMode.PercentOutput, Robot.oi.xBoxLeftTrigger());
+		RobotMap.climber.set(Robot.oi.xBoxLeftTrigger() * -1);
 	}
 	
 	public static void climbDown() {
 		
-		RobotMap.climber.set(ControlMode.PercentOutput, Robot.oi.xBoxRightTrigger() * -1);
+		RobotMap.climber.set(Robot.oi.xBoxRightTrigger());
+	}
+	
+	public static void stop() {
+		RobotMap.climber.set(0);
 	}
 }

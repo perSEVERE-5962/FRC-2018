@@ -100,7 +100,7 @@ public class Robot extends IterativeRobot {
 		robotGyro.resetGyro();
 		SmartDashboard.putData("Reset Gyro", new ResetGyro());
 
-		encoder.setNumberOfEncoders(2);
+		encoder.setNumberOfEncoders(1);
 		encoder.reset();
 		dropIntakeEncoder.reset();
 		RobotMap.dropBoxIntake.getSensorCollection().setQuadraturePosition(0, 10);
@@ -116,9 +116,9 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("I Value:", 0);
 		SmartDashboard.putNumber("D Value:", 0);
 		
-		SmartDashboard.putNumber("P t Value:", 0);
-		SmartDashboard.putNumber("I t Value:", 0);
-		SmartDashboard.putNumber("D t Value:", 0);
+		//SmartDashboard.putNumber("P t Value:", 0);
+		//SmartDashboard.putNumber("I t Value:", 0);
+		//SmartDashboard.putNumber("D t Value:", 0);
 		
 
 

@@ -8,9 +8,14 @@ public class MockEncoder extends RobotEncoder {
 	double distance = 0;
 	public double getDistance() {
 		distance += 2; // increment by 2 inches
+		
 		if(isInverted())
 			distance = -distance;
 		SmartDashboard.putString("Encoder Distance", "" + distance);
 		return distance;
 	}
+	//private boolean isInverted() {
+		// TODO Auto-generated method stub
+	//	return false;
+	//}
 }

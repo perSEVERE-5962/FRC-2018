@@ -15,11 +15,10 @@ public class BoxIntake {
 		//	RobotMap.boxIntake.set(Robot.oi.gamePadLeftTrigger());
 		//}
 		
-		double speed = (Robot.oi.joystickLeftThrottleAxis() + 1) / 2;
+		//double speed = (Robot.oi.joystickLeftThrottleAxis() + 1) / 2;
 		
-		RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, -speed);
-		RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, speed);
-		SmartDashboard.putNumber("Speed of Intake", speed);
+		RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, -1);
+		RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, 1);
 	}
 	
 	public static void boxOutake() {
@@ -30,20 +29,18 @@ public class BoxIntake {
 		
 		//RobotMap.boxIntake.set(-1);
 		
-		double speed =  -1 * (Robot.oi.joystickLeftThrottleAxis() + 1) / 2;
+		//double speed =  -1 * (Robot.oi.joystickLeftThrottleAxis() + 1) / 2;
 		
-		RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, -speed);
-		RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, speed);
-		SmartDashboard.putNumber("Speed of Intake", speed);
+		RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, 1);
+		RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, -1);
 	}
 	
 	public static void boxSpin() {
 		
-		double speed = (Robot.oi.joystickLeftThrottleAxis() + 1) / 8;
+		//double speed = (Robot.oi.joystickLeftThrottleAxis() + 1) / 8;
 		
-		RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, speed);
-		RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, speed);
-		SmartDashboard.putNumber("Speed of Intake", speed);
+		RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, .5);
+		RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, .5);
 	}
 	
 	public static void boxStop() {

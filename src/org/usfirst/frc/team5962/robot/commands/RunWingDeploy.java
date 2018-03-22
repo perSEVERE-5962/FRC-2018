@@ -8,14 +8,12 @@ public class RunWingDeploy extends Command{
 
 	// Called just before this Command runs the first time
     protected void initialize() {
-       WingDeploy.leftWingOff();
-       WingDeploy.rightWingOff();
+       WingDeploy.bothWingsOff();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	WingDeploy.leftWingDeploy();
-    	WingDeploy.rightWingDeploy();
+    	WingDeploy.bothWingsDeploy();
     }
 
     // Make this return true when this Command no longer needs to run execute()

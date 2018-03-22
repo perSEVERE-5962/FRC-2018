@@ -10,6 +10,7 @@ import org.usfirst.frc.team5962.robot.commands.RunWingDeploy;
 import org.usfirst.frc.team5962.robot.commands.StopBoxIntake;
 import org.usfirst.frc.team5962.robot.commands.StopBoxOutake;
 import org.usfirst.frc.team5962.robot.commands.StopBoxSpin;
+import org.usfirst.frc.team5962.robot.commands.StopWingDeploy;
 import org.usfirst.frc.team5962.robot.commands.Throttle;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -68,12 +69,15 @@ public class OI {
 		
 		deployWings = new JoystickButton(gamepad1, 1);
 		deployWings.whenPressed(new RunWingDeploy());
+		deployWings.whenReleased(new StopWingDeploy());
 		
 		deployLeftWing = new JoystickButton(gamepad1, 2);
 		deployLeftWing.whenPressed(new RunLeftWingDeploy());
+		deployLeftWing.whenReleased(new StopWingDeploy());
 		
 		deployRightWing = new JoystickButton(gamepad1, 3);
 		deployRightWing.whenPressed(new RunRightWingDeploy());
+		deployRightWing.whenReleased(new StopWingDeploy());
 		
 		//deployWings = new JoystickButton(joystickRight, 3);
 		//deployWings.whenPressed(new RunWingDeploy());

@@ -27,9 +27,9 @@ public class Autonomous extends Subsystem {
 	public PIDDriveSource pidDriveSource;
 	public static PIDController pidDriveController;
 	
-	public PIDTurningDriveOutput pidTurningDriveOutput;
-	public PIDTurningDriveSource pidTurningDriveSource;
-	public static PIDController pidTurningDriveController;
+	//public PIDTurningDriveOutput pidTurningDriveOutput;
+	//public PIDTurningDriveSource pidTurningDriveSource;
+	//public static PIDController pidTurningDriveController;
 	
 	//Enum for what action the bot is doing at the moment
 	public static enum CurrentState{
@@ -90,19 +90,12 @@ public class Autonomous extends Subsystem {
 		//initialize PID
 		pidDriveOutput = new PIDDriveOutput();
 		pidDriveSource = new PIDDriveSource();
-		pidTurningDriveOutput = new PIDTurningDriveOutput();
-		pidTurningDriveSource = new PIDTurningDriveSource();
 		double Kp = SmartDashboard.getNumber("P Value:", 0);
 		double Ki = SmartDashboard.getNumber("I Value:", 0);
 		double Kd = SmartDashboard.getNumber("D Value:", 0);
-		double Tp = SmartDashboard.getNumber("P t Value:", 0);
-		double Ti = SmartDashboard.getNumber("I t Value:", 0);
-		double Td = SmartDashboard.getNumber("D t Value:", 0);
 		pidDriveController = new PIDController(Kp,Ki,Kd,pidDriveSource,pidDriveOutput);
-		pidTurningDriveController = new PIDController(Tp, Ti, Td, pidTurningDriveSource, pidTurningDriveOutput);
-		//pidDriveController.setPID(1,  0,  0);
 		pidDriveController.disable();
-		pidTurningDriveController.disable();
+
 		
 		//If left: 1
 		//If Right: -1
@@ -128,6 +121,9 @@ public class Autonomous extends Subsystem {
 	public void elapsedTime() {
         long now = System.currentTimeMillis();
         long elapsedTime =  (long) ((end - now) / 1000.0);
+        if (elapsedTime < 12) {
+        	pidDriveController.disable();
+        }
         SmartDashboard.putNumber("Time", elapsedTime);
     }
 	
@@ -254,6 +250,7 @@ public class Autonomous extends Subsystem {
 			  
 			  if (substeps == 0) {
 				  currentState = CurrentState.backToForward;
+				  substeps++;
 				  
 			  } else if (substeps == 1) {
 					currentState = CurrentState.driveHalfwayPastSwitch;
@@ -361,7 +358,6 @@ public class Autonomous extends Subsystem {
 			
 			switch (currentState){
 				case nothing:
-					pidTurningDriveController.disable();
 					pidDriveController.disable();
 					RobotMap.myRobot.tankDrive(0, 0);
 					DriverStation.reportWarning("YOU ARE HEREDEAEFEAFEFSEFSEFSEF", false);
@@ -378,27 +374,31 @@ public class Autonomous extends Subsystem {
 					//RobotMap.myRobot.setMaxOutput(0.5);
 					
 					if (!actionStarted) {
-						//DriverStation.reportWarning("YOU ARE HERE", true);
-						pidTurningDriveController.disable();
 						pidDriveController.disable();
-						//Robot.robotGyro.resetGyro();
+						
 						//Robot.encoder.reset();
-						double Kp = SmartDashboard.getNumber("P Value:", 0.15);
+						double Kp = SmartDashboard.getNumber("P Value:", 0.05);
 						double Ki = SmartDashboard.getNumber("I Value:", 0);
 						double Kd = SmartDashboard.getNumber("D Value:", 0);
-						pidDriveController.setPID(Kp, Ki, Kd);
+						pidDriveController.setPID(0.05, 0, 0);
 						pidDriveController.setOutputRange(-0.5,0.5);
-						pidDriveController.setInputRange(0, 98);
+						pidDriveController.setInputRange(0, 150);
 						pidDriveController.setSetpoint(96);
 						pidDriveController.setPercentTolerance(1);
 						pidDriveController.enable();
 						actionStarted = true;
 					
-					} else if (pidDriveController.onTarget()) { //&&
-							   //RobotMap.robotLeftVictor1.getSpeed() == 0 &&
-							   //RobotMap.robotRightVictor1.getSpeed() == 0) {
+					} else if (pidDriveController.onTarget()  &&
+							   (RobotMap.robotLeftVictor1.getSpeed() == 0 &&
+							   RobotMap.robotRightVictor1.getSpeed() == 0)) {
 						actionStarted = false;
 						steps++;
+					
+						
+					}
+					
+					else if (pidDriveController.isEnabled() == false){
+						RobotMap.myRobot.tankDrive(0, 0);
 					}
 						
 					break;
@@ -413,18 +413,18 @@ public class Autonomous extends Subsystem {
 						
 				case drivePastSwitch:
 					if (!actionStarted) {
-						//DriverStation.reportWarning("YOU ARE HERE", true);
-						pidTurningDriveController.disable();
 						pidDriveController.disable();
 						//Robot.encoder.reset();
-						Robot.robotGyro.resetGyro();
 						pidDriveController.setOutputRange(-0.5,0.5);
 						pidDriveController.setInputRange(0,160);
 						pidDriveController.setSetpoint(144.5);
 						pidDriveController.setPercentTolerance(1);
 						pidDriveController.enable();
 						actionStarted = true;
-					} else if (pidDriveController.onTarget()) {
+					}else if (pidDriveController.onTarget()  &&
+							   RobotMap.robotLeftVictor1.getSpeed() == 0 &&
+							   RobotMap.robotRightVictor1.getSpeed() == 0) {
+						SmartDashboard.putString("DEBUG: " , "Halfway past Switch");
 						actionStarted = false;
 						substeps++;
 					}
@@ -432,18 +432,18 @@ public class Autonomous extends Subsystem {
 						
 				case driveAcrossSwitch:
 					if (!actionStarted) {
-						//DriverStation.reportWarning("YOU ARE HERE", true);
-						pidTurningDriveController.disable();
 						pidDriveController.disable();
 						Robot.encoder.reset();
-						//Robot.robotGyro.resetGyro();
 						pidDriveController.setOutputRange(-0.5, 0.5);
 						pidDriveController.setInputRange(0,200);
 						pidDriveController.setSetpoint(171.625);
 						pidDriveController.setPercentTolerance(1);
 						pidDriveController.enable();
 						actionStarted = true;
-					} else if (pidDriveController.onTarget()) {
+					} else if (pidDriveController.onTarget()  &&
+							   RobotMap.robotLeftVictor1.getSpeed() == 0 &&
+							   RobotMap.robotRightVictor1.getSpeed() == 0) {
+						SmartDashboard.putString("DEBUG: " , "Halfway past Switch");
 						actionStarted = false;
 						substeps++;
 					}
@@ -451,18 +451,18 @@ public class Autonomous extends Subsystem {
 					
 				case driveHalfwayPastSwitch:
 					if (!actionStarted) {
-						//DriverStation.reportWarning("YOU ARE HERE", true);
-						pidTurningDriveController.disable();
 						pidDriveController.disable();
-						//Robot.robotGyro.resetGyro();
 						Robot.encoder.reset();
 						pidDriveController.setOutputRange(-0.5, 0.5);
-						pidDriveController.setInputRange(0,80);
-						pidDriveController.setSetpoint(76);
+						pidDriveController.setInputRange(0,85);
+						pidDriveController.setSetpoint(76); //76
 						pidDriveController.setPercentTolerance(1);
 						pidDriveController.enable();
 						actionStarted = true;
-					} else if (pidDriveController.onTarget()) {
+					}else if (pidDriveController.onTarget()  &&
+							   RobotMap.robotLeftVictor1.getSpeed() == 0 &&
+							   RobotMap.robotRightVictor1.getSpeed() == 0) {
+						SmartDashboard.putString("DEBUG: " , "Halfway past Switch");
 						actionStarted = false;
 						substeps++;
 					}
@@ -475,10 +475,7 @@ public class Autonomous extends Subsystem {
 						
 				case driveBackwards:
 					if (!actionStarted) {
-						//DriverStation.reportWarning("YOU ARE HERE", true);
-						pidTurningDriveController.disable();
 						pidDriveController.disable();
-						//Robot.robotGyro.resetGyro();
 						Robot.encoder.reset();
 						pidDriveController.setOutputRange(-0.5, 0.5);
 						pidDriveController.setInputRange(-120,0);
@@ -499,10 +496,7 @@ public class Autonomous extends Subsystem {
 					
 				case driveBackwardsSlightly:
 					if (!actionStarted) {
-						//DriverStation.reportWarning("YOU ARE HERE", true);
-						pidTurningDriveController.disable();
 						pidDriveController.disable();
-						//Robot.robotGyro.resetGyro();
 						Robot.encoder.reset();
 						pidDriveController.setOutputRange(-0.5, 0.5);
 						pidDriveController.setInputRange(-30,0);
@@ -510,7 +504,10 @@ public class Autonomous extends Subsystem {
 						pidDriveController.setPercentTolerance(1);
 						pidDriveController.enable();
 						actionStarted = true;
-					} else if (pidDriveController.onTarget()) {
+					}else if (pidDriveController.onTarget()  &&
+							   RobotMap.robotLeftVictor1.getSpeed() == 0 &&
+							   RobotMap.robotRightVictor1.getSpeed() == 0) {
+						SmartDashboard.putString("DEBUG: " , "Halfway past Switch");
 						actionStarted = false;
 						substeps++;
 					}
@@ -530,108 +527,45 @@ public class Autonomous extends Subsystem {
 						
 				case turn180:
 					if (!actionStarted) {
-						//DriverStation.reportWarning("YOU ARE HERE", true);
-						pidTurningDriveController.disable();
-						pidDriveController.disable();
-						//Robot.robotGyro.resetGyro();
-						Robot.encoder.reset();
-						pidTurningDriveController.setOutputRange(-0.5, 0.5);
-						pidTurningDriveController.setInputRange(-360, 360);
-						pidTurningDriveController.setSetpoint(180);
-						pidTurningDriveController.setPercentTolerance(1);
-						pidTurningDriveController.enable();
-						actionStarted = true;
-					} else if (pidDriveController.onTarget()) {
-						actionStarted = false;
-						Robot.robotGyro.resetGyro();
-						substeps++;
 					}
 					break;
 						
 				case turn90Left:
-					if (!actionStarted) {
-						//DriverStation.reportWarning("YOU ARE HERE", true);
-						pidTurningDriveController.disable();
-						pidDriveController.disable();
-						//Robot.robotGyro.resetGyro();
-						Robot.encoder.reset();
-						pidTurningDriveController.setOutputRange(-0.05, 0.05);
-						pidTurningDriveController.setInputRange(-360, 360);
-						pidTurningDriveController.setSetpoint(-90);
-						pidTurningDriveController.setPercentTolerance(1);
-						pidTurningDriveController.enable();
-						actionStarted = true;
-					} else if (pidDriveController.onTarget()) {
-						actionStarted = false;
-						Robot.robotGyro.resetGyro();
+					if (Robot.robotGyro.getGyroAngle() <= -90.0) {
 						substeps++;
+					} else {
+						RobotMap.myRobot.tankDrive(-1,1);
 					}
+					
 					break;
 						
 				case turn90Right:
 					if (!actionStarted) {
-						//DriverStation.reportWarning("YOU ARE HERE", true);
-						pidTurningDriveController.disable();
-						pidDriveController.disable();
-						//Robot.robotGyro.resetGyro();
-						Robot.encoder.reset();
-						pidTurningDriveController.setOutputRange(-0.05, 0.05);
-						pidTurningDriveController.setInputRange(-360, 360);
-						pidTurningDriveController.setSetpoint(90);
-						pidTurningDriveController.setPercentTolerance(1);
-						pidTurningDriveController.enable();
-						actionStarted = true;
-					} else if (pidDriveController.onTarget()) {
-						actionStarted = false;
-						Robot.robotGyro.resetGyro();
-						substeps++;
 					}
 					break;
 					
 				case turnADegree:
 					if (!actionStarted) {
-						//DriverStation.reportWarning("YOU ARE HERE", true);
-						pidTurningDriveController.disable();
-						pidDriveController.disable();
-						//Robot.robotGyro.resetGyro();
-						Robot.encoder.reset();
-						pidTurningDriveController.setOutputRange(-0.25, 0.25);
-						pidTurningDriveController.setInputRange(-360, 360);
-						if (location == Robot.Location.switchLeft ||
-							location == Robot.Location.switchRight) {
-							
-							pidTurningDriveController.setSetpoint(platesLocation * 29.5433);
-						} else if (location == Robot.Location.middle) {
-							
-							pidTurningDriveController.setSetpoint(-1 * platesLocation * 36.1225);
-						}
-						pidTurningDriveController.setPercentTolerance(1);
-						pidTurningDriveController.enable();
-						actionStarted = true;
-					} else if (pidDriveController.onTarget()) {
-						actionStarted = false;
-						Robot.robotGyro.resetGyro();
-						substeps++;
 					}
 						
 				case backToForward:
-					if (!actionStarted) {
+					//if (!actionStarted) {
 						//DriverStation.reportWarning("YOU ARE HERE", true);
-						pidTurningDriveController.disable();
-						pidDriveController.disable();
+						//pidTurningDriveController.disable();
+						//pidDriveController.disable();
 						//Robot.robotGyro.resetGyro();
-						Robot.encoder.reset();
-						pidTurningDriveController.setOutputRange(-0.5, 0.5);
-						pidTurningDriveController.setInputRange(-360, 360);
-						pidTurningDriveController.setSetpoint(0);
-						pidTurningDriveController.setPercentTolerance(1);
-						pidTurningDriveController.enable();
-						actionStarted = true;
-					} else if (pidDriveController.onTarget()) {
-						actionStarted = false;
-						Robot.robotGyro.resetGyro();
-						substeps++;
-					}
+						//Robot.encoder.reset();
+						//pidTurningDriveController.setOutputRange(-0.5, 0.5);
+						//pidTurningDriveController.setInputRange(-360, 360);
+						//pidTurningDriveController.setSetpoint(0);
+						//pidTurningDriveController.setPercentTolerance(1);
+						//pidTurningDriveController.enable();
+						//actionStarted = true;
+					//} else if (pidDriveController.onTarget()) {
+						//actionStarted = false;
+						//Robot.robotGyro.resetGyro();
+						//substeps++;
+					//}
 					break;
 						
 				default:

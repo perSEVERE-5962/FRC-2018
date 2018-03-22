@@ -19,7 +19,7 @@ public class DropIntake {
 	
 	public static void dropIntake() {
 		
-		RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, Robot.oi.xBoxRightAxis());
+		RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, Robot.oi.xBoxRightAxis() * .75);
 		//Robot.dropIntakeEncoder.getDistance();
 		
 	}
