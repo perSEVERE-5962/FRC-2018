@@ -40,7 +40,7 @@ public class BoxIntake {
 		//double speed = (Robot.oi.joystickLeftThrottleAxis() + 1) / 8;
 		
 		RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, .5);
-		RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, .5);
+		RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, -.5);
 	}
 	
 	public static void boxStop() {
