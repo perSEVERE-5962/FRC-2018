@@ -9,7 +9,7 @@
 	<classpathentry kind="var" path="wpiutil" sourcepath="wpiutil.sources"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/CTRE_Phoenix-sources.jar"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/CTRE_Phoenix.jar"/>
-	<classpathentry kind="lib" path="C:/Users/YashP/wpilib/user/java/lib/Team5962Sensors.jar" sourcepath="C:/Users/YashP/Documents/FRC code/Team5962Sensors"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/Team5962Sensors.jar"/>
+	<classpathentry kind="lib" path="C:/Users/MVRobotics/wpilib/user/java/lib/jsch-0.1.54.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

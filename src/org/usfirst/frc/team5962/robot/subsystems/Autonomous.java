@@ -4,6 +4,8 @@ import org.usfirst.frc.team5962.robot.Robot;
 import org.usfirst.frc.team5962.robot.RobotMap;
 import org.usfirst.frc.team5962.robot.subsystems.FmsDataRetrieval.PlatesLocation;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -49,6 +51,8 @@ public class Autonomous extends Subsystem {
 		intoExchange,
 		intoSwitch,
 		pickUpBlock,
+		lowerIntake,
+		liftSlide,
 		
 		turn180,
 		turn90Left,
@@ -63,7 +67,7 @@ public class Autonomous extends Subsystem {
 	//Variables for the switch case
 	private CurrentState currentState = CurrentState.nothing;
 	
-	//Variables for default state of the robot in Autonomouse
+	//Variables for default state of the robot in Autonomous
 	private Robot.Location location = Robot.Location.farRight;
 	private Robot.Action action = Robot.Action.nothing;
 			
@@ -136,7 +140,6 @@ public class Autonomous extends Subsystem {
 		switch (location){
 		case farRight:
 			
-			//SmartDashboard.putString("DEBUG: " , steps + "");
 			//Crosses the line
 			if (steps == 0 && (action == Robot.Action.crossLine ||
 							   action == Robot.Action.switch1)){
@@ -154,7 +157,6 @@ public class Autonomous extends Subsystem {
 				
 			} 
 			else {
-				//DriverStation.reportWarning("GANESH LOOK HERE" , false);
 				currentState = CurrentState.nothing;
 			}
 			break;
@@ -222,21 +224,23 @@ public class Autonomous extends Subsystem {
 			
 		case farLeft:	
 			
-			//Crosses the Line
+			//Crosses the line
 			if (steps == 0 && (action == Robot.Action.crossLine ||
-			   action == Robot.Action.switch1)){
-
+							   action == Robot.Action.switch1)){
+		
 				currentState = CurrentState.crossLineStraight;
-
+			
 			//Moves directly to switch after crossing the line
 			} else if (platesLocation == 1 && steps == 1 && action == Robot.Action.switch1) {
+				
 				turnToSwitch();
-
+				
 			//Moves along the backside of the switch to drop the cube
 			} else if (platesLocation == -1 && steps == 1 && action == Robot.Action.switch1) {
 				aroundSwitch();
-
-			} else {
+				
+			} 
+			else {
 				currentState = CurrentState.nothing;
 			}
 			break;
@@ -252,24 +256,28 @@ public class Autonomous extends Subsystem {
 		public void turnToSwitch() {
 			  
 			  if (substeps == 0) {
-				  currentState = CurrentState.backToForward;
-				  substeps++;
+				  //currentState = CurrentState.backToForward;
+				  currentState = CurrentState.lowerIntake;
 				  
 			  } else if (substeps == 1) {
-					currentState = CurrentState.driveHalfwayPastSwitch;
+					//currentState = CurrentState.driveHalfwayPastSwitch;
+				  currentState = CurrentState.liftSlide;
 				
 				//Turns based on which switch we own
 			  } else if(substeps == 2) {
-				  if (platesLocation == -1) {
+				  if (platesLocation == -1 && location == Robot.Location.farRight) {
 					  currentState = CurrentState.turn90Left;
 				  }
-				  else if(platesLocation == 1) {
+				  else if(platesLocation == 1 && location == Robot.Location.farLeft) {
 					  currentState = CurrentState.turn90Right;
 				  }
+				  else {
+					  currentState = CurrentState.nothing;
+				  }
 					  
-				
 			  } else if (substeps == 3) {
-				  currentState = CurrentState.moveForwardToSwitch;
+				  //currentState = CurrentState.moveForwardToSwitch;
+				  substeps++;
 		      }else if(substeps == 4) {
 		    	  currentState = CurrentState.intoSwitch;
 			  } else {
@@ -375,7 +383,7 @@ public class Autonomous extends Subsystem {
 //					}
 					
 					//RobotMap.myRobot.setMaxOutput(0.5);
-					
+					/*
 					if (!actionStarted) {
 						pidDriveController.disable();
 						
@@ -525,7 +533,14 @@ public class Autonomous extends Subsystem {
 					break;
 						
 				case intoSwitch:
-					substeps++;
+					if (elapsedTime < 3) {
+						RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, 0);
+						RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, 0);
+						substeps++;
+					} else {
+						RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, 1);
+						RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, -1);
+					}
 					break;
 						
 				case pickUpBlock:
@@ -539,9 +554,10 @@ public class Autonomous extends Subsystem {
 						
 				case turn90Left:
 					if (Robot.robotGyro.getGyroAngle() <= -90.0) {
+						RobotMap.myRobot.tankDrive(0, 0);
 						substeps++;
 					} else {
-						RobotMap.myRobot.tankDrive(-1,1);
+						RobotMap.myRobot.tankDrive(-.75,.75);
 					}
 					
 					break;
@@ -575,11 +591,29 @@ public class Autonomous extends Subsystem {
 					//}
 					break;
 						
+				case lowerIntake:
+					
+					if(elapsedTime < 11.25) {
+						RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, 0);
+						substeps++;
+					} else {
+						RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, 1);
+					}
+					break;
+					
+				case liftSlide:
+					if(elapsedTime < 10.25) {
+						RobotMap.lift.set(0);
+						substeps++;
+					} else {
+						RobotMap.lift.set(1);
+					}
+					
 				default:
 					RobotMap.myRobot.tankDrive(0, 0);
 					break;
 						
 				}
 					
-			}
 	}
+}
