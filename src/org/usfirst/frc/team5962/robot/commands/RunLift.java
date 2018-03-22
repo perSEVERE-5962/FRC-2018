@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.command.Command;
 public class RunLift extends Command{
 
 	PIDLiftSubsystem pidLiftSubsystem;
-	Lift lift = new Lift();
 	
 	// Called just before this Command runs the first time
     protected void initialize() {
@@ -21,8 +20,8 @@ public class RunLift extends Command{
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	lift.lift();
-    	lift.checkHeight();
+    	Lift.lift();
+    	Lift.checkHeight();
     	//if (Robot.oi.xBoxLeftAxis() < 0) {
     	//	pidLiftSubsystem.setSetPoint(40);
     	//} else if (Robot.oi.xBoxRightAxis() > 0){

@@ -1,35 +1,25 @@
 package org.usfirst.frc.team5962.robot.commands;
 
 import org.usfirst.frc.team5962.robot.Robot;
-import org.usfirst.frc.team5962.robot.RobotMap;
-import org.usfirst.frc.team5962.robot.subsystems.DropIntake;
+import org.usfirst.frc.team5962.robot.subsystems.WingDeploy;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
-public class RunDropIntake extends Command{
+public class StopWingDeploy extends Command{
 
-	
 	// Called just before this Command runs the first time
     protected void initialize() {
-    	
-    	
+
+    	WingDeploy.bothWingsOff();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	//pidDropIntakeSubsystem.enable();
-    	//DropIntake.dropIntake();
-    	//DropIntake.checkParallel();
-    	DropIntake.dropIntake();
-    	}
-    	   	
-    	//pidDropIntakeSubsystem.enable();
+    	WingDeploy.bothWingsOff();
+    }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-
 
     	return false;
     }
