@@ -69,6 +69,8 @@ public class Autonomous extends Subsystem {
 			
 	//Variable for stopwatch
 	private long end;
+	private long now;
+	private long elapsedTime;
 	
 	//Variable for what step the action is on
 	int steps = 0;
@@ -83,6 +85,8 @@ public class Autonomous extends Subsystem {
 	double onTargetCurrentTime = 0;
 
 	boolean actionStarted = false;
+	
+	
 
 	//Called from Run Autonomous and sets up the timer and switch ownership
 	public void init()
@@ -119,8 +123,8 @@ public class Autonomous extends Subsystem {
 	
 	//Displays timer for the autonomous
 	public void elapsedTime() {
-        long now = System.currentTimeMillis();
-        long elapsedTime =  (long) ((end - now) / 1000.0);
+        now = System.currentTimeMillis();
+        elapsedTime =  (long) ((end - now) / 1000.0);
         if (elapsedTime < 12) {
         	pidDriveController.disable();
         }
@@ -373,7 +377,7 @@ public class Autonomous extends Subsystem {
 					
 					//RobotMap.myRobot.setMaxOutput(0.5);
 					
-					if (!actionStarted) {
+					/*if (!actionStarted) {
 						pidDriveController.disable();
 						
 						//Robot.encoder.reset();
@@ -393,12 +397,16 @@ public class Autonomous extends Subsystem {
 							   RobotMap.robotRightVictor1.getSpeed() == 0)) {
 						actionStarted = false;
 						steps++;
-					
-						
 					}
+					*/
+					
+					if (elapsedTime < 12) {
+			        	pidDriveController.disable();
+			        }
 					
 					else if (pidDriveController.isEnabled() == false){
 						RobotMap.myRobot.tankDrive(0, 0);
+						steps++;
 					}
 						
 					break;
