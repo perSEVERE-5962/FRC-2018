@@ -383,7 +383,7 @@ public class Autonomous extends Subsystem {
 //					}
 					
 					//RobotMap.myRobot.setMaxOutput(0.5);
-					/*
+					
 					if (!actionStarted) {
 						pidDriveController.disable();
 						
@@ -393,27 +393,30 @@ public class Autonomous extends Subsystem {
 						double Kd = SmartDashboard.getNumber("D Value:", 0);
 						pidDriveController.setPID(0.05, 0, 0);
 						pidDriveController.setOutputRange(-0.5,0.5);
-						pidDriveController.setInputRange(0, 150);
-						pidDriveController.setSetpoint(96);
+						pidDriveController.setInputRange(0, 1500);
+						pidDriveController.setSetpoint(1000);
 						pidDriveController.setPercentTolerance(1);
 						pidDriveController.enable();
 						actionStarted = true;
-						substeps++;
+						//substeps++;
 					
-					} else if (pidDriveController.onTarget()  &&
+					}/* else if (pidDriveController.onTarget()  &&
 							   RobotMap.robotLeftVictor1.getSpeed() == 0 &&
 							   RobotMap.robotRightVictor1.getSpeed() == 0) {
 						actionStarted = false;
 						steps++;
-					}
-					*/
+					} */
+					
 					
 					if (elapsedTime < 12) {
 			        	pidDriveController.disable();
+			        	SmartDashboard.putString("DEBUG: ", "DISABLING PID");
+			        	steps++;
 			        }
 					
 					else if (pidDriveController.isEnabled() == false){
 						RobotMap.myRobot.tankDrive(0, 0);
+						SmartDashboard.putString("DEBUG: ", "TANK DRIVE 0");
 						steps++;
 					}
 						
@@ -558,7 +561,7 @@ public class Autonomous extends Subsystem {
 						RobotMap.myRobot.tankDrive(0, 0);
 						substeps++;
 					} else {
-						RobotMap.myRobot.tankDrive(-.75,.75);
+						RobotMap.myRobot.tankDrive(.75,-.75);
 					}
 					
 					break;
@@ -596,9 +599,11 @@ public class Autonomous extends Subsystem {
 					
 					if(elapsedTime < 11.25) {
 						RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, 0);
+						SmartDashboard.putString("DEBUG: ", "STOPPING THE INTAKE");
 						substeps++;
 					} else {
 						RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, 1);
+						SmartDashboard.putString("DEBUG: ", "DROPPING THE INTAKE");
 					}
 					break;
 					
