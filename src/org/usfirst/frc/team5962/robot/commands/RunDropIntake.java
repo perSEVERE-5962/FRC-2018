@@ -21,7 +21,7 @@ public class RunDropIntake extends Command{
     protected void execute() {
     	//pidDropIntakeSubsystem.enable();
     	//DropIntake.dropIntake();
-    	//DropIntake.checkParallel();
+    	DropIntake.checkParallel();
     	DropIntake.dropIntake();
     	}
     	   	

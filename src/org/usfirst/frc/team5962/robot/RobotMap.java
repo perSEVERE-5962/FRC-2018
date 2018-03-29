@@ -65,6 +65,7 @@ public class RobotMap {
 	public static RobotUltrasonicAnalog ultraSonic;
 	
 	public static DigitalInput limitSwitchSlide;
+	public static DigitalInput limitDropIntake;
 	
 	public static Relay wingRelay;
 	
@@ -93,6 +94,7 @@ public class RobotMap {
 		
 		ultraSonic = new RobotUltrasonicAnalog(0);
 		limitSwitchSlide = new DigitalInput(DIO_CHANNEL_8);
+		limitDropIntake = new DigitalInput(DIO_CHANNEL_9);
 		
 		wingRelay = new Relay(0);
 
