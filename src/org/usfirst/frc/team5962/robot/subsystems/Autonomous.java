@@ -410,7 +410,8 @@ public class Autonomous extends Subsystem {
 					
 					if (elapsedTime < 12) {
 			        	pidDriveController.disable();
-			        	SmartDashboard.putString("DEBUG: ", "DISABLING PID");
+			        	SmartDashboard.putString("DEBUG: ", "DISABLE PID");
+			        	SmartDashboard.putString("TIME2 ", elapsedTime + "");
 			        	steps++;
 			        }
 					
@@ -537,14 +538,15 @@ public class Autonomous extends Subsystem {
 					break;
 						
 				case intoSwitch:
-					if (elapsedTime < 3) {
-						RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, 0);
-						RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, 0);
-						substeps++;
-					} else {
+					//if (elapsedTime < 9.25) {
+						//RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, 0);
+						//RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, 0);
+						//substeps++;
+					//} else {
+                        SmartDashboard.putString("DEBUG: " , "Into Switch");
 						RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, 1);
 						RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, -1);
-					}
+					//}
 					break;
 						
 				case pickUpBlock:
@@ -561,7 +563,7 @@ public class Autonomous extends Subsystem {
 						RobotMap.myRobot.tankDrive(0, 0);
 						substeps++;
 					} else {
-						RobotMap.myRobot.tankDrive(.75,-.75);
+						RobotMap.myRobot.tankDrive(.625,-.625);
 					}
 					
 					break;
@@ -597,22 +599,24 @@ public class Autonomous extends Subsystem {
 						
 				case lowerIntake:
 					
-					if(elapsedTime < 11.25) {
+					//if(elapsedTime < 12) {
 						RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, 0);
 						SmartDashboard.putString("DEBUG: ", "STOPPING THE INTAKE");
 						substeps++;
-					} else {
-						RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, 1);
-						SmartDashboard.putString("DEBUG: ", "DROPPING THE INTAKE");
-					}
+					//} else {
+						//RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, 1);
+						//SmartDashboard.putString("DEBUG: ", "DROPPING THE INTAKE");
+					//}
 					break;
 					
 				case liftSlide:
-					if(elapsedTime < 10.25) {
+					if(elapsedTime < 11) {
 						RobotMap.lift.set(0);
-						substeps++;
+						RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, 0.25);
+						substeps ++;
 					} else {
 						RobotMap.lift.set(1);
+						
 					}
 					
 				default:
