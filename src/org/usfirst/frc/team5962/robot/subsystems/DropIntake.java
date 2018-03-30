@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DropIntake {
 
@@ -24,15 +25,9 @@ public class DropIntake {
 		
 	}
 	
-	public void checkParallel() {
+	public static void checkParallel() {
 		
-		//Makes sure the intake is parrallel to the gorund so the intake won't move back
-		//if (getDistance() >= STRINGLENGTH) {
-		//	RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, 0);
-		//}
-		
-		
-		//pidDropIntakeController.setSetpoint(16);
+		SmartDashboard.putString("Limit Drop Intake Pressed:", RobotMap.limitDropIntake.get() + "");
 
 		
 		

@@ -257,11 +257,11 @@ public class Autonomous extends Subsystem {
 			  
 			  if (substeps == 0) {
 				  //currentState = CurrentState.backToForward;
-				  currentState = CurrentState.lowerIntake;
+				  currentState = CurrentState.liftSlide;
 				  
 			  } else if (substeps == 1) {
 					//currentState = CurrentState.driveHalfwayPastSwitch;
-				  currentState = CurrentState.liftSlide;
+				  currentState = CurrentState.lowerIntake;
 				
 				//Turns based on which switch we own
 			  } else if(substeps == 2) {
@@ -279,7 +279,8 @@ public class Autonomous extends Subsystem {
 				  //currentState = CurrentState.moveForwardToSwitch;
 				  substeps++;
 		      }else if(substeps == 4) {
-		    	  currentState = CurrentState.intoSwitch;
+		    	  //currentState = CurrentState.intoSwitch;
+		    	  substeps++;
 			  } else {
 				  substeps = 0;
 				  steps++;
@@ -410,7 +411,8 @@ public class Autonomous extends Subsystem {
 					
 					if (elapsedTime < 12) {
 			        	pidDriveController.disable();
-			        	SmartDashboard.putString("DEBUG: ", "DISABLING PID");
+			        	SmartDashboard.putString("DEBUG: ", "DISABLE PID");
+			        	SmartDashboard.putString("TIME2 ", elapsedTime + "");
 			        	steps++;
 			        }
 					
@@ -537,14 +539,15 @@ public class Autonomous extends Subsystem {
 					break;
 						
 				case intoSwitch:
-					if (elapsedTime < 3) {
-						RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, 0);
-						RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, 0);
-						substeps++;
-					} else {
-						RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, 1);
-						RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, -1);
-					}
+					//if (elapsedTime < 9.25) {
+						//RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, 0);
+						//RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, 0);
+						//substeps++;
+					//} else {
+                    //}
+			
+
+					
 					break;
 						
 				case pickUpBlock:
@@ -559,21 +562,29 @@ public class Autonomous extends Subsystem {
 				case turn90Left:
 					if (Robot.robotGyro.getGyroAngle() <= -90.0) {
 						RobotMap.myRobot.tankDrive(0, 0);
+						RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, 1);
+						RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, -1);
 						substeps++;
 					} else {
-						RobotMap.myRobot.tankDrive(.75,-.75);
+						RobotMap.myRobot.tankDrive(.625,-.625);
 					}
 					
 					break;
 						
 				case turn90Right:
-					if (!actionStarted) {
+					if (Robot.robotGyro.getGyroAngle() <= 90.0) {
+						RobotMap.myRobot.tankDrive(0, 0);
+						RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, 1);
+						RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, -1);
+					} else {
+						RobotMap.myRobot.tankDrive(-.625, .625);
 					}
 					break;
 					
 				case turnADegree:
 					if (!actionStarted) {
 					}
+					break;
 						
 				case backToForward:
 					//if (!actionStarted) {
@@ -597,23 +608,25 @@ public class Autonomous extends Subsystem {
 						
 				case lowerIntake:
 					
-					if(elapsedTime < 11.25) {
+					SmartDashboard.putString("Limit Drop Intake Pressed:", RobotMap.limitDropIntake.get() + "");
+					if (!RobotMap.limitDropIntake.get()) {
 						RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, 0);
 						SmartDashboard.putString("DEBUG: ", "STOPPING THE INTAKE");
 						substeps++;
 					} else {
-						RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, 1);
-						SmartDashboard.putString("DEBUG: ", "DROPPING THE INTAKE");
-					}
+						RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, 0.75);
+						}
 					break;
-					
+							
 				case liftSlide:
-					if(elapsedTime < 10.25) {
+					if(elapsedTime < 11) {
 						RobotMap.lift.set(0);
-						substeps++;
+						substeps ++;
 					} else {
 						RobotMap.lift.set(1);
+						
 					}
+					break;
 					
 				default:
 					RobotMap.myRobot.tankDrive(0, 0);
