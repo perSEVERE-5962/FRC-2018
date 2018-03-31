@@ -279,8 +279,7 @@ public class Autonomous extends Subsystem {
 				  //currentState = CurrentState.moveForwardToSwitch;
 				  substeps++;
 		      }else if(substeps == 4) {
-		    	  //currentState = CurrentState.intoSwitch;
-		    	  substeps++;
+		    	  currentState = CurrentState.intoSwitch;
 			  } else {
 				  substeps = 0;
 				  steps++;
@@ -539,15 +538,9 @@ public class Autonomous extends Subsystem {
 					break;
 						
 				case intoSwitch:
-					//if (elapsedTime < 9.25) {
-						//RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, 0);
-						//RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, 0);
-						//substeps++;
-					//} else {
-                    //}
-			
-
-					
+					RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, 1);
+					RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, -1);
+					substeps++;
 					break;
 						
 				case pickUpBlock:
@@ -562,8 +555,6 @@ public class Autonomous extends Subsystem {
 				case turn90Left:
 					if (Robot.robotGyro.getGyroAngle() <= -90.0) {
 						RobotMap.myRobot.tankDrive(0, 0);
-						RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, 1);
-						RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, -1);
 						substeps++;
 					} else {
 						RobotMap.myRobot.tankDrive(.625,-.625);
@@ -572,10 +563,9 @@ public class Autonomous extends Subsystem {
 					break;
 						
 				case turn90Right:
-					if (Robot.robotGyro.getGyroAngle() <= 90.0) {
+					if (Robot.robotGyro.getGyroAngle() >= 90.0) {
 						RobotMap.myRobot.tankDrive(0, 0);
-						RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, 1);
-						RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, -1);
+						substeps++;
 					} else {
 						RobotMap.myRobot.tankDrive(-.625, .625);
 					}
