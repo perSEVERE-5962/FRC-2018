@@ -27,12 +27,8 @@ public class RunClimber extends Command{
     	{
     		Climber.climbUp();
     	//	pidClimberSubsystem.setSetPoint(60);
-    	} else if (Robot.oi.xBoxRightTrigger() > 0.5)
-    	{
-    		Climber.climbDown();
-    	//	pidClimberSubsystem.setSetPoint(0);
-    	}
-    	else {
+    		
+    	} else {
     		Climber.stop();
     		
     	}
