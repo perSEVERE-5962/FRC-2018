@@ -20,7 +20,11 @@ public class DropIntake {
 	
 	public static void dropIntake() {
 		
+		if (Robot.oi.xBoxRightAxis() > .3 || Robot.oi.xBoxRightAxis() < -.3) {
 		RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, Robot.oi.xBoxRightAxis());
+		} else {
+			RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, 0);
+		}
 		//Robot.dropIntakeEncoder.getDistance();
 		
 	}
