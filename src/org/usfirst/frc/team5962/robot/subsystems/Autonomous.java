@@ -277,9 +277,9 @@ public class Autonomous extends Subsystem {
 					  
 			  } else if (substeps == 3) {
 				  //currentState = CurrentState.moveForwardToSwitch;
-				  substeps++;
+				  currentState = CurrentState.intoSwitch;
 		      }else if(substeps == 4) {
-		    	  currentState = CurrentState.intoSwitch;
+		    	  substeps++;
 			  } else {
 				  substeps = 0;
 				  steps++;
@@ -540,7 +540,7 @@ public class Autonomous extends Subsystem {
 				case intoSwitch:
 					RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, 1);
 					RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, -1);
-					substeps++;
+					//substeps++;
 					break;
 						
 				case pickUpBlock:

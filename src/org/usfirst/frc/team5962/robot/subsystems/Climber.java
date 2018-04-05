@@ -12,6 +12,10 @@ public class Climber {
 		RobotMap.climber.set(Robot.oi.xBoxLeftTrigger() * -1);
 	}
 	
+	public static void climbDown() {
+		
+		RobotMap.climber.set(Robot.oi.xBoxRightTrigger());
+	}
 	
 	public static void stop() {
 		RobotMap.climber.set(0);
