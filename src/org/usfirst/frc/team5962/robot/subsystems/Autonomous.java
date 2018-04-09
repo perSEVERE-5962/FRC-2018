@@ -213,7 +213,8 @@ public class Autonomous extends Subsystem {
 				
 			//Turns if the switch is owned on the left side
 			} else if (platesLocation == -1 && steps == 0 && (action == Robot.Action.crossLine ||
-						  									 action == Robot.Action.switch1)) {
+			
+					action == Robot.Action.switch1)) {
 				currentState = CurrentState.crossLineDiagonal;
 				
 			} else if (platesLocation == -1 && steps == 1 && action == Robot.Action.switch1) {
@@ -283,6 +284,10 @@ public class Autonomous extends Subsystem {
 			  } else {
 				  substeps = 0;
 				  steps++;
+			  }
+			  
+			  if (substeps > 1 && !RobotMap.limitSwitchSlide.get()) {
+				  RobotMap.lift.set(.5);
 			  }
 		}
 		
@@ -408,7 +413,7 @@ public class Autonomous extends Subsystem {
 					} */
 					
 					
-					if (elapsedTime < 12) {
+					if (elapsedTime < 10) {
 			        	pidDriveController.disable();
 			        	SmartDashboard.putString("DEBUG: ", "DISABLE PID");
 			        	SmartDashboard.putString("TIME2 ", elapsedTime + "");
@@ -553,21 +558,21 @@ public class Autonomous extends Subsystem {
 					break;
 						
 				case turn90Left:
-					if (Robot.robotGyro.getGyroAngle() <= -90.0) {
+					if (Robot.robotGyro.getGyroAngle() <= -75.0) {
 						RobotMap.myRobot.tankDrive(0, 0);
 						substeps++;
 					} else {
-						RobotMap.myRobot.tankDrive(.625,-.625);
+						RobotMap.myRobot.tankDrive(1,-1);
 					}
 					
 					break;
 						
 				case turn90Right:
-					if (Robot.robotGyro.getGyroAngle() >= 90.0) {
+					if (Robot.robotGyro.getGyroAngle() >= 75.0) {
 						RobotMap.myRobot.tankDrive(0, 0);
 						substeps++;
 					} else {
-						RobotMap.myRobot.tankDrive(-.625, .625);
+						RobotMap.myRobot.tankDrive(-1, 1);
 					}
 					break;
 					
@@ -604,18 +609,18 @@ public class Autonomous extends Subsystem {
 						SmartDashboard.putString("DEBUG: ", "STOPPING THE INTAKE");
 						substeps++;
 					} else {
-						RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, 0.75);
+						RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, 0.3);
 						}
 					break;
 							
 				case liftSlide:
-					if(elapsedTime < 11) {
-						RobotMap.lift.set(0);
+					if(elapsedTime < 9 || RobotMap.limitSwitchSlide.get()) {
+						RobotMap.lift.set(0.5);
 						substeps ++;
 					} else {
 						RobotMap.lift.set(1);
-						
 					}
+					
 					break;
 					
 				default:

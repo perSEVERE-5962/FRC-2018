@@ -15,14 +15,16 @@ public class Lift {
 	
 	public static void lift() {
 		
-		if (!isEnabled){
-		RobotMap.lift.set(0.0);
+		if (isEnabled){
+		RobotMap.lift.set(-.1);
 		}
 		else {
-			if (Robot.oi.xBoxLeftAxis() > 0)
+			if (Robot.oi.xBoxLeftAxis() > 0.2)
 				RobotMap.lift.set(Robot.oi.xBoxLeftAxis() * -.5);
-			else {
+			else if (Robot.oi.xBoxLeftAxis() < -.2){
 				RobotMap.lift.set(Robot.oi.xBoxLeftAxis() * -1);
+			} else {
+				RobotMap.lift.set(0);
 			}
 		}
 	
