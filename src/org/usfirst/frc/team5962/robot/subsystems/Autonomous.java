@@ -60,7 +60,9 @@ public class Autonomous extends Subsystem {
 		turnADegree,
 		backToForward,
 		
-		nothing
+		nothing,
+		
+		straightAuto
 		
 	}
 	
@@ -162,25 +164,8 @@ public class Autonomous extends Subsystem {
 			break;
 			
 		case switchRight:
-			//Goes straight if switch is owned on the right side
-			if (platesLocation == -1 && steps == 0 && (action == Robot.Action.crossLine ||
-			   				   						   action == Robot.Action.switch1)){
-				currentState = CurrentState.crossLineStraight;
-				
-			} else if (platesLocation == -1 && steps == 1 && action == Robot.Action.switch1) {
-				straightToSwitch();
-				
-			//Turns if the switch is owned on the left side
-			} else if (platesLocation == 1 && steps == 0 && (action == Robot.Action.crossLine ||
-						  									 action == Robot.Action.switch1)) {
-				currentState = CurrentState.crossLineDiagonal;
-				
-			} else if (platesLocation == 1 && steps == 1 && action == Robot.Action.switch1) {
-				aroundSwitch();
-			} else
-				currentState = CurrentState.nothing;
 			
-			break;
+			currentState = CurrentState.straightAuto;
 			
 		case middle:
 			if (steps == 0 && (action == Robot.Action.crossLine ||
@@ -192,35 +177,10 @@ public class Autonomous extends Subsystem {
 				currentState = CurrentState.nothing;
 			
 			break;
-		case vault:
-			if (steps == 0 && (action == Robot.Action.exchange ||
-							   action == Robot.Action.crossLine)) {
-				intoVault();
-			} else if(steps == 1 && action == Robot.Action.crossLine) {
-				crossLineAfterVault();
-			}
-			break;
 			
 		case switchLeft:
 			
-			//Goes straight if switch is owned on the left side
-			if (platesLocation == 1 && steps == 0 && (action == Robot.Action.crossLine ||
-			   				   						   action == Robot.Action.switch1)){
-				currentState = CurrentState.crossLineStraight;
-				
-			} else if (platesLocation == 1 && steps == 1 && action == Robot.Action.switch1) {
-				straightToSwitch();
-				
-			//Turns if the switch is owned on the left side
-			} else if (platesLocation == -1 && steps == 0 && (action == Robot.Action.crossLine ||
-						  									 action == Robot.Action.switch1)) {
-				currentState = CurrentState.crossLineDiagonal;
-				
-			} else if (platesLocation == -1 && steps == 1 && action == Robot.Action.switch1) {
-				aroundSwitch();
-			} else
-				currentState = CurrentState.nothing;
-			break;
+			currentState = CurrentState.straightAuto;
 			
 		case farLeft:	
 			
@@ -277,12 +237,16 @@ public class Autonomous extends Subsystem {
 					  
 			  } else if (substeps == 3) {
 				  //currentState = CurrentState.moveForwardToSwitch;
-				  substeps++;
+				  currentState = CurrentState.intoSwitch;
 		      }else if(substeps == 4) {
-		    	  currentState = CurrentState.intoSwitch;
+		    	  substeps++;
 			  } else {
 				  substeps = 0;
 				  steps++;
+			  }
+			  
+			  if (substeps > 1 && !RobotMap.limitSwitchSlide.get()) {
+				  RobotMap.lift.set(.5);
 			  }
 		}
 		
@@ -408,7 +372,7 @@ public class Autonomous extends Subsystem {
 					} */
 					
 					
-					if (elapsedTime < 12) {
+					if (elapsedTime < 10) {
 			        	pidDriveController.disable();
 			        	SmartDashboard.putString("DEBUG: ", "DISABLE PID");
 			        	SmartDashboard.putString("TIME2 ", elapsedTime + "");
@@ -427,67 +391,6 @@ public class Autonomous extends Subsystem {
 					steps++;
 					break;
 						
-				case crossLineFromMiddle:
-					steps++;
-					break;
-						
-				case drivePastSwitch:
-					if (!actionStarted) {
-						pidDriveController.disable();
-						//Robot.encoder.reset();
-						pidDriveController.setOutputRange(-0.5,0.5);
-						pidDriveController.setInputRange(0,160);
-						pidDriveController.setSetpoint(144.5);
-						pidDriveController.setPercentTolerance(1);
-						pidDriveController.enable();
-						actionStarted = true;
-					}else if (pidDriveController.onTarget()  &&
-							   RobotMap.robotLeftVictor1.getSpeed() == 0 &&
-							   RobotMap.robotRightVictor1.getSpeed() == 0) {
-						SmartDashboard.putString("DEBUG: " , "Halfway past Switch");
-						actionStarted = false;
-						substeps++;
-					}
-					break;
-						
-				case driveAcrossSwitch:
-					if (!actionStarted) {
-						pidDriveController.disable();
-						Robot.encoder.reset();
-						pidDriveController.setOutputRange(-0.5, 0.5);
-						pidDriveController.setInputRange(0,200);
-						pidDriveController.setSetpoint(171.625);
-						pidDriveController.setPercentTolerance(1);
-						pidDriveController.enable();
-						actionStarted = true;
-					} else if (pidDriveController.onTarget()  &&
-							   RobotMap.robotLeftVictor1.getSpeed() == 0 &&
-							   RobotMap.robotRightVictor1.getSpeed() == 0) {
-						SmartDashboard.putString("DEBUG: " , "Halfway past Switch");
-						actionStarted = false;
-						substeps++;
-					}
-					break;
-					
-				case driveHalfwayPastSwitch:
-					if (!actionStarted) {
-						pidDriveController.disable();
-						Robot.encoder.reset();
-						pidDriveController.setOutputRange(-0.5, 0.5);
-						pidDriveController.setInputRange(0,85);
-						pidDriveController.setSetpoint(76); //76
-						pidDriveController.setPercentTolerance(1);
-						pidDriveController.enable();
-						actionStarted = true;
-					}else if (pidDriveController.onTarget()  &&
-							   RobotMap.robotLeftVictor1.getSpeed() == 0 &&
-							   RobotMap.robotRightVictor1.getSpeed() == 0) {
-						SmartDashboard.putString("DEBUG: " , "Halfway past Switch");
-						actionStarted = false;
-						substeps++;
-					}
-					
-					break;
 						
 				case moveForwardToSwitch:
 					substeps++;
@@ -540,7 +443,7 @@ public class Autonomous extends Subsystem {
 				case intoSwitch:
 					RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, 1);
 					RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, -1);
-					substeps++;
+					//substeps++;
 					break;
 						
 				case pickUpBlock:
@@ -553,21 +456,21 @@ public class Autonomous extends Subsystem {
 					break;
 						
 				case turn90Left:
-					if (Robot.robotGyro.getGyroAngle() <= -90.0) {
+					if (Robot.robotGyro.getGyroAngle() <= -75.0) {
 						RobotMap.myRobot.tankDrive(0, 0);
 						substeps++;
 					} else {
-						RobotMap.myRobot.tankDrive(.625,-.625);
+						RobotMap.myRobot.tankDrive(1,-1);
 					}
 					
 					break;
 						
 				case turn90Right:
-					if (Robot.robotGyro.getGyroAngle() >= 90.0) {
+					if (Robot.robotGyro.getGyroAngle() >= 75.0) {
 						RobotMap.myRobot.tankDrive(0, 0);
 						substeps++;
 					} else {
-						RobotMap.myRobot.tankDrive(-.625, .625);
+						RobotMap.myRobot.tankDrive(-1, 1);
 					}
 					break;
 					
@@ -604,17 +507,47 @@ public class Autonomous extends Subsystem {
 						SmartDashboard.putString("DEBUG: ", "STOPPING THE INTAKE");
 						substeps++;
 					} else {
-						RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, 0.75);
+						RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, 0.3);
 						}
 					break;
 							
 				case liftSlide:
-					if(elapsedTime < 11) {
-						RobotMap.lift.set(0);
+					if(elapsedTime < 9 || RobotMap.limitSwitchSlide.get()) {
+						RobotMap.lift.set(0.5);
 						substeps ++;
 					} else {
 						RobotMap.lift.set(1);
+					}
+					
+					break;
+					
+				case straightAuto:
+					if (elapsedTime > 9) {
+						RobotMap.myRobot.tankDrive(1, 1);
+					} else {
+						RobotMap.myRobot.tankDrive(0, 0);
+					}
+					
+					if ((platesLocation == -1 && location == Robot.Location.switchRight) ||
+						(platesLocation == 1 && location == Robot.Location.switchLeft)) {
 						
+						if (!RobotMap.limitDropIntake.get()) {
+							RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, 0);
+						} else {
+							RobotMap.dropBoxIntake.set(ControlMode.PercentOutput, 0.3);
+						}
+					
+						if(elapsedTime < 11 || RobotMap.limitSwitchSlide.get()) {
+							RobotMap.lift.set(0.2);
+						} else {
+							RobotMap.lift.set(1);
+						}
+					
+						if (elapsedTime < 3) {
+							RobotMap.leftBoxIntake.set(ControlMode.PercentOutput, 1);
+							RobotMap.rightBoxIntake.set(ControlMode.PercentOutput, -1);
+						}
+					
 					}
 					break;
 					
