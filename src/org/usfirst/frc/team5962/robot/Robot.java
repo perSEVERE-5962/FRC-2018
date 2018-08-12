@@ -206,11 +206,19 @@ public class Robot extends IterativeRobot {
 		
 	}
 
+
+	ShellExecuter shellExecuter;
+	boolean shellExecuterEnabled = false;
 	/**
 	 * This function is called periodically during test mode
 	 */
 	public void testPeriodic() {
 		LiveWindow.run();
+		if (!shellExecuterEnabled) {
+			shellExecuter = new ShellExecuter();
+			shellExecuter.executeFile("python pynetworktableTest.py 10.59.62.2");
+			shellExecuterEnabled = true;
+		}
 	}
 	
 	

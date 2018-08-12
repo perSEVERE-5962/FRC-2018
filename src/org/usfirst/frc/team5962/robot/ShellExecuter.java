@@ -31,12 +31,11 @@ public class ShellExecuter{
   * @param scriptFileName
   * @return
   */
- public List<String> executeFile(String scriptFileName)
+ public List<String> executeFile(String remoteCommand)
  {
      List<String> result = new ArrayList<String>();
      try
      {
-
          /**
          * Create a new Jsch object
          * This object will execute shell commands or scripts on server
@@ -62,8 +61,7 @@ public class ShellExecuter{
          InputStream in = channelExec.getInputStream();
 
          // Set the command that you want to execute
-         // In our case its the remote shell script
-         channelExec.setCommand("sh "+scriptFileName);
+         channelExec.setCommand(remoteCommand);
 
          // Execute the command
          channelExec.connect();
@@ -77,6 +75,7 @@ public class ShellExecuter{
          while ((line = reader.readLine()) != null)
          {
              result.add(line);
+             System.out.println(line);
          }
 
          //retrieve the exit status of the remote command corresponding to this channel
