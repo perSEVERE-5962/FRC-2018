@@ -81,6 +81,7 @@ public class RobotMap {
 		leftDrive.setInverted(true);
 		rightDrive.setInverted(true);
 		myRobot = new DifferentialDrive(leftDrive, rightDrive);
+		myRobot.setMaxOutput(0.25);
 		leftBoxIntake = new TalonSRX(12);
 		leftBoxIntake.setInverted(true);
 		rightBoxIntake = new TalonSRX(13);

@@ -10,7 +10,7 @@ public class Joystick extends Subsystem {
 public static void throttle() {
 	//double nob = (((Robot.oi.joystickRight.getThrottle() * -1) + 2) / 3);
 	//SmartDashboard.putString("NOB Speed: ", nob + "");
-	RobotMap.myRobot.setMaxOutput ((.75));
+	RobotMap.myRobot.setMaxOutput ((.25));
 }
 	@Override
 	protected void initDefaultCommand() {

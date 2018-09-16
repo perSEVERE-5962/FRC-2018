@@ -30,6 +30,8 @@ public class OI {
 	public Joystick joystickRight;
 	public Joystick gamepad1;
 	public Joystick xBoxController;
+	public Joystick gamepad2;
+
 	
 	public Button throttle;
 	public Button jsIntake;
@@ -51,6 +53,7 @@ public class OI {
 		joystickRight = new Joystick(2);
 		gamepad1 = new Joystick(0);
 		xBoxController = new Joystick(3);
+		gamepad2 = new Joystick(4);
 		
 		jsIntake = new JoystickButton(joystickLeft,1);
 		jsIntake.whenPressed(new RunBoxIntake());

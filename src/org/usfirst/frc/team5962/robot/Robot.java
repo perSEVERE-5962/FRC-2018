@@ -96,7 +96,7 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		//RobotMap.myRobot.setMaxOutput(0.5);
 		//gyro.setUpResetGyro();
-		RobotMap.myRobot.setMaxOutput(0.5);
+		RobotMap.myRobot.setMaxOutput(0.25);
 		robotGyro.resetGyro();
 		SmartDashboard.putData("Reset Gyro", new ResetGyro());
 
