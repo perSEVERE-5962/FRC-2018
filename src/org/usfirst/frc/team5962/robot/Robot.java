@@ -96,7 +96,7 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		//RobotMap.myRobot.setMaxOutput(0.5);
 		//gyro.setUpResetGyro();
-		RobotMap.myRobot.setMaxOutput(0.5);
+		RobotMap.myRobot.setMaxOutput(0.25);
 		robotGyro.resetGyro();
 		SmartDashboard.putData("Reset Gyro", new ResetGyro());
 
@@ -206,11 +206,19 @@ public class Robot extends IterativeRobot {
 		
 	}
 
+
+	ShellExecuter shellExecuter;
+	boolean shellExecuterEnabled = false;
 	/**
 	 * This function is called periodically during test mode
 	 */
 	public void testPeriodic() {
 		LiveWindow.run();
+		if (!shellExecuterEnabled) {
+			shellExecuter = new ShellExecuter();
+			shellExecuter.executeFile("python pynetworktableTest.py 10.59.62.2");
+			shellExecuterEnabled = true;
+		}
 	}
 	
 	
